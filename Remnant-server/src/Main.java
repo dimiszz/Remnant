@@ -1,18 +1,32 @@
-import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Date;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
+
 public class Main {
+
+    public static String communicateMessage(String Message){
+        return "{\"Code\": \"1\", \"Message\": \"" + Message +  "\"}";
+    }
+
     public static void main(String[] args) {
+
         try {
-            Socket cliente = new Socket("127.0.0.1",12345);
-            ObjectInputStream entrada = new ObjectInputStream(cliente.getInputStream());
-            Date data_atual = (Date)entrada.readObject();
-            System.out.println("Data recebida do servidor:" + data_atual.toString());
-            entrada.close();
-            System.out.println("Conexão encerrada");
+            // Instancia o ServerSocket ouvindo a porta 12345
+            ServerSocket servidor = new ServerSocket(12345);
+            System.out.println("Servidor ouvindo a porta 12345");
+            while(true) {
+                // o método accept() bloqueia a execução até que
+                // o servidor receba um pedido de conexão
+                Socket cliente = servidor.accept();
+                System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostAddress());
+
+                ClientHandler clienteHandler = new ClientHandler(cliente);
+
+                Thread thread = new Thread(clienteHandler);
+                thread.start();
+            }
         }
         catch(Exception e) {
             System.out.println("Erro: " + e.getMessage());
