@@ -1,29 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22d1ba55-ef14-49bf-80e5-90a20a42e988" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/Remnant-client.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/Remnant-server.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/src/Main.java" afterDir="false" />
-    </list>
+    <list default="true" id="22d1ba55-ef14-49bf-80e5-90a20a42e988" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../Remnant-server" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 4
@@ -39,13 +24,14 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "master",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dimit/projects/usp/Remnant/Remnant-server",
+    "last_opened_file_path": "C:/Users/dimit/projects/usp/Remnant/Remnant-client",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
     "onboarding.tips.debug.path": "C:/Users/dimit/projects/usp/Remnant/src/Main.java",
+    "settings.editor.selected.configurable": "project.propVCSSupport.DirectoryMappings",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
@@ -68,11 +54,18 @@
       <workItem from="1727873342092" duration="1000" />
       <workItem from="1727873510943" duration="373000" />
       <workItem from="1727873939571" duration="49000" />
+      <workItem from="1727874001641" duration="217000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <ignored-roots>
+      <path value="$PROJECT_DIR$" />
+      <path value="$PROJECT_DIR$/../Remnant-server" />
+    </ignored-roots>
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
