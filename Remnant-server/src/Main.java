@@ -1,15 +1,21 @@
+import java.io.ObjectInputStream;
+import java.net.Socket;
+import java.util.Date;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
     public static void main(String[] args) {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        System.out.printf("Hello and welcome!");
-
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            System.out.println("i = " + i);
+        try {
+            Socket cliente = new Socket("127.0.0.1",12345);
+            ObjectInputStream entrada = new ObjectInputStream(cliente.getInputStream());
+            Date data_atual = (Date)entrada.readObject();
+            System.out.println("Data recebida do servidor:" + data_atual.toString());
+            entrada.close();
+            System.out.println("Conexão encerrada");
+        }
+        catch(Exception e) {
+            System.out.println("Erro: " + e.getMessage());
         }
     }
 }
