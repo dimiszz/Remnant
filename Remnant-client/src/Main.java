@@ -33,16 +33,12 @@ public class Main {
 
     public static void main(String[] args) {
         try {
-            Socket cliente = new Socket("127.0.0.1",12345);
+            Client cliente = new Client("127.0.0.1",12345);
 
             Scanner t = new Scanner(System.in);
 
-            BufferedWriter bufferedWriter = new BufferedWriter(new OutputStreamWriter(cliente.getOutputStream()));
-            BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(cliente.getInputStream()));
             String code = "0";
             String menssage = "";
-
-
 
             while(!Objects.equals(code, "10")){
                 System.out.print("Digite o código: ");
@@ -50,11 +46,9 @@ public class Main {
                 System.out.print("Digite a mensagem: ");
                 menssage = t.nextLine();
 
-                bufferedWriter.write(communicateMessage(code, menssage));
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
+                cliente.write(communicateMessage(code, menssage));
 
-                String mensagem = bufferedReader.readLine();
+                String mensagem = cliente.read();
 
                 HashMap<String, String> map = decodificarMensagem(mensagem);
 
@@ -77,18 +71,12 @@ public class Main {
                         System.out.println("Escreva \"Pedra\", \"Papel\" ou \"Tesoura\" na mensagem!");
                 }
             }
-            bufferedWriter.close();
-            bufferedReader.close();
             cliente.close();
             System.out.println("Conexão encerrada");
         }
         catch(Exception e) {
             System.out.println("Erro: " + e.getMessage());
         }
-//        String mensagem = "{\"Code\": \"1\", \"Message\": \"Olá\"}";
-//        HashMap<String,String> answer = decodificarMensagem(mensagem);
-//        System.out.println(answer.get("Message"));
-
     }
 
     public static String communicateMessage(String Code, String Message){

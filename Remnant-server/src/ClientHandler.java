@@ -31,45 +31,17 @@ public class ClientHandler implements Runnable {
 
     @Override
     public void run() {
-        String message;
+        String mensagem;
         while(socket.isConnected()){
             try{
-                message = bufferedReader.readLine();
-                if (message == null) break;
-                System.out.println(message);
-                HashMap<String, String> map = decodificarMensagem(message);
+                mensagem = bufferedReader.readLine();
+                if (mensagem == null) break;
+                System.out.println(mensagem + "from " + socket.getRemoteSocketAddress());
+                HashMap<String, String> map = decodificarMensagem(mensagem);
 
-                Random random = new Random();
+                String jogada = map.get("Message");
 
-                int choice = random.nextInt(3);
-
-                int value = switch (map.get("Message")) {
-                    case "Pedra" -> 0;
-                    case "Papel" -> 1;
-                    case "Tesoura" -> 2;
-                    default -> -750;
-                };
-
-                String code = "640";
-
-                if (value != -750) {
-                    switch (verificarVencedor(choice, value)) {
-                        case "Empate":
-                            code = "0";
-                            break;
-                        case "Jogador 1":
-                            code = "2";
-                            this.loses++;
-                            break;
-                        case "Jogador 2":
-                            code = "1";
-                            this.points++;
-                            break;
-                        default:
-                    }
-                }
-
-                bufferedWriter.write(communicateMessage(code, "pq vc me ignora?"));
+                bufferedWriter.write(communicateMessage("0", "pq vc me ignora?"));
                 bufferedWriter.newLine();
                 bufferedWriter.flush();
 
@@ -91,16 +63,6 @@ public class ClientHandler implements Runnable {
         }
     }
 
-    public static String verificarVencedor(int jogador1, int jogador2) {
-        if (jogador1 == jogador2) {
-            return "Empate";
-        }
-
-        // Cálculo otimizado para decidir o vencedor
-        // (jogador1 - jogador2 + 3) % 3 garante resultado positivo
-        return ((jogador1 - jogador2 + 3) % 3 == 1) ? "Jogador 1" : "Jogador 2";
-    }
-
     public void closeEverything() {
         try {
             if (this.bufferedReader != null) this.bufferedReader.close();
@@ -110,6 +72,18 @@ public class ClientHandler implements Runnable {
             e.printStackTrace();
         }
         ClientHandler.clientHandlers.remove(this);  // Remover o cliente da lista ao desconectar
+    }
+
+    public void write(String message){
+        try{
+            this.bufferedWriter.write(message);
+            this.bufferedWriter.newLine();
+            this.bufferedWriter.flush();
+        }
+        catch(IOException e){
+            System.out.println("Não foi possível escrever a mensagem: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public static HashMap<String, String> decodificarMensagem(String mensagem){
