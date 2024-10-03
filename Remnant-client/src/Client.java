@@ -47,4 +47,8 @@ public class Client {
             e.printStackTrace();
         }
     }
+
+    public boolean isConnected(){
+        return socket.isConnected();
+    }
 }

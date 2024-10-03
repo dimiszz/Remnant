@@ -17,15 +17,13 @@ public class Main {
             System.out.println("Servidor ouvindo a porta 12345");
             while(true) {
                 // só aceitamos 2 conexões no servidor.
-                if(ClientHandler.clientHandlers.size() < 2) {
-                    Socket cliente = servidor.accept();
-                    System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostAddress());
+                Socket cliente = servidor.accept();
+                System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostAddress());
 
-                    ClientHandler clienteHandler = new ClientHandler(cliente);
+                ClientHandler clienteHandler = new ClientHandler(cliente);
 
-                    Thread thread = new Thread(clienteHandler);
-                    thread.start();
-                }
+                Thread thread = new Thread(clienteHandler);
+                thread.start();
             }
         }
         catch(Exception e) {

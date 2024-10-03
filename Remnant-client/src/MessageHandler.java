@@ -1,12 +1,14 @@
 import java.util.HashMap;
 
 public class MessageHandler {
+    private Client client;
 
     public String handle(String mensagem){
 
         HashMap<String, String> map = decodificarMensagem(mensagem);
 
         String p = switch (map.get("Code")) {
+            case "-1" -> "Servidor está cheio!";
             case "0" -> """
                     Seja bem vindo a Remnant! Nesse jogo, você deve escolher entre Atacar
                     ou Defender e Magia ou Físico, além do golpe especial contra ataque.

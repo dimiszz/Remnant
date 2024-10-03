@@ -16,7 +16,7 @@ public class Main {
             String code = "0";
             String menssage = "";
 
-            while(!Objects.equals(code, "10")){
+            while(cliente.isConnected()){
                 String mensagem = cliente.read();
                 System.out.println(messageHandler.handle(mensagem));
             }

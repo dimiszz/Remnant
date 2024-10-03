@@ -19,6 +19,10 @@ public class ClientHandler implements Runnable {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            if(clientHandlers.size() > 2) {
+                write("{\"Code\": \"-1\"}");
+                closeEverything();
+            }
             clientHandlers.add(this);
             write("{\"Code\": \"0\"}");
         }
