@@ -11,17 +11,13 @@ public class Main {
 
             MessageHandler messageHandler = new MessageHandler();
 
-            Scanner t = new Scanner(System.in);
-
-            String code = "0";
-            String menssage = "";
-
             while(cliente.isConnected()){
                 String mensagem = cliente.read();
+                if (mensagem == null) break;
                 System.out.println(messageHandler.handle(mensagem));
             }
-            cliente.close();
-            System.out.println("Conexão encerrada");
+
+            System.out.println("Conexão encerrada!");
         }
         catch(Exception e) {
             System.out.println("Erro: " + e.getMessage());

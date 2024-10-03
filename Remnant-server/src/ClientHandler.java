@@ -19,22 +19,29 @@ public class ClientHandler implements Runnable {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            clientHandlers.add(this);
+            System.out.println("Usuários conectados: " + clientHandlers.size());
             if(clientHandlers.size() > 2) {
                 write("{\"Code\": \"-1\"}");
+                System.out.println("Número limite de clientes atingido.");
                 closeEverything();
             }
-            clientHandlers.add(this);
-            write("{\"Code\": \"0\"}");
+            else{
+                write("{\"Code\": \"0\"}");
+            }
         }
         catch(IOException e){
-            e.printStackTrace();
+            System.out.println("Erro no cliente " + socket.getRemoteSocketAddress() + ": " + e.getMessage());
         }
     }
 
     @Override
     public void run() {
+
+        if (socket.isClosed()) return;
+
         String mensagem;
-        while(socket.isConnected()){
+        while(socket.isConnected() && !socket.isClosed()){
             try{
                 mensagem = bufferedReader.readLine();
                 if (mensagem == null) break;
@@ -46,12 +53,14 @@ public class ClientHandler implements Runnable {
                 if (Objects.equals(map.get("Code"), "10")) break;
             } catch (IOException e) {
                 closeEverything();
-                System.out.println(e.getMessage());
-                throw new RuntimeException(e);
+                System.out.println("Erro lidando com o cliente " + socket.getRemoteSocketAddress() + ": " + e.getMessage());
+                throw new RuntimeException();
             }
         }
         System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
-        closeEverything();
+        if(socket.isConnected()){
+            closeEverything();
+        }
     }
 
     public void closeEverything() {
@@ -60,7 +69,8 @@ public class ClientHandler implements Runnable {
             if (this.bufferedWriter != null) this.bufferedWriter.close();
             if (this.socket != null) this.socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Erro ao finalizar conexão com o cliente " + socket.getInetAddress() +
+                    socket.getRemoteSocketAddress() + ": " + e.getMessage());
         }
         ClientHandler.clientHandlers.remove(this);  // Remover o cliente da lista ao desconectar
     }
@@ -73,7 +83,6 @@ public class ClientHandler implements Runnable {
         }
         catch(IOException e){
             System.out.println("Não foi possível escrever a mensagem: " + e.getMessage());
-            e.printStackTrace();
         }
     }
 

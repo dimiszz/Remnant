@@ -7,16 +7,21 @@ public class MessageHandler {
 
         HashMap<String, String> map = decodificarMensagem(mensagem);
 
-        String p = switch (map.get("Code")) {
-            case "-1" -> "Servidor está cheio!";
-            case "0" -> """
-                    Seja bem vindo a Remnant! Nesse jogo, você deve escolher entre Atacar
-                    ou Defender e Magia ou Físico, além do golpe especial contra ataque.
-                    Os jogadores possuem 3 vidas. Defesas físicas defendem física, o mesmo para mágicas.
-                    Ou seja, se 1 jogador usar defesa física e o outro ataque mágico, toma dano.
-                    Se ambos atacarem, ambos levam dano. Se um atacar e o outro usar o contra-ataque, 
-                    apenas o que atacou leva dano, independente do tipo do ataque. Ganha quem ficar vivo!""";
-            default -> "MENSAGEM NÃO TRATADA";
+        String p = "MENSAGEM NÃO TRATADA";
+
+        switch (map.get("Code")) {
+            case "-1":
+                p = "Servidor está cheio!";
+                break;
+            case "0":
+                p = """
+                Seja bem vindo a Remnant! Nesse jogo, você deve escolher entre Atacar
+                ou Defender e Magia ou Físico, além do golpe especial contra ataque.
+                Os jogadores possuem 3 vidas. Defesas físicas defendem física, o mesmo para mágicas.
+                Ou seja, se 1 jogador usar defesa física e o outro ataque mágico, toma dano.
+                Se ambos atacarem, ambos levam dano. Se um atacar e o outro usar o contra-ataque, 
+                apenas o que atacou leva dano, independente do tipo do ataque. Ganha quem ficar vivo!""";
+                break;
         };
         return p;
     }
