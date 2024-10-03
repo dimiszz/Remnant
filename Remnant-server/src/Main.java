@@ -13,19 +13,19 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            // Instancia o ServerSocket ouvindo a porta 12345
             ServerSocket servidor = new ServerSocket(12345);
             System.out.println("Servidor ouvindo a porta 12345");
             while(true) {
-                // o método accept() bloqueia a execução até que
-                // o servidor receba um pedido de conexão
-                Socket cliente = servidor.accept();
-                System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostAddress());
+                // só aceitamos 2 conexões no servidor.
+                if(ClientHandler.clientHandlers.size() < 2) {
+                    Socket cliente = servidor.accept();
+                    System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostAddress());
 
-                ClientHandler clienteHandler = new ClientHandler(cliente);
+                    ClientHandler clienteHandler = new ClientHandler(cliente);
 
-                Thread thread = new Thread(clienteHandler);
-                thread.start();
+                    Thread thread = new Thread(clienteHandler);
+                    thread.start();
+                }
             }
         }
         catch(Exception e) {

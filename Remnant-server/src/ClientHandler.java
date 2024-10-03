@@ -13,9 +13,6 @@ public class ClientHandler implements Runnable {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private int points = 0;
-    private int wins = 3;
-    private int loses = 0;
 
     public ClientHandler(Socket socket) {
         try{
@@ -23,6 +20,7 @@ public class ClientHandler implements Runnable {
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             clientHandlers.add(this);
+            write("{\"Code\": \"0\"}");
         }
         catch(IOException e){
             e.printStackTrace();
@@ -41,26 +39,15 @@ public class ClientHandler implements Runnable {
 
                 String jogada = map.get("Message");
 
-                bufferedWriter.write(communicateMessage("0", "pq vc me ignora?"));
-                bufferedWriter.newLine();
-                bufferedWriter.flush();
-
-                if (points == wins){
-                    bufferedWriter.write(communicateMessage("10", "pq vc me ignora? Terminou " + this.points + " a " + this.loses));
-                    bufferedWriter.newLine();
-                    bufferedWriter.flush();
-                }
-
-                if (Objects.equals(map.get("Code"), "10")){
-                    closeEverything();
-                    System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
-                    break;
-                }
+                if (Objects.equals(map.get("Code"), "10")) break;
             } catch (IOException e) {
                 closeEverything();
+                System.out.println(e.getMessage());
                 throw new RuntimeException(e);
             }
         }
+        System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
+        closeEverything();
     }
 
     public void closeEverything() {
