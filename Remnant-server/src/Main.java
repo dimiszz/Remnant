@@ -1,7 +1,5 @@
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.Date;
 
 
 public class Main {
@@ -18,12 +16,9 @@ public class Main {
             while(true) {
                 // só aceitamos 2 conexões no servidor.
                 Socket cliente = servidor.accept();
-                System.out.println("Cliente conectado: " + cliente.getInetAddress().getHostAddress());
-
-                ClientHandler clienteHandler = new ClientHandler(cliente);
-
-                Thread thread = new Thread(clienteHandler);
-                thread.start();
+                System.out.println("Cliente conectado: " + cliente.getInetAddress());
+                Player clienteHandler = new Player(cliente);
+                new Thread(clienteHandler).start();
             }
         }
         catch(Exception e) {

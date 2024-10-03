@@ -2,26 +2,25 @@ import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
-import java.util.Random;
 
 /// FONTE PARA O CLIENTHANDLER: https://www.youtube.com/watch?v=gLfuZrrfKes
 
-public class ClientHandler implements Runnable {
+public class Player implements Runnable {
 
-    public static ArrayList<ClientHandler> clientHandlers = new ArrayList<>();
+    public static ArrayList<Player> players = new ArrayList<>();
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
+    private String nome;
 
-    public ClientHandler(Socket socket) {
+    public Player(Socket socket) {
         try{
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            clientHandlers.add(this);
-            System.out.println("Usuários conectados: " + clientHandlers.size());
-            if(clientHandlers.size() > 2) {
+            players.add(this);
+            System.out.println("Usuários conectados: " + this.users());
+            if(this.users() > 2) {
                 write("{\"Code\": \"-1\"}");
                 System.out.println("Número limite de clientes atingido.");
                 closeEverything();
@@ -35,44 +34,39 @@ public class ClientHandler implements Runnable {
         }
     }
 
+    /// BUG: quando um cliente força a desconexão, o outro não está sendo desconectado ou recebendo mensagens.
     @Override
     public void run() {
-
+        try {
         if (socket.isClosed()) return;
 
-        String mensagem;
         while(socket.isConnected() && !socket.isClosed()){
-            try{
-                mensagem = bufferedReader.readLine();
-                if (mensagem == null) break;
-                System.out.println(mensagem + "from " + socket.getRemoteSocketAddress());
-                HashMap<String, String> map = decodificarMensagem(mensagem);
 
-                String jogada = map.get("Message");
+                this.bufferedReader.readLine();
 
-                if (Objects.equals(map.get("Code"), "10")) break;
-            } catch (IOException e) {
-                closeEverything();
-                System.out.println("Erro lidando com o cliente " + socket.getRemoteSocketAddress() + ": " + e.getMessage());
-                throw new RuntimeException();
             }
+        } catch (IOException e)
+
+        {
+            throw new RuntimeException(e);
         }
-        System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
-        if(socket.isConnected()){
+        finally {
+            System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
             closeEverything();
         }
     }
 
     public void closeEverything() {
         try {
+            write(communicateMessage("100", "Finalizando conexão."));
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
             if (this.socket != null) this.socket.close();
         } catch (IOException e) {
-            System.out.println("Erro ao finalizar conexão com o cliente " + socket.getInetAddress() +
-                    socket.getRemoteSocketAddress() + ": " + e.getMessage());
+            System.out.println("Erro ao finalizar conexão com o cliente " + socket.getInetAddress() + ": " + e.getMessage());
+        } finally {
+            Player.players.remove(this);
         }
-        ClientHandler.clientHandlers.remove(this);  // Remover o cliente da lista ao desconectar
     }
 
     public void write(String message){
@@ -84,6 +78,10 @@ public class ClientHandler implements Runnable {
         catch(IOException e){
             System.out.println("Não foi possível escrever a mensagem: " + e.getMessage());
         }
+    }
+
+    public synchronized int users(){
+        return players.size();
     }
 
     public static HashMap<String, String> decodificarMensagem(String mensagem){
@@ -111,7 +109,15 @@ public class ClientHandler implements Runnable {
 
         return map;
     }
+
+    public static String sendCode(String code){
+        return "{\"Code\": \""+ code + "\"}";
+    }
     public static String communicateMessage(String Code, String Message){
         return "{\"Code\": \""+ Code +"\", \"Message\": \"" + Message +  "\"}";
+    }
+
+    public String getNome(){
+        return this.nome;
     }
 }

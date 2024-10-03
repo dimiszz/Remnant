@@ -20,7 +20,21 @@ public class MessageHandler {
                 Os jogadores possuem 3 vidas. Defesas físicas defendem física, o mesmo para mágicas.
                 Ou seja, se 1 jogador usar defesa física e o outro ataque mágico, toma dano.
                 Se ambos atacarem, ambos levam dano. Se um atacar e o outro usar o contra-ataque, 
-                apenas o que atacou leva dano, independente do tipo do ataque. Ganha quem ficar vivo!""";
+                apenas o que atacou leva dano, independente do tipo do ataque. Ganha quem ficar vivo!
+                
+                1. Para ver a lista de partidas disponíveis, escreva /partidas
+                2. Para criar uma partida, use /criar_partida
+                3. Para se juntar a uma partida, use /entrar {codigo}
+                """;
+                break;
+            case "1":
+                p = "Esperando jogador...";
+                break;
+            case "2":
+                p = "Escreva seu nome: ";
+                break;
+            case "100":
+                p = map.get("Message");
                 break;
         };
         return p;
