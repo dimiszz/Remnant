@@ -1,5 +1,7 @@
+import java.util.ArrayList;
+
 public class Partida implements Runnable{
-    private static int quantidadePartidas;
+    private static ArrayList<Partida> partidas;
     private static int livre = 0;
 
     private int id;
@@ -25,7 +27,7 @@ public class Partida implements Runnable{
     }
 
     public static synchronized Partida criaPartida(Player player1){
-        if (quantidadePartidas < 5){
+        if (getQuantidadePartidas() < 5){
             Partida partida = new Partida();
             partida.addPlayer(player1);
             return partida;
@@ -38,7 +40,14 @@ public class Partida implements Runnable{
     }
 
     public static int getQuantidadePartidas() {
-        return quantidadePartidas;
+        return partidas.size();
+    }
+
+    public static void listarPartidas(){
+        StringBuilder string_partidas = new StringBuilder();
+        for(Partida partida : partidas){
+            string_partidas.append("{\" ID \" : \" ").append(partida.id).append("\"}");
+        }
     }
 
     public Tuple<String, String> getPlayers() {
@@ -48,6 +57,5 @@ public class Partida implements Runnable{
         if (player2 != null) p2 = player2.getNome();
         return new Tuple<>(p1, p2);
     }
-
 
 }

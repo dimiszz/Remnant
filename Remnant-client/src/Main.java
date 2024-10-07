@@ -7,7 +7,7 @@ import java.util.*;
 public class Main {
     public static void main(String[] args) {
         try {
-            Client cliente = new Client("127.0.0.1",12345);
+            Client cliente = new Client("127.0.0.1",7777);
 
             MessageHandler messageHandler = new MessageHandler();
 

@@ -20,37 +20,27 @@ public class Player implements Runnable {
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             players.add(this);
             System.out.println("Usuários conectados: " + this.users());
-            if(this.users() > 2) {
-                write("{\"Code\": \"-1\"}");
-                System.out.println("Número limite de clientes atingido.");
-                closeEverything();
-            }
-            else{
-                write("{\"Code\": \"0\"}");
-            }
+            write("{\"Code\": \"0\"}");
         }
         catch(IOException e){
             System.out.println("Erro no cliente " + socket.getRemoteSocketAddress() + ": " + e.getMessage());
         }
     }
 
-    /// BUG: quando um cliente força a desconexão, o outro não está sendo desconectado ou recebendo mensagens.
     @Override
     public void run() {
         try {
         if (socket.isClosed()) return;
 
         while(socket.isConnected() && !socket.isClosed()){
+                String message = this.bufferedReader.readLine();
 
-                this.bufferedReader.readLine();
+
 
             }
-        } catch (IOException e)
-
-        {
+        } catch (IOException e) {
             throw new RuntimeException(e);
-        }
-        finally {
+        } finally {
             System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
             closeEverything();
         }
@@ -120,4 +110,20 @@ public class Player implements Runnable {
     public String getNome(){
         return this.nome;
     }
+
+    public void HandleMessage(String message){
+        HashMap<String, String> map = decodificarMensagem(message);
+
+        // PARTIDA
+        switch(map.get("Code")){
+            case "101": // Listar partidas ativas;
+
+
+
+
+                break;
+        }
+
+    }
+
 }

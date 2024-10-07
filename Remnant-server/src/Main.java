@@ -11,8 +11,8 @@ public class Main {
     public static void main(String[] args) {
 
         try {
-            ServerSocket servidor = new ServerSocket(12345);
-            System.out.println("Servidor ouvindo a porta 12345");
+            ServerSocket servidor = new ServerSocket(7777);
+            System.out.println("Servidor ouvindo a porta 7777");
             while(true) {
                 // só aceitamos 2 conexões no servidor.
                 Socket cliente = servidor.accept();
