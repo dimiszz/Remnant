@@ -1,3 +1,6 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -11,7 +14,7 @@ public class Player implements Runnable {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String nome;
+    private String nome = "";
 
     public Player(Socket socket) {
         try{
@@ -35,8 +38,9 @@ public class Player implements Runnable {
         while(socket.isConnected() && !socket.isClosed()){
                 String message = this.bufferedReader.readLine();
 
+                String response = HandleSendMessage(message);
 
-
+                write(response);
             }
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -111,19 +115,30 @@ public class Player implements Runnable {
         return this.nome;
     }
 
-    public void HandleMessage(String message){
-        HashMap<String, String> map = decodificarMensagem(message);
+    public String HandleSendMessage(String message){
+        String code = getCodeFromJson(message);
+        Gson gson = new Gson();
+
+        String jsonResponse = "";
 
         // PARTIDA
-        switch(map.get("Code")){
+        switch(code){
             case "101": // Listar partidas ativas;
-
-
-
-
+                jsonResponse = gson.toJson(Partida.listarPartidas());
                 break;
+            case "102":
+                jsonResponse = gson.toJson(Partida.criaPartida(this));
         }
+        System.out.println("escrevendo mensagem: " + jsonResponse);
+        return jsonResponse;
+    }
 
+    public static String getCodeFromJson(String json) {
+
+        int codeStartIndex = json.indexOf("\"Code\" : \"") + 11;
+        int codeEndIndex = json.indexOf("\"", codeStartIndex);
+
+        return json.substring(codeStartIndex, codeEndIndex);
     }
 
 }

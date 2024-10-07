@@ -15,6 +15,8 @@ public class Main {
                 String mensagem = cliente.read();
                 if (mensagem == null) break;
                 System.out.println(messageHandler.handle(mensagem));
+                Thread.sleep(3000);
+                cliente.write(MessageHandler.communicateMessage("102", ""));
             }
 
             System.out.println("Conexão encerrada!");

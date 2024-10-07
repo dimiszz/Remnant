@@ -1,3 +1,10 @@
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import messages.PartidaMessage;
+import messages.PartidasMessage;
+import messages.Response;
+
 import java.util.HashMap;
 
 public class MessageHandler {
@@ -5,11 +12,15 @@ public class MessageHandler {
 
     public String handle(String mensagem){
 
-        HashMap<String, String> map = decodificarMensagem(mensagem);
+        System.out.println("lendo mensagem: " + mensagem);
 
+        String code = getCodeFromJson(mensagem);
         String p = "MENSAGEM NÃO TRATADA";
 
-        switch (map.get("Code")) {
+        GsonBuilder builder = new GsonBuilder();
+        Gson gson = builder.create();
+
+        switch (code) {
             case "-1":
                 p = "Servidor está cheio!";
                 break;
@@ -33,8 +44,13 @@ public class MessageHandler {
             case "2":
                 p = "Escreva seu nome: ";
                 break;
-            case "100":
-                p = map.get("Message");
+            case "101":
+                gson.fromJson(mensagem, new TypeToken<Response<PartidasMessage>>(){}.getType());
+                p = gson.toString();
+                break;
+            case "102":
+                gson.fromJson(mensagem, new TypeToken<Response<PartidaMessage>>(){}.getType());
+                p = gson.toString();
                 break;
         };
         return p;
@@ -64,6 +80,15 @@ public class MessageHandler {
         }
 
         return map;
+    }
+
+    public static String getCodeFromJson(String json) {
+        // Verifica se a string JSON contém "Code"
+        int codeStartIndex = json.indexOf("\"Code\" : \"") + 11; // 11 é o comprimento de "\"Code\" : \""
+        int codeEndIndex = json.indexOf("\"", codeStartIndex); // Encontra o próximo " após o valor do código
+
+        // Extrai o código entre as aspas
+        return json.substring(codeStartIndex, codeEndIndex);
     }
 
 
