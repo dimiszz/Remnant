@@ -18,7 +18,7 @@ public class Main {
             while(true) {
                 // só aceitamos 2 conexões no servidor.
                 Socket cliente = servidor.accept();
-                System.out.println("Cliente conectado: " + cliente.getInetAddress());
+                System.out.println("Cliente conectado: " + cliente.getRemoteSocketAddress());
                 Player clienteHandler = new Player(cliente);
                 new Thread(clienteHandler).start();
             }

@@ -24,8 +24,18 @@
                     <target>15</target>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.4.1</version>
+                <configuration>
+                    <mainClass>client.Main</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
+
+
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
