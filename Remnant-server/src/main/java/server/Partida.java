@@ -1,6 +1,7 @@
+package server;
+
 import messages.PartidaMessage;
 import messages.PartidasMessage;
-import messages.Response;
 
 import java.util.ArrayList;
 
@@ -23,7 +24,6 @@ public class Partida implements Runnable{
             this.player1 = player;
         }
         else if (this.player2 == null) this.player2 = player;
-
     }
 
     @Override

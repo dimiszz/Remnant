@@ -1,3 +1,5 @@
+package server;
+
 public class Result<T> {
     private String code;
     private T value;

@@ -1,3 +1,5 @@
+package server;
+
 // https://stackoverflow.com/questions/2670982/using-pairs-or-2-tuples-in-java
 public class Tuple<X, Y> {
     public final X x;

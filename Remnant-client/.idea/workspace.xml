@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="22d1ba55-ef14-49bf-80e5-90a20a42e988" name="Changes" comment="Trabalhando em bugs na desconexão de jogadores.">
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/src/main/java/Result.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/messages/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/messages/Response.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Remnant-server/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Remnant-server/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Remnant-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Remnant-server/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Remnant-server/src/main/java/Partida.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Remnant-server/src/main/java/Partida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Remnant-server/src/main/java/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Remnant-server/src/main/java/Player.java" afterDir="false" />
     </list>
@@ -85,7 +83,7 @@
     <configuration name="Run Client" type="Application" factoryName="Application" singleton="false">
       <option name="ALTERNATIVE_JRE_PATH" value="openjdk-22" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="Main" />
+      <option name="MAIN_CLASS_NAME" value="client.Main" />
       <module name="Remnant-client" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -94,7 +92,7 @@
     <configuration name="Run Server" type="Application" factoryName="Application" temporary="true">
       <option name="ALTERNATIVE_JRE_PATH" value="openjdk-22" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
-      <option name="MAIN_CLASS_NAME" value="Main" />
+      <option name="MAIN_CLASS_NAME" value="server.Main" />
       <module name="Remnant-server" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -135,7 +133,9 @@
       <workItem from="1728311451114" duration="642000" />
       <workItem from="1728312128961" duration="5283000" />
       <workItem from="1728317425005" duration="81000" />
-      <workItem from="1728396173182" duration="8983000" />
+      <workItem from="1728396173182" duration="9698000" />
+      <workItem from="1728409076940" duration="51000" />
+      <workItem from="1728409183859" duration="2856000" />
     </task>
     <servers />
   </component>

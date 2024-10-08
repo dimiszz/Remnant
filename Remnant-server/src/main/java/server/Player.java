@@ -1,3 +1,5 @@
+package server;
+
 import com.google.gson.Gson;
 import messages.Response;
 
@@ -115,9 +117,9 @@ public class Player implements Runnable {
     }
 
     public <T> Response<?> HandleSendMessage(Result<T> result){
-        if (!result.isSuccess()) return new Response<>(result.getCode(), result.getMessage());
+        if (!result.isSuccess()) return new Response<>(result.getCode(), result.getMessage()); // retornando STRING
 
-        return new Response<>(result.getCode(), result.getValue());
+        return new Response<>(result.getCode(), result.getValue()); // retorna tipo T.
     }
 
     public static String getCodeFromJson(String json) {
