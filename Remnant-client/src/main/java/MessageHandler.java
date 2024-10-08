@@ -44,13 +44,18 @@ public class MessageHandler {
             case "2":
                 p = "Escreva seu nome: ";
                 break;
+            case "100":
+                Response<String> error = gson.fromJson(mensagem, new TypeToken<Response<String>>(){}.getType());
+                p = error.responseObject;
+                break;
             case "101":
-                gson.fromJson(mensagem, new TypeToken<Response<PartidasMessage>>(){}.getType());
-                p = gson.toString();
+                Response<PartidasMessage> psm = gson.fromJson(mensagem, new TypeToken<Response<PartidasMessage>>(){}.getType());
+                p = psm.responseObject.partidas.toString();
                 break;
             case "102":
-                gson.fromJson(mensagem, new TypeToken<Response<PartidaMessage>>(){}.getType());
-                p = gson.toString();
+                Response<PartidaMessage> pm = gson.fromJson(mensagem, new TypeToken<Response<PartidaMessage>>(){}.getType());
+                p = "Id: "+ pm.responseObject.id +" Jogador 1: " + pm.responseObject.jogador1
+                        + " Jogador 2: " + pm.responseObject.jogador2;
                 break;
         };
         return p;
@@ -84,15 +89,14 @@ public class MessageHandler {
 
     public static String getCodeFromJson(String json) {
         // Verifica se a string JSON contém "Code"
-        int codeStartIndex = json.indexOf("\"Code\" : \"") + 11; // 11 é o comprimento de "\"Code\" : \""
+        int codeStartIndex = json.indexOf("\"code\":\"") + 8; // 11 é o comprimento de "\"Code\" : \""
         int codeEndIndex = json.indexOf("\"", codeStartIndex); // Encontra o próximo " após o valor do código
-
         // Extrai o código entre as aspas
         return json.substring(codeStartIndex, codeEndIndex);
     }
 
 
     public static String communicateMessage(String Code, String Message){
-        return "{\"Code\": \""+ Code + "\", \"Message\": \"" + Message +  "\"}";
+        return "{\"code\":\""+ Code + "\", \"message\":\"" + Message +  "\"}";
     }
 }

@@ -5,19 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="22d1ba55-ef14-49bf-80e5-90a20a42e988" name="Changes" comment="Trabalhando em bugs na desconexão de jogadores.">
-      <change afterPath="$PROJECT_DIR$/src/messages/PartidaMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/messages/PartidasMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/messages/Response.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/src/messages/PartidaMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/src/messages/PartidasMessage.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Remnant-server/src/messages/Response.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Remnant-server/src/main/java/Result.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Remnant-client.iml" beforeDir="false" afterPath="$PROJECT_DIR$/Remnant-client.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/MessageHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/MessageHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Remnant-server/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Remnant-server/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/messages/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/messages/Response.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Remnant-server/src/main/java/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Remnant-server/src/main/java/Main.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Remnant-server/src/main/java/Partida.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Remnant-server/src/main/java/Partida.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Remnant-server/src/main/java/Player.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Remnant-server/src/main/java/Player.java" afterDir="false" />
     </list>
@@ -49,41 +41,44 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.Main.executor": "Run",
-    "Application.Run Client.executor": "Run",
-    "Application.Run Server.executor": "Run",
-    "Maven.Remnant-client [clean].executor": "Run",
-    "Maven.Remnant-client [install].executor": "Run",
-    "Maven.Remnant-client [validate].executor": "Run",
-    "Maven.Remnant-client [verify].executor": "Run",
-    "Maven.Remnant-server [clean].executor": "Run",
-    "Maven.Remnant-server [validate].executor": "Run",
-    "Maven.Remnant-server [verify].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/dimit/projects/usp/Remnant/Remnant-client/src/messages",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "onboarding.tips.debug.path": "C:/Users/dimit/projects/usp/Remnant/src/Main.java",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.2",
-    "settings.editor.selected.configurable": "reference.settings.project.maven.importing",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Run Client.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Run Server.executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Remnant-client [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Remnant-client [install].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Remnant-client [validate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Remnant-client [verify].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Remnant-server [clean].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Remnant-server [validate].executor&quot;: &quot;Run&quot;,
+    &quot;Maven.Remnant-server [verify].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/dimit/projects/usp/Remnant/Remnant-client/src/messages&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;onboarding.tips.debug.path&quot;: &quot;C:/Users/dimit/projects/usp/Remnant/src/Main.java&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;reference.settings.project.maven.importing&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\dimit\projects\usp\Remnant\Remnant-client\src\messages" />
     </key>
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
       <recent name="" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="messages" />
     </key>
   </component>
   <component name="RunManager" selected="Application.Run Client">
@@ -139,6 +134,8 @@
       <workItem from="1727978364790" duration="5387000" />
       <workItem from="1728311451114" duration="642000" />
       <workItem from="1728312128961" duration="5283000" />
+      <workItem from="1728317425005" duration="81000" />
+      <workItem from="1728396173182" duration="8983000" />
     </task>
     <servers />
   </component>

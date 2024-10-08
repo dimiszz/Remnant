@@ -1,10 +1,9 @@
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import messages.Response;
 
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /// FONTE PARA O CLIENTHANDLER: https://www.youtube.com/watch?v=gLfuZrrfKes
 
@@ -23,7 +22,7 @@ public class Player implements Runnable {
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             players.add(this);
             System.out.println("Usuários conectados: " + this.users());
-            write("{\"Code\": \"0\"}");
+            write("{\"code\":\"0\"}");
         }
         catch(IOException e){
             System.out.println("Erro no cliente " + socket.getRemoteSocketAddress() + ": " + e.getMessage());
@@ -38,7 +37,7 @@ public class Player implements Runnable {
         while(socket.isConnected() && !socket.isClosed()){
                 String message = this.bufferedReader.readLine();
 
-                String response = HandleSendMessage(message);
+                String response = HandleReceiveMessage(message);
 
                 write(response);
             }
@@ -78,66 +77,54 @@ public class Player implements Runnable {
         return players.size();
     }
 
-    public static HashMap<String, String> decodificarMensagem(String mensagem){
-        int i, y, bin = 0;
-        String key = "";
-        String value = "";
-        HashMap<String, String> map = new HashMap<String, String>();
-        for(i = 0, y = 0; i < mensagem.length()-1; i++){
-            if(mensagem.charAt(i) == '\"'){
-                y = i+1;
-                StringBuilder m1 = new StringBuilder();
-                while(mensagem.charAt(y) != '\"'){
-                    m1.append(mensagem.charAt(y));
-                    y++;
-                }
-                i = y+1;
-                if(bin % 2 == 0) key = m1.toString();
-                else {
-                    value = m1.toString();
-                    map.put(key, value);
-                }
-                bin++;
-            }
-        }
-
-        return map;
-    }
-
     public static String sendCode(String code){
-        return "{\"Code\": \""+ code + "\"}";
+        return "{\"code\":\""+ code + "\"}";
     }
+
     public static String communicateMessage(String Code, String Message){
-        return "{\"Code\": \""+ Code +"\", \"Message\": \"" + Message +  "\"}";
+        return "{\"code\":\""+ Code +"\",\"message\":\"" + Message +  "\"}";
     }
 
     public String getNome(){
         return this.nome;
     }
 
-    public String HandleSendMessage(String message){
+    public String HandleReceiveMessage(String message){
         String code = getCodeFromJson(message);
-        Gson gson = new Gson();
 
-        String jsonResponse = "";
+        Gson gson = new Gson();
+        Response<?> jsonResult;
 
         // PARTIDA
         switch(code){
             case "101": // Listar partidas ativas;
-                jsonResponse = gson.toJson(Partida.listarPartidas());
+                jsonResult = HandleSendMessage(Partida.listarPartidas());
                 break;
             case "102":
-                jsonResponse = gson.toJson(Partida.criaPartida(this));
+                jsonResult = HandleSendMessage(Partida.criaPartida(this));
+                break;
+            default:
+                jsonResult = new Response<>("100", "Mensagem não tratada.");
+                break;
         }
+
+        String jsonResponse = gson.toJson(jsonResult);
+
         System.out.println("escrevendo mensagem: " + jsonResponse);
         return jsonResponse;
     }
 
+    public <T> Response<?> HandleSendMessage(Result<T> result){
+        if (!result.isSuccess()) return new Response<>(result.getCode(), result.getMessage());
+
+        return new Response<>(result.getCode(), result.getValue());
+    }
+
     public static String getCodeFromJson(String json) {
-
-        int codeStartIndex = json.indexOf("\"Code\" : \"") + 11;
-        int codeEndIndex = json.indexOf("\"", codeStartIndex);
-
+        // Verifica se a string JSON contém "Code"
+        int codeStartIndex = json.indexOf("\"code\":\"") + 8; // 11 é o comprimento de "\"Code\" : \""
+        int codeEndIndex = json.indexOf("\"", codeStartIndex); // Encontra o próximo " após o valor do código
+        // Extrai o código entre as aspas
         return json.substring(codeStartIndex, codeEndIndex);
     }
 

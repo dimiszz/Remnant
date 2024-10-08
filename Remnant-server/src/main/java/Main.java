@@ -5,7 +5,7 @@ import java.net.Socket;
 public class Main {
 
     public static String communicateMessage(String Message){
-        return "{\"Code\": \"1\", \"Message\": \"" + Message +  "\"}";
+        return "{\"code\":\"1\",\"message\":\"" + Message +  "\"}";
     }
 
     public static void main(String[] args) {

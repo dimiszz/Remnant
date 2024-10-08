@@ -39,24 +39,24 @@ public class Partida implements Runnable{
         return partidas.size();
     }
 
-    public static Response<PartidasMessage> listarPartidas(){
+    public static Result<PartidasMessage> listarPartidas(){
         PartidasMessage message = new PartidasMessage();
         for(Partida partida : partidas){
             Tuple<String, String> players = partida.getPlayers();
             message.addPartida(String.valueOf(partida.getId()),
                     players.x, players.y);
         }
-        return new Response<>("101" ,message);
+        return Result.OK("101", message);
     }
 
-    public static synchronized Response<PartidaMessage> criaPartida(Player player1){
+    public static synchronized Result<PartidaMessage> criaPartida(Player player1){
         if (getQuantidadePartidas() < 5){
             Partida partida = new Partida();
             partida.addPlayer(player1);
-            return new Response<>("102",new PartidaMessage(String.valueOf(partida.getId()),
+            return Result.OK("102", new PartidaMessage(String.valueOf(partida.getId()),
                     partida.player1.getNome(),null));
         }
-        return null;
+        return Result.Error("Não foi possível criar a partida: número máximo atingido.");
     }
 
     public Tuple<String, String> getPlayers() {
