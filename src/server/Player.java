@@ -5,7 +5,6 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class Player implements Runnable {
-
     public static ArrayList<Player> players = new ArrayList<>();
     private Socket socket;
     private BufferedReader bufferedReader;
@@ -19,7 +18,7 @@ public class Player implements Runnable {
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
             players.add(this);
             System.out.println("Usuários conectados: " + this.users());
-            write("{\"code\":\"0\"}");
+            write("0 Conexão estabelecida");
         }
         catch(IOException e){
             System.out.println("Erro no cliente " + socket.getRemoteSocketAddress() + ": " + e.getMessage());
@@ -33,9 +32,7 @@ public class Player implements Runnable {
 
             while(socket.isConnected() && !socket.isClosed()){
                 String message = this.bufferedReader.readLine();
-
-                String response = HandleReceiveMessage(message);
-
+                String response = handleMensagemRecebida(message);
                 write(response);
             }
         } catch (IOException e) {
@@ -48,7 +45,7 @@ public class Player implements Runnable {
 
     public void closeEverything() {
         try {
-            write(communicateMessage("100", "Finalizando conexão."));
+            write(enviaMensagem("100", "Finalizando conexão."));
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
             if (this.socket != null) this.socket.close();
@@ -74,45 +71,36 @@ public class Player implements Runnable {
         return players.size();
     }
 
-    public static String sendCode(String code){
-        return "{\"code\":\""+ code + "\"}";
+    public static String enviaCode(String code){
+        return code;
     }
 
-    public static String communicateMessage(String Code, String Message){
-        return "{\"code\":\""+ Code +"\",\"message\":\"" + Message +  "\"}";
+    public static String enviaMensagem(String code, String message){
+        return code + " " + message;
     }
 
     public String getUsername(){
         return this.username;
     }
 
-    public String HandleReceiveMessage(String message){
+    public String handleMensagemRecebida(String message){
         String code = message.substring(0, message.indexOf(' '));
         String result;
 
         // PARTIDA
         switch(code){
             case "101": // Listar partidas ativas;
-                result = message.substring(message.indexOf(' '));
+                result = Partida.listarPartidas();
                 break;
             case "102":
-                result = message.substring(message.indexOf(' '));
+                result = Partida.criaPartida(this);
                 break;
             default:
-                result = message.substring(message.indexOf(' '));
+                result = "100 Mensagem não tratada";
                 break;
         }
 
-        System.out.println("escrevendo mensagem: " + result);
+        System.out.println("Escrevendo mensagem: " + result);
         return result;
     }
-
-    public static String getCodeFromJson(String json) {
-        // Verifica se a string JSON contém "Code"
-        int codeStartIndex = json.indexOf("\"code\":\"") + 8; // 11 é o comprimento de "\"Code\" : \""
-        int codeEndIndex = json.indexOf("\"", codeStartIndex); // Encontra o próximo " após o valor do código
-        // Extrai o código entre as aspas
-        return json.substring(codeStartIndex, codeEndIndex);
-    }
-
 }

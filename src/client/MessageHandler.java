@@ -1,17 +1,11 @@
 package client;
 
-import message.PartidaMessage;
-import message.PartidasMessage;
-import message.Response;
-
 public class MessageHandler {
-    private ClientMessage client;
-
     public String handle(String mensagem){
 
-        System.out.println("lendo mensagem: " + mensagem);
+        System.out.println("Lendo mensagem: " + mensagem);
 
-        String code = getCodeFromJson(mensagem);
+        String code = mensagem.substring(0, mensagem.indexOf(' '));
         String p = "MENSAGEM NÃO TRATADA";
 
         switch (code) {
@@ -51,15 +45,7 @@ public class MessageHandler {
         return p;
     }
 
-    public static String getCodeFromJson(String json) {
-        // Verifica se a string JSON contém "Code"
-        int codeStartIndex = json.indexOf("\"code\":\"") + 8; // 11 é o comprimento de "\"Code\" : \""
-        int codeEndIndex = json.indexOf("\"", codeStartIndex); // Encontra o próximo " após o valor do código
-        // Extrai o código entre as aspas
-        return json.substring(codeStartIndex, codeEndIndex);
-    }
-
     public static String communicateMessage(String Code, String Message){
-        return "{\"code\":\""+ Code + "\", \"message\":\"" + Message +  "\"}";
+        return Code + " " + Message;
     }
 }

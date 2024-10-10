@@ -4,9 +4,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import server.*;
 
+// Fonte para o servidor e cliente: https://www.youtube.com/watch?v=gLfuZrrfKes
 public class Server {
     public static void main(String[] args) {
-
         try {
             // Cria o servidor na porta 7777
             ServerSocket servidor = new ServerSocket(7777);
@@ -18,8 +18,8 @@ public class Server {
                 System.out.println("Cliente conectado: " + cliente.getRemoteSocketAddress());
 
                 // Cria uma nova thread para o cliente/jogador
-                Player clienteHandler = new Player(cliente);
-                new Thread(clienteHandler).start();
+                Player novojogador = new Player(cliente);
+                new Thread(novojogador).start();
             }
 
             // Fecha o servidor
