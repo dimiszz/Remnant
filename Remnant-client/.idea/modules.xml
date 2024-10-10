@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="ProjectModuleManager">
-    <modules>
-      <module fileurl="file://$PROJECT_DIR$/Remnant-client.iml" filepath="$PROJECT_DIR$/Remnant-client.iml" />
-      <module fileurl="file://$PROJECT_DIR$/../Remnant-server/Remnant-server.iml" filepath="$PROJECT_DIR$/../Remnant-server/Remnant-server.iml" />
-    </modules>
-  </component>
-</project>

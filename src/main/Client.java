@@ -1,11 +1,11 @@
-package client;
+package main;
 
-//TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
-// click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-public class Main {
+import client.*;
+
+public class Client {
     public static void main(String[] args) {
         try {
-            Client cliente = new Client("127.0.0.1",7777);
+            ClientMessage cliente = new ClientMessage("127.0.0.1",7777);
 
             MessageHandler messageHandler = new MessageHandler();
 

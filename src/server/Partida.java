@@ -1,7 +1,7 @@
 package server;
 
-import messages.PartidaMessage;
-import messages.PartidasMessage;
+import message.PartidaMessage;
+import message.PartidasMessage;
 
 import java.util.ArrayList;
 
@@ -54,7 +54,7 @@ public class Partida implements Runnable{
             Partida partida = new Partida();
             partida.addPlayer(player1);
             return Result.OK("102", new PartidaMessage(String.valueOf(partida.getId()),
-                    partida.player1.getNome(),null));
+                    partida.player1.getUsername(),null));
         }
         return Result.Error("Não foi possível criar a partida: número máximo atingido.");
     }
@@ -62,8 +62,8 @@ public class Partida implements Runnable{
     public Tuple<String, String> getPlayers() {
         String p1 = null;
         String p2 = null;
-        if (player1 != null) p1 = player1.getNome();
-        if (player2 != null) p2 = player2.getNome();
+        if (player1 != null) p1 = player1.getUsername();
+        if (player2 != null) p2 = player2.getUsername();
         return new Tuple<>(p1, p2);
     }
 }

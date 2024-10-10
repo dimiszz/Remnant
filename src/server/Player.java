@@ -1,13 +1,8 @@
 package server;
 
-import com.google.gson.Gson;
-import messages.Response;
-
 import java.io.*;
 import java.net.Socket;
 import java.util.ArrayList;
-
-/// FONTE PARA O CLIENTHANDLER: https://www.youtube.com/watch?v=gLfuZrrfKes
 
 public class Player implements Runnable {
 
@@ -15,7 +10,7 @@ public class Player implements Runnable {
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
-    private String nome = "";
+    private String username = "";
 
     public Player(Socket socket) {
         try{
@@ -34,9 +29,9 @@ public class Player implements Runnable {
     @Override
     public void run() {
         try {
-        if (socket.isClosed()) return;
+            if(socket.isClosed()) return;
 
-        while(socket.isConnected() && !socket.isClosed()){
+            while(socket.isConnected() && !socket.isClosed()){
                 String message = this.bufferedReader.readLine();
 
                 String response = HandleReceiveMessage(message);
@@ -87,39 +82,29 @@ public class Player implements Runnable {
         return "{\"code\":\""+ Code +"\",\"message\":\"" + Message +  "\"}";
     }
 
-    public String getNome(){
-        return this.nome;
+    public String getUsername(){
+        return this.username;
     }
 
     public String HandleReceiveMessage(String message){
-        String code = getCodeFromJson(message);
-
-        Gson gson = new Gson();
-        Response<?> jsonResult;
+        String code = message.substring(0, message.indexOf(' '));
+        String result;
 
         // PARTIDA
         switch(code){
             case "101": // Listar partidas ativas;
-                jsonResult = HandleSendMessage(Partida.listarPartidas());
+                result = message.substring(message.indexOf(' '));
                 break;
             case "102":
-                jsonResult = HandleSendMessage(Partida.criaPartida(this));
+                result = message.substring(message.indexOf(' '));
                 break;
             default:
-                jsonResult = new Response<>("100", "Mensagem não tratada.");
+                result = message.substring(message.indexOf(' '));
                 break;
         }
 
-        String jsonResponse = gson.toJson(jsonResult);
-
-        System.out.println("escrevendo mensagem: " + jsonResponse);
-        return jsonResponse;
-    }
-
-    public <T> Response<?> HandleSendMessage(Result<T> result){
-        if (!result.isSuccess()) return new Response<>(result.getCode(), result.getMessage()); // retornando STRING
-
-        return new Response<>(result.getCode(), result.getValue()); // retorna tipo T.
+        System.out.println("escrevendo mensagem: " + result);
+        return result;
     }
 
     public static String getCodeFromJson(String json) {

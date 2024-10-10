@@ -1,4 +1,4 @@
-package messages;
+package message;
 
 public class PartidaMessage {
     public String id;

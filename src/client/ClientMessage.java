@@ -3,12 +3,12 @@ package client;
 import java.io.*;
 import java.net.Socket;
 
-public class Client {
+public class ClientMessage {
     private Socket socket;
     private BufferedWriter bufferedWriter;
     private BufferedReader bufferedReader;
 
-    public Client(String host, int port) throws IOException {
+    public ClientMessage(String host, int port) throws IOException {
         this.socket = new Socket(host, port);
         bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
         bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));

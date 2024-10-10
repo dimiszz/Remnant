@@ -1,16 +1,11 @@
 package client;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import messages.PartidaMessage;
-import messages.PartidasMessage;
-import messages.Response;
-
-import java.util.HashMap;
+import message.PartidaMessage;
+import message.PartidasMessage;
+import message.Response;
 
 public class MessageHandler {
-    private Client client;
+    private ClientMessage client;
 
     public String handle(String mensagem){
 
@@ -18,9 +13,6 @@ public class MessageHandler {
 
         String code = getCodeFromJson(mensagem);
         String p = "MENSAGEM NÃO TRATADA";
-
-        GsonBuilder builder = new GsonBuilder();
-        Gson gson = builder.create();
 
         switch (code) {
             case "-1":
@@ -47,46 +39,16 @@ public class MessageHandler {
                 p = "Escreva seu nome: ";
                 break;
             case "100":
-                Response<String> error = gson.fromJson(mensagem, new TypeToken<Response<String>>(){}.getType());
-                p = error.responseObject;
+                p = "Erro";
                 break;
             case "101":
-                Response<PartidasMessage> psm = gson.fromJson(mensagem, new TypeToken<Response<PartidasMessage>>(){}.getType());
-                p = psm.responseObject.partidas.toString();
+                p = "Teste";
                 break;
             case "102":
-                Response<PartidaMessage> pm = gson.fromJson(mensagem, new TypeToken<Response<PartidaMessage>>(){}.getType());
-                p = "Id: "+ pm.responseObject.id +" Jogador 1: " + pm.responseObject.jogador1
-                        + " Jogador 2: " + pm.responseObject.jogador2;
+                p = "Teste";
                 break;
         };
         return p;
-    }
-
-    public static HashMap<String, String> decodificarMensagem(String mensagem){
-        int i, y, bin = 0;
-        String key = "";
-        String value = "";
-        HashMap<String, String> map = new HashMap<String, String>();
-        for(i = 0, y = 0; i < mensagem.length()-1; i++){
-            if(mensagem.charAt(i) == '\"'){
-                y = i+1;
-                StringBuilder m1 = new StringBuilder();
-                while(mensagem.charAt(y) != '\"'){
-                    m1.append(mensagem.charAt(y));
-                    y++;
-                }
-                i = y+1;
-                if(bin % 2 == 0) key = m1.toString();
-                else {
-                    value = m1.toString();
-                    map.put(key, value);
-                }
-                bin++;
-            }
-        }
-
-        return map;
     }
 
     public static String getCodeFromJson(String json) {
@@ -96,7 +58,6 @@ public class MessageHandler {
         // Extrai o código entre as aspas
         return json.substring(codeStartIndex, codeEndIndex);
     }
-
 
     public static String communicateMessage(String Code, String Message){
         return "{\"code\":\""+ Code + "\", \"message\":\"" + Message +  "\"}";

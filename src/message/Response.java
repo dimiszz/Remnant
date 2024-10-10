@@ -1,4 +1,4 @@
-package messages;
+package message;
 
 public class Response<T> {
     public String code;
