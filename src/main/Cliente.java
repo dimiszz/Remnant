@@ -3,6 +3,8 @@ package main;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import cliente.*;
 
 // Fonte para o servidor e cliente: https://www.youtube.com/watch?v=gLfuZrrfKes
@@ -12,6 +14,8 @@ public class Cliente {
     private final BufferedReader bufferedReader;
     private final CodificaMensagem encodeMensagem;
     private Thread leitor;
+    private Thread escritor;
+    private AtomicBoolean active = new AtomicBoolean(true);
 
     public Cliente(String host, int port) throws IOException {
         this.socket = new Socket(host, port);
@@ -21,28 +25,21 @@ public class Cliente {
     }
 
     public void iniciaLeitor(){
-        Leitor leit = new Leitor(this.socket, this.bufferedReader);
+        Leitor leit = new Leitor(this.socket, this.bufferedReader, this.active);
         this.leitor = new Thread(leit);
         this.leitor.start();
     }
 
-    public void escritor(){
-        try{
-            Scanner scanner = new Scanner(System.in);
+    public void iniciaEscritor(){
+        Escritor esct = new Escritor(this.socket, this.encodeMensagem,
+                this.bufferedWriter, this.active);
+        this.escritor = new Thread(esct);
+        this.escritor.start();
+    }
 
-            while(!socket.isClosed() && socket.isConnected()){
-                String mensagem = scanner.nextLine();
-                mensagem = encodeMensagem.codifica(mensagem);
-                this.bufferedWriter.write(mensagem);
-                this.bufferedWriter.newLine();
-                this.bufferedWriter.flush();
-                if (mensagem.equals("999")) this.close();
-            }
-        }
-        catch(IOException e){
-            System.out.println("Não foi possível escrever a mensagem." + e.getMessage());
-            //e.printStackTrace();
-        }
+    public void mainLoop(){
+        while(active.get());
+        close();
     }
 
     //https://stackoverflow.com/questions/10961714/how-to-properly-stop-the-thread-in-java
@@ -53,6 +50,7 @@ public class Cliente {
                 this.bufferedReader.close();
                 this.bufferedWriter.close();
                 this.leitor.interrupt();
+                this.escritor.interrupt();
             }
         }
         catch(IOException e){
@@ -77,8 +75,10 @@ public class Cliente {
             System.out.println("----------------------------------------------------------------------------------------------------");
             // Inicia a thread de leitura
             cliente.iniciaLeitor();
-            // Inicia a o loop da escrita
-            cliente.escritor();
+            // Inicia a thread de escrita
+            cliente.iniciaEscritor();
+
+            cliente.mainLoop();
 
             scanner.close();
         }

@@ -3,13 +3,18 @@ package cliente;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Leitor implements Runnable{
     private final Socket socket;
     private final BufferedReader bufferedReader;
-    public Leitor(Socket s, BufferedReader br){
+    private AtomicBoolean active;
+
+    public Leitor(Socket s, BufferedReader br, AtomicBoolean active){
         this.socket = s;
         this.bufferedReader = br;
+        this.active = active;
     }
 
     @Override
@@ -18,17 +23,22 @@ public class Leitor implements Runnable{
 
         // BUG: quando servidor fecha inesperadamente esse cara fica tentando fazer
         // a conexão sem parar.
-        while(!socket.isClosed()){
+        while(!socket.isClosed() && this.active.get()){
             try {
                 mensagem = bufferedReader.readLine();
                 System.out.println(mensagem);
                 if (Thread.interrupted()) throw new InterruptedException();
+            }
+            catch(SocketException e){
+                System.err.println("Conexão com o servidor foi finalizada. " + e.getMessage());
+                this.active.set(false);
             }
             catch(IOException e){
                 System.out.println("Não foi possível ler a mensagem: " + e.getMessage());
                 //e.printStackTrace();
             } catch (InterruptedException e) {
                 System.out.println("Thread foi interrompida antes da conexão com o socket fechar.");
+                this.active.set(false);
             }
         }
     }
