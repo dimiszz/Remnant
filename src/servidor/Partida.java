@@ -41,10 +41,12 @@ public class Partida implements Runnable{
         StringBuilder resultado = new StringBuilder("101");
 
         for(Partida partida : partidas.values()){
+            Tuple<String, String> players = partida.getPlayers();
+
             resultado.append(" ")
                     .append(partida.getId())
-                    .append(" ").append(partida.getPlayers().x)
-                    .append(" ").append(partida.getPlayers().y)
+                    .append(" ").append(players.x)
+                    .append(" ").append(players.y)
                     .append("\n");
         }
 

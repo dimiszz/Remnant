@@ -75,11 +75,12 @@ public class Cliente {
             cliente.bufferedWriter.newLine();
             cliente.bufferedWriter.flush();
             System.out.println("----------------------------------------------------------------------------------------------------");
-
             // Inicia a thread de leitura
             cliente.iniciaLeitor();
             // Inicia a o loop da escrita
             cliente.escritor();
+
+            scanner.close();
         }
         catch(Exception e) {
             System.out.println("Erro: " + e.getMessage());
