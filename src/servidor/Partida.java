@@ -3,10 +3,10 @@ package servidor;
 import java.util.HashMap;
 
 public class Partida implements Runnable{
-    private static HashMap<Integer, Partida> partidas = new HashMap<>();
+    private static final HashMap<Integer, Partida> partidas = new HashMap<>();
     private static int livre = 0;
 
-    private int id;
+    private final int id;
     private Jogador player1;
     private Jogador player2;
 

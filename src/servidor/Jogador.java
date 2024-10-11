@@ -6,6 +6,8 @@ import java.util.ArrayList;
 
 public class Jogador implements Runnable {
     public static ArrayList<Jogador> jogadores = new ArrayList<>();
+    private static int livre = 0;
+    private int userId;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
@@ -14,6 +16,7 @@ public class Jogador implements Runnable {
 
     public Jogador(Socket socket) {
         try{
+            setId();
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
@@ -48,9 +51,20 @@ public class Jogador implements Runnable {
         this.partida = partida;
     }
 
+    public synchronized void setId(){
+        this.userId = ++livre;
+        setUsername(null);
+    }
+
+    public void setUsername(String username){
+        this.username = "Anônimo " + this.userId;
+        if (username != null && !username.isEmpty()) this.username = username;
+    }
+
     public void closeEverything() {
         try {
-            write("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
+            if (!socket.isClosed())
+                write("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
             if (this.socket != null) this.socket.close();
@@ -76,7 +90,8 @@ public class Jogador implements Runnable {
 
         switch(comando){
             case "100":
-                this.username = conteudo;
+                setUsername(conteudo);
+                System.out.println("Usuário " + this.username + " conectado!");
                 str = """
                 Seja bem vindo a Remnant! Nesse jogo, você deve escolher entre Atacar
                 ou Defender e Magia ou Físico, além do golpe especial contra ataque.
@@ -120,6 +135,7 @@ public class Jogador implements Runnable {
             while(socket.isConnected() && !socket.isClosed()){
                 String message = this.bufferedReader.readLine();
                 String response = DecodificaMensagem(message);
+                if (response.isEmpty()) continue;
                 write(response);
             }
         } catch (IOException e) {
