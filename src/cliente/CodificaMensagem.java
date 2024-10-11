@@ -2,7 +2,7 @@ package cliente;
 
 public class CodificaMensagem {
     public String codifica(String mensagem){
-        String comando, conteudo, str = "MENSAGEM NÃO CODIFICADA";
+        String comando, conteudo, str;
 
         System.out.println("Lendo mensagem: " + mensagem);
         if(mensagem.contains(" ")){
@@ -21,6 +21,8 @@ public class CodificaMensagem {
             case "/fechar":
                 str = "999";
                 break;
+            default:
+                str = "Comando inválido!";
         };
         return str;
     }

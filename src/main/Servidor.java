@@ -25,7 +25,7 @@ public class Servidor {
             }
 
             // Fecha o servidor
-            if(servidor != null) servidor.close();
+            if(!servidor.isClosed()) servidor.close();
         }
         catch(Exception e) {
             System.out.println("Erro: " + e.getMessage());
