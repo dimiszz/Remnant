@@ -1,6 +1,5 @@
-package server;
+package servidor;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class Partida implements Runnable{
@@ -8,8 +7,8 @@ public class Partida implements Runnable{
     private static int livre = 0;
 
     private int id;
-    private Player player1;
-    private Player player2;
+    private Jogador player1;
+    private Jogador player2;
 
     public Partida(){
         this.id = livre;
@@ -17,7 +16,7 @@ public class Partida implements Runnable{
         livre++;
     }
 
-    public void addPlayer(Player player){
+    public void addPlayer(Jogador player){
         player.setPartida(this.id);
         if (this.player1 == null){
             this.player1 = player;
@@ -52,15 +51,15 @@ public class Partida implements Runnable{
         return resultado.toString();
     }
 
-    public static synchronized String criaPartida(Player player1){
+    public static synchronized String criaPartida(Jogador player1){
         String result;
         if (getQuantidadePartidas() < 5){
             Partida partida = new Partida();
             partida.addPlayer(player1);
-            result = "102" + " " + partida.getId() + " " + player1.getUsername() + " " + null;
+            result = partida.getId() + " " + player1.getUsername() + " " + null;
             return result;
         }
-        result = "100 Não foi possível criar a partida: número máximo atingido.";
+        result = "Não foi possível criar a partida: número máximo atingido.";
         return result;
     }
 
