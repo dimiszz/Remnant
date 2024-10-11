@@ -1,29 +1,29 @@
-package server;
+package servidor;
 
-public class Result<T> {
+public class Resultado<T> {
     private String code;
     private T value;
     private boolean success;
     private String message;
 
-    private Result(String code, T object, boolean success) {
+    private Resultado(String code, T object, boolean success) {
         this.value = object;
         this.success = success;
         this.code = code;
     }
 
-    private Result(String message, boolean success, String code) {
+    private Resultado(String message, boolean success, String code) {
         this.message = message;
         this.success = success;
         this.code = code;
     }
 
-    public static <T> Result<T> OK(String code, T object){
-        return new Result<>(code, object, true);
+    public static <T> Resultado<T> OK(String code, T object){
+        return new Resultado<>(code, object, true);
     }
 
-    public static <T> Result<T> Error(String message){
-        return new Result<>(message, false, "100");
+    public static <T> Resultado<T> Error(String message){
+        return new Resultado<>(message, false, "100");
     }
 
     public boolean isSuccess() {
