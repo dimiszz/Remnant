@@ -10,6 +10,7 @@ public class Player implements Runnable {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String username = "";
+    private int partida;
 
     public Player(Socket socket) {
         try{
@@ -102,5 +103,9 @@ public class Player implements Runnable {
 
         System.out.println("Escrevendo mensagem: " + result);
         return result;
+    }
+
+    public void setPartida(int partida) {
+        this.partida = partida;
     }
 }

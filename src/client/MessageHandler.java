@@ -39,7 +39,7 @@ public class MessageHandler {
                 p = "Teste";
                 break;
             case "102":
-                p = "Teste";
+                p = "Criação de partida feita com sucesso!";
                 break;
         };
         return p;

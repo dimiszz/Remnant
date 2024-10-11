@@ -1,9 +1,10 @@
 package server;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Partida implements Runnable{
-    private static ArrayList<Partida> partidas = new ArrayList<>();
+    private static HashMap<Integer, Partida> partidas = new HashMap<>();
     private static int livre = 0;
 
     private int id;
@@ -12,11 +13,12 @@ public class Partida implements Runnable{
 
     public Partida(){
         this.id = livre;
-        partidas.add(this);
+        partidas.put(this.id, this);
         livre++;
     }
 
     public void addPlayer(Player player){
+        player.setPartida(this.id);
         if (this.player1 == null){
             this.player1 = player;
         }
@@ -37,13 +39,17 @@ public class Partida implements Runnable{
     }
 
     public static String listarPartidas(){
-        String resultado = "101";
+        StringBuilder resultado = new StringBuilder("101");
 
-        for(Partida partida : partidas){
-            resultado += " " + String.valueOf(partida.getId()) + " " + partida.getPlayers().x + " " + partida.getPlayers().y + "\n";
+        for(Partida partida : partidas.values()){
+            resultado.append(" ")
+                    .append(partida.getId())
+                    .append(" ").append(partida.getPlayers().x)
+                    .append(" ").append(partida.getPlayers().y)
+                    .append("\n");
         }
 
-        return resultado;
+        return resultado.toString();
     }
 
     public static synchronized String criaPartida(Player player1){
@@ -51,7 +57,7 @@ public class Partida implements Runnable{
         if (getQuantidadePartidas() < 5){
             Partida partida = new Partida();
             partida.addPlayer(player1);
-            result = "102" + " " + String.valueOf(partida.getId()) + " " + player1.getUsername() + " " + null;
+            result = "102" + " " + partida.getId() + " " + player1.getUsername() + " " + null;
             return result;
         }
         result = "100 Não foi possível criar a partida: número máximo atingido.";
