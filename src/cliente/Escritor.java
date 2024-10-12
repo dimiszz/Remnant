@@ -24,7 +24,7 @@ public class Escritor implements Runnable {
         try{
             while(active.get() && !socket.isClosed() && socket.isConnected()){
                 String mensagem = scanner.nextLine();
-                mensagem = CodificadorCliente.codifica(mensagem);
+                mensagem = CodificaDecodifica.codifica(mensagem);
 
                 this.bufferedWriter.write(mensagem);
                 this.bufferedWriter.newLine();
