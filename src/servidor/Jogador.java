@@ -2,6 +2,7 @@ package servidor;
 
 import java.io.*;
 import java.net.Socket;
+import java.net.SocketException;
 import java.util.ArrayList;
 
 public class Jogador implements Runnable {
@@ -63,8 +64,6 @@ public class Jogador implements Runnable {
 
     public void closeEverything() {
         try {
-            if (!socket.isClosed())
-                write("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
             if (this.socket != null) this.socket.close();
@@ -138,9 +137,12 @@ public class Jogador implements Runnable {
                 if (response.isEmpty()) continue;
                 write(response);
             }
+        } catch (SocketException e){
+            System.out.println("Conexão interrompida pelo cliente " + socket.getRemoteSocketAddress());
         } catch (IOException e) {
             throw new RuntimeException(e);
-        } finally {
+        } 
+        finally {
             System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
             closeEverything();
         }
