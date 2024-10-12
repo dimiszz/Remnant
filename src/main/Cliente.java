@@ -1,11 +1,10 @@
 package main;
 
+import cliente.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
-
-import cliente.*;
 
 // Fonte para o servidor e cliente: https://www.youtube.com/watch?v=gLfuZrrfKes
 public class Cliente {
@@ -47,7 +46,7 @@ public class Cliente {
                 this.bufferedReader.close();
                 this.bufferedWriter.close();
                 this.leitor.interrupt();
-                this.escritor.interrupt();
+                //this.escritor.interrupt();
             }
         }
         catch(IOException e){

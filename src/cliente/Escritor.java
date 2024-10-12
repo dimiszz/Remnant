@@ -2,6 +2,7 @@ package cliente;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -34,6 +35,9 @@ public class Escritor implements Runnable {
         catch(IOException e){
             System.out.println("Não foi possível escrever a mensagem." + e.getMessage());
             //e.printStackTrace();
+        }
+        catch(NoSuchElementException e){
+            System.out.println("Thread do Escritor interrompida.");
         }
     }
 }
