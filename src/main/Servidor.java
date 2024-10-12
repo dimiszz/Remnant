@@ -1,9 +1,7 @@
 package main;
 
-import java.net.Socket;
-
 import servidor.*;
-
+import java.net.Socket;
 import java.net.ServerSocket;
 
 // Fonte para o servidor e cliente: https://www.youtube.com/watch?v=gLfuZrrfKes

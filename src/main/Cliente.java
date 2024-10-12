@@ -68,12 +68,10 @@ public class Cliente {
             cliente.bufferedWriter.write("100 " + username);
             cliente.bufferedWriter.newLine();
             cliente.bufferedWriter.flush();
-            System.out.println("----------------------------------------------------------------------------------------------------");
-            // Inicia a thread de leitura
-            cliente.iniciaLeitor();
-            // Inicia a thread de escrita
-            cliente.iniciaEscritor();
 
+            // Inicia a thread de leitura, escrita e main
+            cliente.iniciaLeitor();
+            cliente.iniciaEscritor();
             cliente.mainLoop();
 
             scanner.close();

@@ -74,10 +74,9 @@ public class Jogador implements Runnable {
         }
     }
 
-    public String DecodificaMensagem(String mensagem){
+    public String decodifica(String mensagem){
         String comando, conteudo, str = "MENSAGEM NÃO DECODIFICADA";
 
-        System.out.println("Lendo mensagem: " + mensagem);
         if(mensagem.contains(" ")){
             comando = mensagem.substring(0, mensagem.indexOf(' '));
             conteudo = mensagem.substring(mensagem.indexOf(' ') + 1);
@@ -96,11 +95,11 @@ public class Jogador implements Runnable {
             case "101":
                 str = "201";
                 break;
-            case "102":
-                str = "202 " + Partida.listarPartidas();
-                break;
             case "103":
-                str = "203 " + Partida.criaPartida(this);
+                str = "203 " + Partida.listarPartidas();
+                break;
+            case "104":
+                str = "204 " + Partida.criaPartida(this);
                 break;
             case "999":
                 str = "";
@@ -116,7 +115,7 @@ public class Jogador implements Runnable {
         try {
             while(socket.isConnected() && !socket.isClosed()){
                 String message = this.bufferedReader.readLine();
-                String response = DecodificaMensagem(message);
+                String response = decodifica(message);
                 if (response.isEmpty()) continue;
                 write(response);
             }

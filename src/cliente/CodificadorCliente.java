@@ -1,10 +1,9 @@
 package cliente;
 
-public class CodificaMensagem {
+public class CodificadorCliente {
     public static String codifica(String mensagem){
-        String comando, conteudo, str = "Comando inválido!";;
+        String comando, conteudo, str = "COMANDO INVÁLIDO!";;
 
-        System.out.println("Enviando mensagem: " + mensagem);
         if(mensagem.contains(" ")){
             comando = mensagem.substring(0, mensagem.indexOf(' '));
             conteudo = mensagem.substring(mensagem.indexOf(' ') + 1);
@@ -19,10 +18,10 @@ public class CodificaMensagem {
                 str = "101";
                 break;
             case "/listar_partidas":
-                str = "102";
+                str = "103";
                 break;
             case "/criar_partida":
-                str = "103";
+                str = "104";
                 break;
             case "/fechar":
                 str = "999";

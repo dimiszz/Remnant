@@ -1,18 +1,17 @@
 package servidor;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 
-public class Partida{
-    private static final HashMap<Integer, Partida> partidas = new HashMap<>();
+public class Partida implements Runnable{
+    private static final ArrayList<Partida> partidas = new ArrayList<>();
     private static int livre = 0;
-
     private final int id;
     private Jogador player1;
     private Jogador player2;
 
     public Partida(){
         this.id = livre;
-        partidas.put(this.id, this);
+        partidas.add(this);
         livre++;
     }
 
@@ -21,14 +20,14 @@ public class Partida{
     }
 
     private String getPlayer1() {
-        String p1 = null;
+        String p1 = "null";
         if (player1 != null) p1 = this.player1.getUsername();
         return p1;
     }
 
     private String getPlayer2() {
-        String p2 = null;
-        if (player1 != null) p2 = this.player2.getUsername();
+        String p2 = "null";
+        if (player2 != null) p2 = this.player2.getUsername();
         return p2;
     }
 
@@ -43,24 +42,31 @@ public class Partida{
     }
 
     public static String listarPartidas(){
-        String resultado = "101 " + partidas.size();
+        String resultado = Integer.toString(partidas.size());
+        System.out.println(resultado);
 
-        for(Partida partida : partidas.values()){
+        for(Partida partida : partidas){
             resultado += ";" + partida.getId() + ";" + partida.getPlayer1() + ";" + partida.getPlayer2();
         }
+        System.out.println(resultado);
 
-        return resultado.toString();
+        return resultado;
     }
 
     public static String criaPartida(Jogador player){
-        String result;
+        String resultado;
         if (partidas.size() < 5){
             Partida partida = new Partida();
             partida.addPlayer(player);
-            result = partida.getId() + " " + player.getUsername() + " " + null;
-            return result;
+            resultado = partida.getId() + ";" + player.getUsername();
+            return resultado;
         }
-        result = "Não foi possível criar a partida: número máximo atingido.";
-        return result;
+        resultado = "Não foi possível criar a partida: número máximo atingido.";
+        return resultado;
+    }
+
+    @Override
+    public void run() {
+    
     }
 }
