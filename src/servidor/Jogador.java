@@ -75,7 +75,7 @@ public class Jogador implements Runnable {
     }
 
     public String decodifica(String mensagem){
-        String comando, conteudo, str = "MENSAGEM NÃO DECODIFICADA";
+        String comando, conteudo, str;
 
         if(mensagem.contains(" ")){
             comando = mensagem.substring(0, mensagem.indexOf(' '));
@@ -104,6 +104,9 @@ public class Jogador implements Runnable {
             case "999":
                 str = "";
                 this.closeEverything();
+                break;
+            default:
+                str = "MENSAGEM NÃO DECODIFICADA";
                 break;
         }
 

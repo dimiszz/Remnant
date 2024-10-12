@@ -1,9 +1,9 @@
 package servidor;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Partida implements Runnable{
-    private static final ArrayList<Partida> partidas = new ArrayList<>();
+    private static final HashMap<Integer, Partida> partidas = new HashMap<>();
     private static int livre = 0;
     private final int id;
     private Jogador player1;
@@ -11,7 +11,7 @@ public class Partida implements Runnable{
 
     public Partida(){
         this.id = livre;
-        partidas.add(this);
+        partidas.put(this.id, this);
         livre++;
     }
 
@@ -41,14 +41,12 @@ public class Partida implements Runnable{
         }
     }
 
-    public static String listarPartidas(){
-        String resultado = Integer.toString(partidas.size());
-        System.out.println(resultado);
+    public static StringBuilder listarPartidas(){
+        StringBuilder resultado = new StringBuilder(Integer.toString(partidas.size()));
 
-        for(Partida partida : partidas){
-            resultado += ";" + partida.getId() + ";" + partida.getPlayer1() + ";" + partida.getPlayer2();
+        for(Partida partida : partidas.values()){
+            resultado.append(";").append(partida.getId()).append(";").append(partida.getPlayer1()).append(";").append(partida.getPlayer2());
         }
-        System.out.println(resultado);
 
         return resultado;
     }

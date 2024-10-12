@@ -2,7 +2,7 @@ package cliente;
 
 public class CodificadorCliente {
     public static String codifica(String mensagem){
-        String comando, conteudo, str = "COMANDO INVÁLIDO!";;
+        String comando, conteudo, str;
 
         if(mensagem.contains(" ")){
             comando = mensagem.substring(0, mensagem.indexOf(' '));
@@ -13,7 +13,7 @@ public class CodificadorCliente {
             conteudo = "";
         }
 
-        switch (comando) {
+        switch(comando){
             case "/ajuda":
                 str = "101";
                 break;
@@ -25,6 +25,9 @@ public class CodificadorCliente {
                 break;
             case "/fechar":
                 str = "999";
+                break;
+            default:
+                str = "COMANDO INVÁLIDO!";
                 break;
         };
         return str;

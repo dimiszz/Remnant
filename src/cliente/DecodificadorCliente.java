@@ -2,7 +2,7 @@ package cliente;
 
 public class DecodificadorCliente {
     public static String decodifica(String mensagem){
-        String comando, conteudo, str = "MENSAGEM NÃO DECODIFICADA";
+        String comando, conteudo, str;
 
         if(mensagem.contains(" ")){
             comando = mensagem.substring(0, mensagem.indexOf(' '));
@@ -40,19 +40,28 @@ public class DecodificadorCliente {
                 """;
                 break;
             case "203":
+                String partidas[] = conteudo.split(";");
                 str = "----------------------------------------------------------------------------------------------------\n";
-                str += "Partidas disponíveis:\n" + conteudo + "\n";
+                str += "Partidas disponíveis:\n";
+                for(int i = 1; i < partidas.length; i+=3){
+                    str += "id: " + partidas[i] + "\tplayer1: " + partidas[i+1] + "\tplayer2: " + partidas[i+2] + "\n";
+                }
                 str += "----------------------------------------------------------------------------------------------------\n";
                 break;
             case "204":
                 str = "----------------------------------------------------------------------------------------------------\n";
                 str += "Partida criada:\n";
                 str += "id: " + conteudo.substring(0, conteudo.indexOf(';'));
-                str += " username: " + conteudo.substring(conteudo.indexOf(';')+1) + "\n";
+                str += "\tusername: " + conteudo.substring(conteudo.indexOf(';')+1) + "\n";
                 str += "----------------------------------------------------------------------------------------------------\n";
                 break;
             case "999":
                 str = "";
+                break;
+            default:
+                str = "----------------------------------------------------------------------------------------------------\n";
+                str += "MENSAGEM NÃO DECODIFICADA\n";
+                str += "----------------------------------------------------------------------------------------------------\n";
                 break;
         }
 
