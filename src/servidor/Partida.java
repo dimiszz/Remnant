@@ -2,7 +2,7 @@ package servidor;
 
 import java.util.HashMap;
 
-public class Partida implements Runnable{
+public class Partida{
     private static final HashMap<Integer, Partida> partidas = new HashMap<>();
     private static int livre = 0;
 
@@ -16,60 +16,51 @@ public class Partida implements Runnable{
         livre++;
     }
 
-    public void addPlayer(Jogador player){
-        player.setPartida(this.id);
-        if (this.player1 == null){
-            this.player1 = player;
-        }
-        else if (this.player2 == null) this.player2 = player;
-    }
-
-    @Override
-    public void run() {
-
-    }
-
-    public int getId() {
+    private int getId() {
         return id;
     }
 
-    public static int getQuantidadePartidas() {
-        return partidas.size();
+    private String getPlayer1() {
+        String p1 = null;
+        if (player1 != null) p1 = this.player1.getUsername();
+        return p1;
+    }
+
+    private String getPlayer2() {
+        String p2 = null;
+        if (player1 != null) p2 = this.player2.getUsername();
+        return p2;
+    }
+
+    private void addPlayer(Jogador player){
+        player.setPartida(this.id);
+        if(this.player1 == null){
+            this.player1 = player;
+        }
+        else if(this.player2 == null){
+            this.player2 = player;
+        }
     }
 
     public static String listarPartidas(){
-        StringBuilder resultado = new StringBuilder("101");
+        String resultado = "101 " + partidas.size();
 
         for(Partida partida : partidas.values()){
-            Tuple<String, String> players = partida.getPlayers();
-
-            resultado.append(" ")
-                    .append(partida.getId())
-                    .append(" ").append(players.x)
-                    .append(" ").append(players.y)
-                    .append("\n");
+            resultado += ";" + partida.getId() + ";" + partida.getPlayer1() + ";" + partida.getPlayer2();
         }
 
         return resultado.toString();
     }
 
-    public static synchronized String criaPartida(Jogador player1){
+    public static String criaPartida(Jogador player){
         String result;
-        if (getQuantidadePartidas() < 5){
+        if (partidas.size() < 5){
             Partida partida = new Partida();
-            partida.addPlayer(player1);
-            result = partida.getId() + " " + player1.getUsername() + " " + null;
+            partida.addPlayer(player);
+            result = partida.getId() + " " + player.getUsername() + " " + null;
             return result;
         }
         result = "Não foi possível criar a partida: número máximo atingido.";
         return result;
-    }
-
-    public Tuple<String, String> getPlayers() {
-        String p1 = null;
-        String p2 = null;
-        if (player1 != null) p1 = player1.getUsername();
-        if (player2 != null) p2 = player2.getUsername();
-        return new Tuple<>(p1, p2);
     }
 }

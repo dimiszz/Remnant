@@ -12,7 +12,6 @@ public class Cliente {
     private final Socket socket;
     private final BufferedWriter bufferedWriter;
     private final BufferedReader bufferedReader;
-    private final CodificaMensagem encodeMensagem;
     private Thread leitor;
     private Thread escritor;
     private AtomicBoolean active = new AtomicBoolean(true);
@@ -21,7 +20,6 @@ public class Cliente {
         this.socket = new Socket(host, port);
         this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
         this.bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
-        this.encodeMensagem = new CodificaMensagem();
     }
 
     public void iniciaLeitor(){
@@ -31,8 +29,7 @@ public class Cliente {
     }
 
     public void iniciaEscritor(){
-        Escritor esct = new Escritor(this.socket, this.encodeMensagem,
-                this.bufferedWriter, this.active);
+        Escritor esct = new Escritor(this.socket, this.bufferedWriter, this.active);
         this.escritor = new Thread(esct);
         this.escritor.start();
     }

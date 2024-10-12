@@ -1,25 +1,21 @@
 package cliente;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Escritor implements Runnable {
     private final Socket socket;
-    private final CodificaMensagem encodeMensagem;
     private final BufferedWriter bufferedWriter;
-    private final AtomicBoolean active;
-    private final Scanner scanner = new Scanner(System.in);
+    private final Scanner scanner;
+    private AtomicBoolean active;
 
-    public Escritor(Socket socket, CodificaMensagem encodeMensagem,
-                    BufferedWriter bufferedWriter, AtomicBoolean active){
+    public Escritor(Socket socket, BufferedWriter bufferedWriter, AtomicBoolean active){
         this.socket = socket;
-        this.encodeMensagem = encodeMensagem;
         this.bufferedWriter = bufferedWriter;
         this.active = active;
+        this.scanner = new Scanner(System.in);
     }
 
     @Override
@@ -27,7 +23,7 @@ public class Escritor implements Runnable {
         try{
             while(!socket.isClosed() && socket.isConnected()){
                 String mensagem = scanner.nextLine();
-                mensagem = encodeMensagem.codifica(mensagem);
+                mensagem = CodificaMensagem.codifica(mensagem);
 
                 this.bufferedWriter.write(mensagem);
                 this.bufferedWriter.newLine();

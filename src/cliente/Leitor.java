@@ -1,7 +1,6 @@
 package cliente;
 
-import java.io.BufferedReader;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -21,11 +20,10 @@ public class Leitor implements Runnable{
     public void run() {
         String mensagem;
 
-        // BUG: quando servidor fecha inesperadamente esse cara fica tentando fazer
-        // a conexão sem parar.
         while(!socket.isClosed() && this.active.get()){
             try {
                 mensagem = bufferedReader.readLine();
+                mensagem = DecodificaMensagem.decodifica(mensagem);
                 System.out.println(mensagem);
                 if (Thread.interrupted()) throw new InterruptedException();
             }
