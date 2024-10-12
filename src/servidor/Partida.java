@@ -67,7 +67,7 @@ public class Partida implements Runnable{
     }
 
     public static String entrarPartida(Jogador player, String id){
-        if(player.getPartida() == -1) return "Você já está em uma partida.";
+        if(player.getPartida() != -1) return "Você já está em uma partida.";
         if(id == "") return "ID da partida não foi informado.";
         //https://stackoverflow.com/questions/18711896/how-can-i-prevent-java-lang-numberformatexception-for-input-string-n-a
         if(!id.matches("-?\\d+")) return "ID da partida inválido.";
