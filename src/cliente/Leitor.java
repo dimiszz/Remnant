@@ -23,7 +23,7 @@ public class Leitor implements Runnable{
         while(!socket.isClosed() && this.active.get()){
             try {
                 mensagem = bufferedReader.readLine();
-                mensagem = CodificaDecodifica.decodifica(mensagem);
+                mensagem = CodificaDecodifica.decodifica(mensagem).toString();
                 System.out.println(mensagem);
                 if (Thread.interrupted()) throw new InterruptedException();
             }
