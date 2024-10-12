@@ -40,7 +40,7 @@ public class DecodificadorCliente {
                 """;
                 break;
             case "203":
-                String partidas[] = conteudo.split(";");
+                String[] partidas = conteudo.split(";");
                 str = "----------------------------------------------------------------------------------------------------\n";
                 str += "Partidas disponíveis:\n";
                 for(int i = 1; i < partidas.length; i+=3){
@@ -53,6 +53,13 @@ public class DecodificadorCliente {
                 str += "Partida criada:\n";
                 str += "id: " + conteudo.substring(0, conteudo.indexOf(';'));
                 str += "\tusername: " + conteudo.substring(conteudo.indexOf(';')+1) + "\n";
+                str += "----------------------------------------------------------------------------------------------------\n";
+                break;
+            case "205":
+                String[] partida = conteudo.split(";");
+                str = "----------------------------------------------------------------------------------------------------\n";
+                str += "Entrou na partida:\n";
+                str += "id: " + partida[0] + "\tplayer1: " + partida[1] + "\tplayer2: " + partida[2] + "\n";
                 str += "----------------------------------------------------------------------------------------------------\n";
                 break;
             case "999":
