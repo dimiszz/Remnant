@@ -29,8 +29,9 @@ public class Cliente {
 
     public void iniciaEscritor(){
         Escritor esct = new Escritor(this.socket, this.bufferedWriter, this.active);
-        this.escritor = new Thread(esct);
-        this.escritor.start();
+//        this.escritor = new Thread(esct);
+//        this.escritor.start();
+        this.escritor = Thread.ofPlatform().daemon().start(esct);
     }
 
     public void mainLoop(){
@@ -74,7 +75,9 @@ public class Cliente {
             cliente.iniciaEscritor();
             cliente.mainLoop();
 
+            System.out.println("Tentando finalizar o scanner...");
             scanner.close();
+            System.out.println("acabou a thread principal.");
         }
         catch(Exception e) {
             System.out.println("Erro: " + e.getMessage());

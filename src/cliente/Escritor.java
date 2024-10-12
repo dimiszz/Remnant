@@ -22,7 +22,7 @@ public class Escritor implements Runnable {
     @Override
     public void run() {
         try{
-            while(!socket.isClosed() && socket.isConnected()){
+            while(active.get() && !socket.isClosed() && socket.isConnected()){
                 String mensagem = scanner.nextLine();
                 mensagem = CodificadorCliente.codifica(mensagem);
 
