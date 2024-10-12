@@ -86,6 +86,8 @@ public class Jogador implements Runnable {
             conteudo = "";
         }
 
+        //System.out.println("RECEBENDO COMANDO " + comando + " DO USUÁRIO " + socket.getRemoteSocketAddress());
+
         switch(comando){
             case "100":
                 setUsername(conteudo);
@@ -100,6 +102,9 @@ public class Jogador implements Runnable {
                 break;
             case "104":
                 str = "204 " + Partida.criaPartida(this);
+                break;
+            case "105":
+                str = "205 " + Partida.entrarPartida(this, conteudo);
                 break;
             case "999":
                 str = "";

@@ -20,47 +20,58 @@ public class Partida implements Runnable{
     }
 
     private String getPlayer1() {
-        String p1 = "null";
+        String p1 = "[VAGO]";
         if (player1 != null) p1 = this.player1.getUsername();
         return p1;
     }
 
     private String getPlayer2() {
-        String p2 = "null";
+        String p2 = "[VAGO]";
         if (player2 != null) p2 = this.player2.getUsername();
         return p2;
     }
 
-    private void addPlayer(Jogador player){
+    private synchronized boolean addPlayer(Jogador player){
+        if(this.player1 == null) this.player1 = player;
+        else if(this.player2 == null) this.player2 = player;
+        else return false;
+
         player.setPartida(this.id);
-        if(this.player1 == null){
-            this.player1 = player;
-        }
-        else if(this.player2 == null){
-            this.player2 = player;
-        }
+        return true;
     }
 
     public static StringBuilder listarPartidas(){
         StringBuilder resultado = new StringBuilder(Integer.toString(partidas.size()));
 
         for(Partida partida : partidas.values()){
-            resultado.append(";").append(partida.getId()).append(";").append(partida.getPlayer1()).append(";").append(partida.getPlayer2());
+            resultado.append(";").append(partida.getId())
+                    .append(";").append(partida.getPlayer1())
+                    .append(";").append(partida.getPlayer2());
         }
 
         return resultado;
     }
 
     public static String criaPartida(Jogador player){
-        String resultado;
-        if (partidas.size() < 5){
-            Partida partida = new Partida();
-            partida.addPlayer(player);
-            resultado = partida.getId() + ";" + player.getUsername();
-            return resultado;
-        }
-        resultado = "Não foi possível criar a partida: número máximo atingido.";
-        return resultado;
+        if (partidas.size() >= 5) return "Não foi possível criar a partida: número máximo atingido.";
+
+        StringBuilder resultado = new StringBuilder();
+        Partida partida = new Partida();
+        partida.addPlayer(player);
+        resultado.append(partida.getId()).append(";").append(player.getUsername());
+
+        return resultado.toString();
+
+    }
+
+    public static String entrarPartida(Jogador player, String id){
+        Partida partida  = partidas.get(Integer.parseInt(id));
+        if(partida == null) return "Partida não foi encontrada.";
+        if (!partida.addPlayer(player)) return "Partida está cheia.";
+
+        return partida.getId() +
+                ";" + partida.getPlayer1() +
+                ";" + partida.getPlayer2();
     }
 
     @Override

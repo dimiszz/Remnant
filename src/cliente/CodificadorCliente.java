@@ -8,10 +8,13 @@ public class CodificadorCliente {
             comando = mensagem.substring(0, mensagem.indexOf(' '));
             conteudo = mensagem.substring(mensagem.indexOf(' ') + 1);
         }
+
         else{
             comando = mensagem;
             conteudo = "";
         }
+
+        //System.out.println("COMANDO: "+comando);
 
         switch(comando){
             case "/ajuda":
@@ -22,6 +25,9 @@ public class CodificadorCliente {
                 break;
             case "/criar_partida":
                 str = "104";
+                break;
+            case "/entrar":
+                str = "105 " + conteudo;
                 break;
             case "/fechar":
                 str = "999";
