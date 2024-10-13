@@ -1,7 +1,7 @@
 package cliente;
 
 public class CodificaDecodifica {
-    public boolean emJogo = false;
+    public static boolean emJogo = false;
 
     public static String separaComando(String mensagem){
         if(mensagem.contains(" ")){
@@ -21,6 +21,26 @@ public class CodificaDecodifica {
         StringBuilder str = new StringBuilder("");
         String comando = separaComando(mensagem);
         String conteudo = separaConteudo(mensagem);
+
+        if (emJogo){
+            str.append(
+                    switch (comando){
+                        case "/ataque" -> "0";
+                        case "/defesa" -> "1";
+                        case "/contra-ataque" -> "2";
+                        default -> "-1";
+            });
+
+            str.append(";");
+
+            str.append(
+                    switch (comando) {
+                        case "/magia" -> "0";
+                        case "/fisico" -> "1";
+                        default -> "-1";
+            });
+            return str.toString();
+        }
 
         switch(comando){
             case "/ajuda":
@@ -126,6 +146,9 @@ public class CodificaDecodifica {
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 str.append("PARTIDA INICIANDO!!");
                 str.append("\n----------------------------------------------------------------------------------------------------\n");
+            case "997":
+                emJogo = true;
+                break;
             case "999":
                 str.append("");
                 break;

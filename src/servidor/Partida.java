@@ -159,8 +159,8 @@ public class Partida implements Runnable {
 
                 System.out.println("Avisando que as mensagens foram processadas!");
                 this.phaser.arriveAndAwaitAdvance();
-                System.out.println("Esperando clientes finalizarem suas solicitações.");
-                this.phaser.arriveAndAwaitAdvance();
+                //System.out.println("Esperando clientes finalizarem suas solicitações.");
+                //this.phaser.arriveAndAwaitAdvance();
             }
             //phaser.arriveAndAwaitAdvance();
 

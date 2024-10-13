@@ -10,7 +10,7 @@ public class Escritor implements Runnable {
     private final Socket socket;
     private final BufferedWriter bufferedWriter;
     private final Scanner scanner;
-    private AtomicBoolean active;
+    private final AtomicBoolean active;
 
     public Escritor(Socket socket, BufferedWriter bufferedWriter, AtomicBoolean active){
         this.socket = socket;

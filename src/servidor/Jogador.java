@@ -121,6 +121,7 @@ public class Jogador implements Runnable {
 
         if (this.emJogo){
             try {
+                // Colocamos o input do usuário na fila de respostas para a partida tratar.
                 this.filaRespostas.put(this.userId + ";" + comando);
 
                 System.out.println("Esperando mensagem ser colocada na fila para avançar Jogador " + this.userId);
@@ -129,6 +130,8 @@ public class Jogador implements Runnable {
                 System.out.println("Esperando mensagem ser processada pela Partida " + this.userId);
                 this.phaser.arriveAndAwaitAdvance();
 
+
+                // Essa parte do código é para procurar a resposta desse jogador na fila de respostas
                 String resposta = this.filaRespostas.take();
                 String[] respostaQuebrada = resposta.split(";");
 
@@ -139,11 +142,12 @@ public class Jogador implements Runnable {
 
                 System.out.println("O cliente " + this.userId + " de nome " + this.username + " está pronto! " + resposta);
 
-                this.phaser.arriveAndAwaitAdvance();
+                // aqui esperamos para enviar a mensagem simultaneamente  para ambos os clientes.
+                //this.phaser.arriveAndAwaitAdvance();
                 this.phaser.arriveAndDeregister();
 
                 this.phaser.register();
-                return "997";
+                return "997 Obrigado por receber a mensagem " + this.userId + mensagem;
             }
             catch(InterruptedException e){
                 System.out.println(e.getMessage());
