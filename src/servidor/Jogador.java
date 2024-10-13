@@ -4,6 +4,9 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Phaser;
 
 public class Jogador implements Runnable {
     public static ArrayList<Jogador> jogadores = new ArrayList<>();
@@ -13,7 +16,10 @@ public class Jogador implements Runnable {
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String username = "";
-    private int partida;
+    private int partidaId;
+    private boolean emJogo = false;
+    private Phaser phaser;
+    BlockingQueue<String> filaRespostas;
 
     public Jogador(Socket socket){
         try{
@@ -21,7 +27,7 @@ public class Jogador implements Runnable {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.partida = -1;
+            this.partidaId = -1;
             jogadores.add(this);
             System.out.println("Usuários conectados: " + this.users());
         }
@@ -41,6 +47,14 @@ public class Jogador implements Runnable {
         }
     }
 
+    public void setEmJogo(boolean estado){
+        this.emJogo = estado;
+    }
+
+    public void setFilaRespostas(BlockingQueue<String> filaRespostas){
+        this.filaRespostas = filaRespostas;
+    }
+
     public synchronized int users(){
         return jogadores.size();
     }
@@ -49,20 +63,25 @@ public class Jogador implements Runnable {
         return this.username;
     }
 
-    public int getPartida(){
-        return this.partida;
+    public void setPhaser(Phaser phaser){
+        this.phaser = phaser;
+        this.phaser.register();
+    }
+
+    public int getPartidaId(){
+        return this.partidaId;
     }
 
     public boolean estaEmPartida(){
-        return this.partida != -1;
+        return this.partidaId != -1;
     }
 
-    public void setPartida(int partida){
-        this.partida = partida;
+    public void setPartidaId(int partida){
+        this.partidaId = partida;
     }
 
     public void removePartida(){
-        setPartida(-1);
+        setPartidaId(-1);
     }
 
     public synchronized void setId(){
@@ -87,7 +106,7 @@ public class Jogador implements Runnable {
         }
     }
 
-    public String decodifica(String mensagem){
+    public String decodifica(String mensagem) {
         String comando, conteudo, str;
 
         if(mensagem.contains(" ")){
@@ -97,6 +116,39 @@ public class Jogador implements Runnable {
         else{
             comando = mensagem;
             conteudo = "";
+        }
+
+
+        if (this.emJogo){
+            try {
+                this.filaRespostas.put(this.userId + ";" + comando);
+
+                System.out.println("Esperando mensagem ser colocada na fila para avançar Jogador " + this.userId);
+                this.phaser.arriveAndAwaitAdvance();
+
+                System.out.println("Esperando mensagem ser processada pela Partida " + this.userId);
+                this.phaser.arriveAndAwaitAdvance();
+
+                String resposta = this.filaRespostas.take();
+                String[] respostaQuebrada = resposta.split(";");
+
+                if (Integer.parseInt(respostaQuebrada[0]) != this.userId) {
+                    filaRespostas.put(resposta);
+                    resposta = this.filaRespostas.take();
+                }
+
+                System.out.println("O cliente " + this.userId + " de nome " + this.username + " está pronto! " + resposta);
+
+                this.phaser.arriveAndAwaitAdvance();
+                this.phaser.arriveAndDeregister();
+
+                this.phaser.register();
+                return "997";
+            }
+            catch(InterruptedException e){
+                System.out.println(e.getMessage());
+                throw new RuntimeException();
+            }
         }
 
         switch(comando){

@@ -1,6 +1,8 @@
 package cliente;
 
 public class CodificaDecodifica {
+    public boolean emJogo = false;
+
     public static String separaComando(String mensagem){
         if(mensagem.contains(" ")){
             return mensagem.substring(0, mensagem.indexOf(' '));
@@ -120,6 +122,10 @@ public class CodificaDecodifica {
                 str.append("Saindo da partida:\n").append(conteudo);
                 str.append("\n----------------------------------------------------------------------------------------------------\n");
                 break;
+            case "207":
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                str.append("PARTIDA INICIANDO!!");
+                str.append("\n----------------------------------------------------------------------------------------------------\n");
             case "999":
                 str.append("");
                 break;

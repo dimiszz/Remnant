@@ -1,0 +1,13 @@
+Fontes usadas para implementação do Phaser:
+
+https://www.geeksforgeeks.org/arrayblockingqueue-class-in-java/
+https://www.baeldung.com/java-countdown-latch
+https://stackoverflow.com/questions/6595835/resettable-countdownlatch
+https://examples.javacodegeeks.com/java-development/core-java/util/concurrent/phaser/java-util-concurrent-phaser-example/
+https://www.baeldung.com/java-phaser
+https://stackoverflow.com/questions/31956018/understanding-phaser-in-java-with-an-example
+https://www.youtube.com/watch?v=TizEvoI4CIs
+https://www.youtube.com/watch?v=tWkOtYyEEmk
+https://www.baeldung.com/java-blocking-queue
+https://www.baeldung.com/java-cyclic-barrier
+https://www.youtube.com/watch?v=qG9FFlKV4LQ
