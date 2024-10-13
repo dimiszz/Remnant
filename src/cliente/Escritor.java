@@ -27,7 +27,7 @@ public class Escritor implements Runnable {
 
                 System.err.println("Mensagem escrita do cliente: " + mensagem);
 
-                mensagem = CodificadorCliente.codifica(mensagem);
+                mensagem = CodificaDecodifica.codifica(mensagem);
 
                 System.err.println("Mensagem para o servidor: " + mensagem);
 
