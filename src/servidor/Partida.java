@@ -11,8 +11,10 @@ public class Partida implements Runnable{
 
     public Partida(){
         this.id = livre;
-        partidas.put(this.id, this);
+        partidas.put(livre, this);
         livre++;
+        this.player1 = null;
+        this.player2 = null;
     }
 
     private int getId() {
@@ -53,7 +55,8 @@ public class Partida implements Runnable{
     }
 
     public static String criaPartida(Jogador player){
-        if (partidas.size() >= 5) return "Não foi possível criar a partida: número máximo atingido.";
+        if(partidas.get(player.getPartida()) != null) return "Você já está em uma partida.";
+        if(partidas.size() >= 5) return "Não foi possível criar a partida: número máximo atingido.";
 
         StringBuilder resultado = new StringBuilder();
         Partida partida = new Partida();
@@ -61,17 +64,43 @@ public class Partida implements Runnable{
         resultado.append(partida.getId()).append(";").append(player.getUsername());
 
         return resultado.toString();
-
     }
 
     public static String entrarPartida(Jogador player, String id){
+        if(player.getPartida() != -1) return "Você já está em uma partida.";
+        if(id == "") return "ID da partida não foi informado.";
+        //https://stackoverflow.com/questions/18711896/how-can-i-prevent-java-lang-numberformatexception-for-input-string-n-a
+        if(!id.matches("\\d+")) return "ID da partida inválido.";
         Partida partida  = partidas.get(Integer.parseInt(id));
         if(partida == null) return "Partida não foi encontrada.";
-        if (!partida.addPlayer(player)) return "Partida está cheia.";
+        if(!partida.addPlayer(player)) return "Partida está cheia.";
 
         return partida.getId() +
                 ";" + partida.getPlayer1() +
                 ";" + partida.getPlayer2();
+    }
+
+    public static String sairPartida(Jogador player){
+        if(player.getPartida() != -1){
+            Partida partida = partidas.get(player.getPartida());
+            if(partida.player1 == player){
+                partida.player1 = null;
+                player.setPartida(-1);
+                if(partida.player1 == null){
+                    partidas.remove(partida.getId());
+                }
+                return "Você saiu da partida " + partida.getId() + ".";
+            }
+            else if(partida.player2 == player){
+                partida.player2 = null;
+                player.setPartida(-1);
+                if(partida.player1 == null){
+                    partidas.remove(partida.getId());
+                }
+                return "Você saiu da partida " + partida.getId() + ".";
+            }
+        }
+        return "Você não está em nenhuma partida.";
     }
 
     @Override

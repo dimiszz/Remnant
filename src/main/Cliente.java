@@ -14,8 +14,6 @@ public class Cliente {
     private final Socket socket;
     private final BufferedWriter bufferedWriter;
     private final BufferedReader bufferedReader;
-    private Thread leitor;
-    private Thread escritor;
     private AtomicBoolean active = new AtomicBoolean(true);
 
     public Cliente(String host, int port) throws IOException {
@@ -25,16 +23,11 @@ public class Cliente {
     }
 
     public void iniciaLeitor(){
-        Leitor leit = new Leitor(this.socket, this.bufferedReader, this.active);
-        this.leitor = new Thread(leit);
-        this.leitor.start();
+        Thread.ofPlatform().daemon().start(new Leitor(this.socket, this.bufferedReader, this.active));
     }
 
     public void iniciaEscritor(){
-        Escritor esct = new Escritor(this.socket, this.bufferedWriter, this.active);
-//        this.escritor = new Thread(esct);
-//        this.escritor.start();
-        this.escritor = Thread.ofPlatform().daemon().start(esct);
+        Thread.ofPlatform().daemon().start(new Escritor(this.socket, this.bufferedWriter, this.active));
     }
 
     public void mainLoop(){
@@ -49,8 +42,6 @@ public class Cliente {
                 this.socket.close();
                 this.bufferedReader.close();
                 this.bufferedWriter.close();
-                this.leitor.interrupt();
-                //this.escritor.interrupt();
             }
         }
         catch(IOException e){

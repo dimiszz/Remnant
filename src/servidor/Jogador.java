@@ -21,6 +21,7 @@ public class Jogador implements Runnable {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+            this.partida = -1;
             jogadores.add(this);
             System.out.println("Usuários conectados: " + this.users());
         }
@@ -48,7 +49,11 @@ public class Jogador implements Runnable {
         return this.username;
     }
 
-    public void setPartida(int partida) {
+    public int getPartida(){
+        return this.partida;
+    }
+
+    public void setPartida(int partida){
         this.partida = partida;
     }
 
@@ -62,7 +67,7 @@ public class Jogador implements Runnable {
         if (username != null && !username.isEmpty()) this.username = username;
     }
 
-    public void closeEverything() {
+    public void closeEverything(){
         try {
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
@@ -86,8 +91,6 @@ public class Jogador implements Runnable {
             conteudo = "";
         }
 
-        //System.out.println("RECEBENDO COMANDO " + comando + " DO USUÁRIO " + socket.getRemoteSocketAddress());
-
         switch(comando){
             case "100":
                 setUsername(conteudo);
@@ -106,12 +109,15 @@ public class Jogador implements Runnable {
             case "105":
                 str = "205 " + Partida.entrarPartida(this, conteudo);
                 break;
+            case "106":
+                str = "206 " + Partida.sairPartida(this);
+                break;
             case "999":
                 str = "";
                 this.closeEverything();
                 break;
             default:
-                str = "MENSAGEM NÃO DECODIFICADA";
+                str = "COMANDO INVÁLIDO!";
                 break;
         }
 
