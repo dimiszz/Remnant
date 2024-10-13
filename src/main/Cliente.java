@@ -1,6 +1,9 @@
 package main;
 
 import cliente.*;
+import logs.LogFrame;
+
+import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -50,7 +53,11 @@ public class Cliente {
 
     public static void main(String[] args) {
         try {
-            // Cria o cliente e conecta ao servidor
+            LogFrame logs = new LogFrame(true);
+
+            System.err.println("Iniciando console de logs.");
+
+
             Cliente cliente = new Cliente("127.0.0.1",7777);
 
             // Le o nome de usuario e envia ao servidor
@@ -68,6 +75,7 @@ public class Cliente {
 
             System.out.println("Tentando finalizar o scanner...");
             scanner.close();
+            logs.dispose();
             System.out.println("acabou a thread principal.");
         }
         catch(Exception e) {
