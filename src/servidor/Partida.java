@@ -70,7 +70,7 @@ public class Partida implements Runnable{
         if(player.getPartida() != -1) return "Você já está em uma partida.";
         if(id == "") return "ID da partida não foi informado.";
         //https://stackoverflow.com/questions/18711896/how-can-i-prevent-java-lang-numberformatexception-for-input-string-n-a
-        if(!id.matches("-?\\d+")) return "ID da partida inválido.";
+        if(!id.matches("\\d+")) return "ID da partida inválido.";
         Partida partida  = partidas.get(Integer.parseInt(id));
         if(partida == null) return "Partida não foi encontrada.";
         if(!partida.addPlayer(player)) return "Partida está cheia.";
@@ -84,15 +84,19 @@ public class Partida implements Runnable{
         if(player.getPartida() != -1){
             Partida partida = partidas.get(player.getPartida());
             if(partida.player1 == player){
-                livre--;
                 partida.player1 = null;
                 player.setPartida(-1);
+                if(partida.player1 == null){
+                    partidas.remove(partida.getId());
+                }
                 return "Você saiu da partida " + partida.getId() + ".";
             }
             else if(partida.player2 == player){
-                livre--;
                 partida.player2 = null;
                 player.setPartida(-1);
+                if(partida.player1 == null){
+                    partidas.remove(partida.getId());
+                }
                 return "Você saiu da partida " + partida.getId() + ".";
             }
         }

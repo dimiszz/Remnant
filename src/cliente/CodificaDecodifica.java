@@ -15,7 +15,7 @@ public class CodificaDecodifica {
         return "";
     }
 
-    public static StringBuilder codifica(String mensagem){
+    public static String codifica(String mensagem){
         StringBuilder str = new StringBuilder("");
         String comando = separaComando(mensagem);
         String conteudo = separaConteudo(mensagem);
@@ -43,10 +43,10 @@ public class CodificaDecodifica {
                 str.append("COMANDO INVÁLIDO!");
                 break;
         };
-        return str;
+        return str.toString();
     }
 
-    public static StringBuilder decodifica(String mensagem){
+    public static String decodifica(String mensagem){
         StringBuilder str = new StringBuilder("");
         String comando = separaComando(mensagem);
         String conteudo = separaConteudo(mensagem);
@@ -132,6 +132,6 @@ public class CodificaDecodifica {
                 break;
         }
 
-        return str;
+        return str.toString();
     }
 }
