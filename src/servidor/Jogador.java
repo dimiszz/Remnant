@@ -15,7 +15,7 @@ public class Jogador implements Runnable {
     private String username = "";
     private int partida;
 
-    public Jogador(Socket socket) {
+    public Jogador(Socket socket){
         try{
             setId();
             this.socket = socket;
@@ -120,12 +120,11 @@ public class Jogador implements Runnable {
                 str = "COMANDO INVÁLIDO!";
                 break;
         }
-
         return str;
     }
 
     @Override
-    public void run() {
+    public void run(){
         try {
             while(socket.isConnected() && !socket.isClosed()){
                 String message = this.bufferedReader.readLine();
@@ -133,11 +132,13 @@ public class Jogador implements Runnable {
                 if (response.isEmpty()) continue;
                 write(response);
             }
-        } catch (SocketException e){
+        }
+        catch(SocketException e) {
             System.out.println("Conexão interrompida pelo cliente " + socket.getRemoteSocketAddress());
-        } catch (IOException e) {
+        }
+        catch(IOException e) {
             throw new RuntimeException(e);
-        } 
+        }
         finally {
             System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
             closeEverything();

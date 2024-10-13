@@ -17,7 +17,7 @@ public class Leitor implements Runnable{
     }
 
     @Override
-    public void run() {
+    public void run(){
         String mensagem;
 
         while(!socket.isClosed() && this.active.get()){
@@ -27,11 +27,11 @@ public class Leitor implements Runnable{
                 System.out.println(mensagem);
                 if (Thread.interrupted()) throw new InterruptedException();
             }
-            catch(SocketException e){
+            catch(SocketException e) {
                 System.err.println("Conexão com o servidor foi finalizada. " + e.getMessage());
                 this.active.set(false);
             }
-            catch(IOException e){
+            catch(IOException e) {
                 System.out.println("Não foi possível ler a mensagem: " + e.getMessage());
                 //e.printStackTrace();
             } catch (InterruptedException e) {

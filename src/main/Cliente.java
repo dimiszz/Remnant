@@ -41,7 +41,7 @@ public class Cliente {
                 this.bufferedWriter.close();
             }
         }
-        catch(IOException e){
+        catch(IOException e) {
             System.out.println("Não foi possível encerrar: " + e.getMessage());
             throw new RuntimeException();
             //e.printStackTrace();

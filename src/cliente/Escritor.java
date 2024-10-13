@@ -20,8 +20,8 @@ public class Escritor implements Runnable {
     }
 
     @Override
-    public void run() {
-        try{
+    public void run(){
+        try {
             while(active.get() && !socket.isClosed() && socket.isConnected()){
                 String mensagem = scanner.nextLine();
                 mensagem = CodificaDecodifica.codifica(mensagem);
@@ -31,11 +31,11 @@ public class Escritor implements Runnable {
                 if (mensagem.equals("999")) active.set(false);
             }
         }
-        catch(IOException e){
+        catch(IOException e) {
             System.out.println("Não foi possível escrever a mensagem." + e.getMessage());
             //e.printStackTrace();
         }
-        catch(NoSuchElementException e){
+        catch(NoSuchElementException e) {
             System.out.println("Thread do Escritor interrompida.");
         }
     }

@@ -2,7 +2,7 @@ package servidor;
 
 import java.util.HashMap;
 
-public class Partida implements Runnable{
+public class Partida implements Runnable {
     private static final HashMap<Integer, Partida> partidas = new HashMap<>();
     private static int livre = 0;
     private final int id;
@@ -17,17 +17,17 @@ public class Partida implements Runnable{
         this.player2 = null;
     }
 
-    private int getId() {
+    private int getId(){
         return id;
     }
 
-    private String getPlayer1() {
+    private String getPlayer1(){
         String p1 = "[VAGO]";
         if (player1 != null) p1 = this.player1.getUsername();
         return p1;
     }
 
-    private String getPlayer2() {
+    private String getPlayer2(){
         String p2 = "[VAGO]";
         if (player2 != null) p2 = this.player2.getUsername();
         return p2;
@@ -42,7 +42,7 @@ public class Partida implements Runnable{
         return true;
     }
 
-    public static StringBuilder listarPartidas(){
+    public static String listarPartidas(){
         StringBuilder resultado = new StringBuilder(Integer.toString(partidas.size()));
 
         for(Partida partida : partidas.values()){
@@ -51,7 +51,7 @@ public class Partida implements Runnable{
                     .append(";").append(partida.getPlayer2());
         }
 
-        return resultado;
+        return resultado.toString();
     }
 
     public static String criaPartida(Jogador player){
