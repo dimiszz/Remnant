@@ -1,7 +1,14 @@
 package cliente;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 public class CodificaDecodifica {
     public static boolean emJogo = false;
+    public static AtomicBoolean tratado;
+
+    public CodificaDecodifica(AtomicBoolean tratado) {
+        CodificaDecodifica.tratado = tratado;
+    }
 
     public static String separaComando(String mensagem){
         if(mensagem.contains(" ")){
@@ -148,6 +155,8 @@ public class CodificaDecodifica {
                 str.append("\n----------------------------------------------------------------------------------------------------\n");
             case "997":
                 emJogo = true;
+                str.append("Obrigado por esperar pacientemente. Sua mensagem foi ").append(conteudo);
+                tratado.set(true);
                 break;
             case "999":
                 str.append("");

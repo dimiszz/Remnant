@@ -15,6 +15,7 @@ public class Cliente {
     private final BufferedWriter bufferedWriter;
     private final BufferedReader bufferedReader;
     private AtomicBoolean active = new AtomicBoolean(true);
+    private AtomicBoolean tratado = new AtomicBoolean(true);
 
     public Cliente(String host, int port) throws IOException {
         this.socket = new Socket(host, port);
@@ -27,7 +28,7 @@ public class Cliente {
     }
 
     public void iniciaEscritor(){
-        Thread.ofPlatform().daemon().start(new Escritor(this.socket, this.bufferedWriter, this.active));
+        Thread.ofPlatform().daemon().start(new Escritor(this.socket, this.bufferedWriter, this.active, this.tratado));
     }
 
     public void mainLoop(){
@@ -59,6 +60,8 @@ public class Cliente {
 
 
             Cliente cliente = new Cliente("127.0.0.1",7777);
+
+            new CodificaDecodifica(cliente.tratado);
 
             // Le o nome de usuario e envia ao servidor
             Scanner scanner = new Scanner(System.in);

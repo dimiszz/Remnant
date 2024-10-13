@@ -11,11 +11,13 @@ public class Escritor implements Runnable {
     private final BufferedWriter bufferedWriter;
     private final Scanner scanner;
     private final AtomicBoolean active;
+    private final AtomicBoolean tratado;
 
-    public Escritor(Socket socket, BufferedWriter bufferedWriter, AtomicBoolean active){
+    public Escritor(Socket socket, BufferedWriter bufferedWriter, AtomicBoolean active, AtomicBoolean tratado){
         this.socket = socket;
         this.bufferedWriter = bufferedWriter;
         this.active = active;
+        this.tratado = tratado;
         this.scanner = new Scanner(System.in);
     }
 
@@ -23,6 +25,10 @@ public class Escritor implements Runnable {
     public void run(){
         try {
             while(active.get() && !socket.isClosed() && socket.isConnected()){
+                while(!tratado.get() && CodificaDecodifica.emJogo){
+                    scanner.next();
+                }
+
                 String mensagem = scanner.nextLine();
 
                 System.err.println("Cliente: " + mensagem);
@@ -35,6 +41,7 @@ public class Escritor implements Runnable {
                 this.bufferedWriter.newLine();
                 this.bufferedWriter.flush();
                 if (mensagem.equals("999")) active.set(false);
+                if (CodificaDecodifica.emJogo) tratado.set(false);
             }
         }
         catch(IOException e) {
