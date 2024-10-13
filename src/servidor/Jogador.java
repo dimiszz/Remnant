@@ -53,8 +53,16 @@ public class Jogador implements Runnable {
         return this.partida;
     }
 
+    public boolean estaEmPartida(){
+        return this.partida != -1;
+    }
+
     public void setPartida(int partida){
         this.partida = partida;
+    }
+
+    public void removePartida(){
+        setPartida(-1);
     }
 
     public synchronized void setId(){

@@ -4,6 +4,7 @@ import java.util.HashMap;
 
 public class Partida implements Runnable {
     private static final HashMap<Integer, Partida> partidas = new HashMap<>();
+    private static final int maximoPartidas = 5;
     private static int livre = 0;
     private final int id;
     private Jogador player1;
@@ -41,6 +42,18 @@ public class Partida implements Runnable {
         player.setPartida(this.id);
         return true;
     }
+    public boolean removePlayer(Jogador player){
+        if(this.player1 == player){
+            this.player1 = null;
+            player.removePartida();
+        }
+        else if(this.player2 == player){
+            this.player2 = null;
+            player.removePartida();
+        }
+        else return false;
+        return true;
+    }
 
     public static String listarPartidas(){
         StringBuilder resultado = new StringBuilder(Integer.toString(partidas.size()));
@@ -56,19 +69,17 @@ public class Partida implements Runnable {
 
     public static String criaPartida(Jogador player){
         if(partidas.get(player.getPartida()) != null) return "Você já está em uma partida.";
-        if(partidas.size() >= 5) return "Não foi possível criar a partida: número máximo atingido.";
+        if(partidas.size() >= Partida.maximoPartidas)
+            return "Não foi possível criar a partida: número máximo atingido.";
 
-        StringBuilder resultado = new StringBuilder();
         Partida partida = new Partida();
         partida.addPlayer(player);
-        resultado.append(partida.getId()).append(";").append(player.getUsername());
 
-        return resultado.toString();
+        return partida.getId() + ";" + player.getUsername();
     }
 
     public static String entrarPartida(Jogador player, String id){
-        if(player.getPartida() != -1) return "Você já está em uma partida.";
-        if(id == "") return "ID da partida não foi informado.";
+        if(player.estaEmPartida()) return "Você já está em uma partida.";
         //https://stackoverflow.com/questions/18711896/how-can-i-prevent-java-lang-numberformatexception-for-input-string-n-a
         if(!id.matches("\\d+")) return "ID da partida inválido.";
         Partida partida  = partidas.get(Integer.parseInt(id));
@@ -81,26 +92,13 @@ public class Partida implements Runnable {
     }
 
     public static String sairPartida(Jogador player){
-        if(player.getPartida() != -1){
-            Partida partida = partidas.get(player.getPartida());
-            if(partida.player1 == player){
-                partida.player1 = null;
-                player.setPartida(-1);
-                if(partida.player1 == null){
-                    partidas.remove(partida.getId());
-                }
-                return "Você saiu da partida " + partida.getId() + ".";
-            }
-            else if(partida.player2 == player){
-                partida.player2 = null;
-                player.setPartida(-1);
-                if(partida.player1 == null){
-                    partidas.remove(partida.getId());
-                }
-                return "Você saiu da partida " + partida.getId() + ".";
-            }
-        }
-        return "Você não está em nenhuma partida.";
+        if(player.getPartida() == -1) return "Você não está em nenhuma partida.";
+
+        Partida partida = partidas.get(player.getPartida());
+
+        if(!partida.removePlayer(player)) return "Você não está na partida " + partida.getId();
+
+        return "Você saiu da partida " + partida.getId() + ".";
     }
 
     @Override
