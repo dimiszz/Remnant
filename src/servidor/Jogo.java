@@ -9,6 +9,8 @@ public class Jogo {
     - Assassino   vida: 68  defesa: 4  físico: 20  inteligência: 16
     */
 
+    public static Random random = new Random();
+
     protected static Classe getClasse(String classe){
         switch(classe){
             case "Guerreiro":
@@ -23,10 +25,10 @@ public class Jogo {
     }
 
     protected static void comecaJogada(Partida partida){
-        int rodada = new Random().nextInt(2);
+        int rodada = random.nextInt(2);
         if(rodada == 0){
-            partida.setJogadaP1("Ataque");
             partida.setJogadaP2("Defesa");
+            partida.setJogadaP1("Ataque");
         }
         else{
             partida.setJogadaP1("Defesa");
