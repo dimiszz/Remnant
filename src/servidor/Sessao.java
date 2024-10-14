@@ -134,12 +134,12 @@ public class Sessao {
         if(sessao.player1 == playerAtual){
             Jogador playerOutro = sessao.player2;
             playerOutro.setPartida(false);
-            playerOutro.write("306 Seu oponente saiu da partida.\n206 " + sairSessao(playerAtual));
+            playerOutro.write("305 Seu oponente saiu da partida.\n206 " + sairSessao(playerAtual));
         }
         if(sessao.player2 == playerAtual){
             Jogador playerOutro = sessao.player1;
             playerOutro.setPartida(false);
-            playerOutro.write("306 Seu oponente saiu da partida.\n206 " + sairSessao(playerOutro));
+            playerOutro.write("305 Seu oponente saiu da partida.\n206 " + sairSessao(playerOutro));
         }
         
         return "Você saiu da partida.\n206 " + sairSessao(playerAtual);

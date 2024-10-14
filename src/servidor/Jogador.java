@@ -175,7 +175,8 @@ public class Jogador implements Runnable {
             throw new RuntimeException(e);
         }
         finally {
-            System.out.println("Fechando conexão com o cliente " + socket.getRemoteSocketAddress());
+            System.out.println("Cliente desconectado: " + socket.getRemoteSocketAddress());
+            System.out.println("Usuários conectados: " + this.users() + "\n");
             closeEverything();
         }
     }

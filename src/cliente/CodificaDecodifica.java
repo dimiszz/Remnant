@@ -43,7 +43,7 @@ public class CodificaDecodifica {
                 str.append("114 ").append(conteudo);
                 break;
             case "/sair_partida":
-                str.append("115 ");
+                str.append("115");
                 break;
             case "/fechar":
                 str.append("999");
@@ -109,7 +109,8 @@ public class CodificaDecodifica {
                 else{
                     str.append(conteudo);
                 }
-                str.append("\n----------------------------------------------------------------------------------------------------\n");
+                str.append("\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "205":
                 str.append("----------------------------------------------------------------------------------------------------\n");
@@ -123,25 +124,26 @@ public class CodificaDecodifica {
                 else{
                     str.append(conteudo);
                 }
-                str.append("\n----------------------------------------------------------------------------------------------------\n");
+                str.append("\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "206":
                 str.append("----------------------------------------------------------------------------------------------------\n");
-                str.append("Saindo da sessão:\n").append(conteudo);
-                str.append("\n----------------------------------------------------------------------------------------------------\n");
+                str.append("Saindo da sessão:\n").append(conteudo).append("\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "300":
                 str.append("""
                 ----------------------------------------------------------------------------------------------------
                 Partida iniciada!
                 Escolha sua classe usando o comando "/escolher {classe}".
+                Ex: "/escolher Guerreiro"
                 Use "/ajuda" para ver os comandos disponíveis na partida.
 
                 Classes:
-                - Guerreiro
-                - Mago
-                - Arqueiro
-                - Assassino (copilot gerou as classes, nem vamo usar essas mas é muito legal)
+                - Guerreiro   vida: 72  defesa: 7  físico: 22  inteligência: 10
+                - Feiticeiro  vida: 65  defesa: 5  físico: 6   inteligência: 26
+                - Assassino   vida: 68  defesa: 4  físico: 20  inteligência: 16
                 ----------------------------------------------------------------------------------------------------
                 """);
                 break;
@@ -156,14 +158,40 @@ public class CodificaDecodifica {
                 break;
             case "305":
                 str.append("----------------------------------------------------------------------------------------------------\n");
-                str.append(conteudo);
-                str.append("\n----------------------------------------------------------------------------------------------------\n");
+                str.append("Saindo da partida:\n").append(conteudo).append("\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "306":
                 str.append("----------------------------------------------------------------------------------------------------\n");
-                str.append(conteudo);
-                str.append("\n----------------------------------------------------------------------------------------------------\n");
+                str.append(conteudo).append("\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
+            case "400":
+                str.append("""
+                ----------------------------------------------------------------------------------------------------
+                Combate iniciado!
+                Escolha sua classe usando o comando "/escolher {classe}".
+                Ex: "/escolher Guerreiro"
+                Use "/ajuda" para ver os comandos disponíveis na partida.
+
+                Classes:
+                - Guerreiro   vida: 72  defesa: 7  físico: 22  inteligência: 10
+                - Feiticeiro  vida: 65  defesa: 5  físico: 6   inteligência: 26
+                - Assassino   vida: 68  defesa: 4  físico: 20  inteligência: 16
+                ----------------------------------------------------------------------------------------------------
+                """);
+            case "401":
+                String[] conteudos = conteudo.split(";");
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                str.append("Começando Rodada: ").append(conteudos[13]).append("\n\n");
+                str.append("Jogador 1: ").append(conteudos[1]).append("\tClasse: ").append(conteudos[2]);
+                str.append("\tVida: ").append(conteudos[3]).append("\tDefesa: ").append(conteudos[4]);
+                str.append("\tFísico: ").append(conteudos[5]).append("\tInteligência: ").append(conteudos[6]);
+                str.append("\nJogador 2: ").append(conteudos[7]).append("\tClasse: ").append(conteudos[8]);
+                str.append("\tVida: ").append(conteudos[9]).append("\tDefesa: ").append(conteudos[10]);
+                str.append("\tFísico: ").append(conteudos[11]).append("\tInteligência: ").append(conteudos[12]);
+                str.append("\n\nVocê começa com: ").append(conteudos[0]).append("\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
             case "999":
                 str.append("");
                 break;
