@@ -1,10 +1,10 @@
 package servidor;
 
 public class Partida {
-    private Jogador player1;
-    private Jogador player2;
-    private String classeP1;
-    private String classeP2;
+    private final Jogador player1;
+    private final Jogador player2;
+    private Classe classeP1;
+    private Classe classeP2;
     private String jogadaP1;
     private String jogadaP2;
     private int rodada;
@@ -17,22 +17,6 @@ public class Partida {
         this.classeP2 = null;
         rodada = 0;
         this.flagCombate = false;
-    }
-
-    protected Jogador getPlayer1(){
-        return this.player1;
-    }
-
-    protected Jogador getPlayer2(){
-        return this.player2;
-    }
-
-    protected String getClasseP1(){
-        return this.classeP1;
-    }
-
-    protected String getClasseP2(){
-        return this.classeP2;
     }
 
     protected String getJogadaP1(){
@@ -50,18 +34,23 @@ public class Partida {
     protected void setJogadaP2(String jogada){
         this.jogadaP2 = jogada;
     }
-    
+
     protected void proxRodada(){
         this.rodada++;
     }
 
-    protected String comecaCombate(){
+    protected void comecaCombate(){
         this.flagCombate = true;
-        
-        String resultado = "";
-        resultado += this.player1.getUsername() + ";" + this.classeP1 + ";";
-        resultado += this.player2.getUsername() + ";" + this.classeP2;
-        return resultado;
+
+        String resultado = this.player1.getUsername() + ";" + this.classeP1 + ";"
+                + this.player2.getUsername() + ";" + this.classeP2;
+
+        Jogo.comecaJogada(this);
+        this.player1.write("400 " + resultado);
+        this.player1.write("401 " + comecaRodada(1));
+        this.player2.write("400 " + resultado);
+        this.player2.write("401 " + comecaRodada(2));
+
     }
 
     protected String comecaRodada(int jogador){
@@ -72,61 +61,41 @@ public class Partida {
         else{
             resultado += this.getJogadaP2() + ";";
         }
-        resultado += this.getPlayer1().getUsername() + ";" + this.getClasseP1() + ";" + Jogo.getAtributos(this.getClasseP1()) + ";";
-        resultado += this.getPlayer2().getUsername() + ";" + this.getClasseP2() + ";" + Jogo.getAtributos(this.getClasseP2()) + ";";
+        resultado += this.player1.getUsername() + ";" + this.classeP1 + ";" + this.classeP1.getAtributos() + ";";
+        resultado += this.player2.getUsername() + ";" + this.classeP2 + ";" + this.classeP2.getAtributos() + ";";
         resultado += this.rodada;
         return resultado;
     }
-    
+
     //303
     protected void setClasse(Jogador player, String classe){
         if(this.flagCombate){
             player.write("303 Combate já iniciado");
             return;
         }
-        
-        classe = Jogo.getClasse(classe);
-        if(classe == "invalido"){
+
+        Classe classe_selecionada = Jogo.getClasse(classe);
+        if(classe_selecionada == null){
             player.write("303 Classe inválida");
             return;
         }
 
-        if(player == this.player1){
-            this.classeP1 = classe;
-            if(this.classeP2 == null){
-                this.player1.write("303 Classe " + classe + " selecionada");
-                this.player1.write("306 Aguardando o outro jogador selecionar...");
-                return;
-            }
-            else{
-                Jogo.comecaJogada(this);
-                this.player2.write("400 " + comecaCombate());
-                this.player2.write("401 " + comecaRodada(2));
-                this.player1.write("303 Classe " + classe + " selecionada");
-                this.player1.write("400 " + comecaCombate());
-                this.player1.write("401 " + comecaRodada(1));
-                return;
-            }
-        }
-        else if(player == this.player2){
-            this.classeP2 = classe;
-            if(this.classeP1 == null){
-                this.player2.write("303 Classe " + classe + " selecionada");
-                this.player2.write("306 Aguardando o outro jogador selecionar...");
-                return;
-            }
-            else{
-                Jogo.comecaJogada(this);
-                this.player1.write("400 " + comecaCombate());
-                this.player1.write("401 " + comecaRodada(2));
-                this.player2.write("303 Classe " + classe + " selecionada");
-                this.player2.write("400 " + comecaCombate());
-                this.player2.write("401 " + comecaRodada(1));
-                return;
-            }
+        if (player != this.player1 && player != this.player2){
+            player.write("303 Jogador não encontrado");
+            return;
         }
 
-        player.write("303 Jogador não encontrado");
-        return;
+        System.out.println("Jogador " + player.getUsername() + "escolheu " + classe_selecionada);
+
+        if(player == this.player1) this.classeP1 = classe_selecionada;
+        else this.classeP2 = classe_selecionada;
+
+        player.write("303 Classe " + classe_selecionada + " selecionada");
+
+        if (this.classeP1 == null || this.classeP2 == null) {
+            this.player1.write("306 Aguardando o outro jogador selecionar...");
+        }
+
+        else comecaCombate();
     }
 }

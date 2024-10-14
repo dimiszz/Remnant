@@ -9,29 +9,16 @@ public class Jogo {
     - Assassino   vida: 68  defesa: 4  físico: 20  inteligência: 16
     */
 
-    protected static String getClasse(String classe){
+    protected static Classe getClasse(String classe){
         switch(classe){
             case "Guerreiro":
-                return "Guerreiro";
+                return Classe.Guerreiro();
             case "Feiticeiro":
-                return "Feiticeiro";
+                return Classe.Feiticeiro();
             case "Assassino":
-                return "Assassino";
+                return Classe.Assassino();
             default:
-                return "invalido";
-        }
-    }
-
-    protected static String getAtributos(String classe){
-        switch(classe){
-            case "Guerreiro":
-                return "72;7;22;10";
-            case "Feiticeiro":
-                return "65;5;6;26";
-            case "Assassino":
-                return "68;4;20;16";
-            default:
-                return "invalido";
+                return null;
         }
     }
 

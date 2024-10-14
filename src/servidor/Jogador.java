@@ -25,7 +25,7 @@ public class Jogador implements Runnable {
             this.idSessao = -1;
             this.flagPartida = false;
             jogadores.add(this);
-            System.out.println("Usuários conectados: " + this.users() + "\n");
+            System.out.println("Usuários conectados: " + this.users());
         }
         catch(IOException e){
             System.out.println("Erro no cliente " + socket.getRemoteSocketAddress() + ": " + e.getMessage());
@@ -171,8 +171,8 @@ public class Jogador implements Runnable {
         }
         finally {
             System.out.println("Cliente desconectado: " + socket.getRemoteSocketAddress());
-            System.out.println("Usuários conectados: " + this.users() + "\n");
             closeEverything();
+            System.out.println("Usuários conectados: " + this.users() + "\n");
         }
     }
 }
