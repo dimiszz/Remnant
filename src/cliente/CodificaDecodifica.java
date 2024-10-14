@@ -24,17 +24,26 @@ public class CodificaDecodifica {
             case "/ajuda":
                 str.append("101");
                 break;
-            case "/listar_partidas":
+            case "/listar_sessoes":
                 str.append("103");
                 break;
-            case "/criar_partida":
+            case "/criar_sessao":
                 str.append("104");
                 break;
-            case "/entrar_partida":
+            case "/entrar_sessao":
                 str.append("105 ").append(conteudo);
                 break;
-            case "/sair_partida":
+            case "/sair_sessao":
                 str.append("106");
+                break;
+            case "/escolher":
+                str.append("113 ").append(conteudo);
+                break;
+            case "/combate":
+                str.append("114 ").append(conteudo);
+                break;
+            case "/sair_partida":
+                str.append("115 ");
                 break;
             case "/fechar":
                 str.append("999");
@@ -47,6 +56,7 @@ public class CodificaDecodifica {
     }
 
     public static String decodifica(String mensagem){
+        System.out.println("Servidor: " + mensagem + "\n");
         StringBuilder str = new StringBuilder("");
         String comando = separaComando(mensagem);
         String conteudo = separaConteudo(mensagem);
@@ -69,29 +79,29 @@ public class CodificaDecodifica {
             case "201":
                 str.append("""
                 ----------------------------------------------------------------------------------------------------
-                - Use "/listar_partidas" para ver a lista de partidas disponíveis.
-                - Use "/criar_partida" para criar uma partida.
-                - Use "/entrar_partida {id}" para se juntar a uma partida.
-                - Use "/sair_partida" para sair da partida atual.
+                - Use "/listar_sessoes" para ver a lista de sessões disponíveis.
+                - Use "/criar_sessao" para criar uma sessão.
+                - Use "/entrar_sessao {id}" para se juntar a uma sessão.
+                - Use "/sair_sessao" para sair da sessão atual.
                 - Use "/fechar" para fechar o jogo.
                 ----------------------------------------------------------------------------------------------------
                 """);
                 break;
             case "203":
-                String[] partidas = conteudo.split(";");
+                String[] sessoes = conteudo.split(";");
                 str.append("----------------------------------------------------------------------------------------------------\n");
-                str.append("Partidas disponíveis:\n");
-                for(int i = 1; i < partidas.length; i+=3){
-                    str.append("id: ").append(partidas[i]);
-                    str.append("\tplayer1: ").append(partidas[i+1]);
-                    str.append("\tplayer2: ").append(partidas[i+2]);
+                str.append("Sessões disponíveis:\n");
+                for(int i = 1; i < sessoes.length; i+=3){
+                    str.append("id: ").append(sessoes[i]);
+                    str.append("\tplayer1: ").append(sessoes[i+1]);
+                    str.append("\tplayer2: ").append(sessoes[i+2]);
                     str.append("\n");
                 }
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "204":
                 str.append("----------------------------------------------------------------------------------------------------\n");
-                str.append("Criando partida:\n");
+                str.append("Criando sessão:\n");
                 if(conteudo.contains(";")){
                     str.append("id: ").append(conteudo.substring(0, conteudo.indexOf(';')));
                     str.append("\tusername: ").append(conteudo.substring(conteudo.indexOf(';')+1));
@@ -103,12 +113,12 @@ public class CodificaDecodifica {
                 break;
             case "205":
                 str.append("----------------------------------------------------------------------------------------------------\n");
-                str.append("Entrando na partida:\n");
+                str.append("Entrando na sessão:\n");
                 if(conteudo.contains(";")){
-                    String[] partida = conteudo.split(";");
-                    str.append("id: ").append(partida[0]);
-                    str.append("\tplayer1: ").append(partida[1]);
-                    str.append("\tplayer2: ").append(partida[2]);
+                    String[] sessao = conteudo.split(";");
+                    str.append("id: ").append(sessao[0]);
+                    str.append("\tplayer1: ").append(sessao[1]);
+                    str.append("\tplayer2: ").append(sessao[2]);
                 }
                 else{
                     str.append(conteudo);
@@ -117,7 +127,41 @@ public class CodificaDecodifica {
                 break;
             case "206":
                 str.append("----------------------------------------------------------------------------------------------------\n");
-                str.append("Saindo da partida:\n").append(conteudo);
+                str.append("Saindo da sessão:\n").append(conteudo);
+                str.append("\n----------------------------------------------------------------------------------------------------\n");
+                break;
+            case "300":
+                str.append("""
+                ----------------------------------------------------------------------------------------------------
+                Partida iniciada!
+                Escolha sua classe usando o comando "/escolher {classe}".
+                Use "/ajuda" para ver os comandos disponíveis na partida.
+
+                Classes:
+                - Guerreiro
+                - Mago
+                - Arqueiro
+                - Assassino (copilot gerou as classes, nem vamo usar essas mas é muito legal)
+                ----------------------------------------------------------------------------------------------------
+                """);
+                break;
+            case "301":
+                str.append("""
+                ----------------------------------------------------------------------------------------------------
+                - Use "/escolher {classe}" para escolher a sua classe.
+                - Use "/combate {ataque/defesa}" para escolher o tipo de ataque ou defesa.
+                - Use "/sair_partida" para sair da partida.
+                ----------------------------------------------------------------------------------------------------
+                """);
+                break;
+            case "305":
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                str.append(conteudo);
+                str.append("\n----------------------------------------------------------------------------------------------------\n");
+                break;
+            case "306":
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                str.append(conteudo);
                 str.append("\n----------------------------------------------------------------------------------------------------\n");
                 break;
             case "999":

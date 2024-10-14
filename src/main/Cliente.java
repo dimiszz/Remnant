@@ -2,8 +2,6 @@ package main;
 
 import cliente.*;
 import logs.LogFrame;
-
-import javax.swing.*;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
@@ -53,7 +51,7 @@ public class Cliente {
 
     public static void main(String[] args) {
         try {
-            LogFrame logs = new LogFrame(true);
+            LogFrame logs = new LogFrame(false);
 
             System.err.println("Iniciando console de logs.");
 

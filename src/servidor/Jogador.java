@@ -6,14 +6,15 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 public class Jogador implements Runnable {
-    public static ArrayList<Jogador> jogadores = new ArrayList<>();
+    private static ArrayList<Jogador> jogadores = new ArrayList<>();
     private static int livre = 0;
-    private int userId;
+    private int idUsuario;
+    private int idSessao;
     private Socket socket;
     private BufferedReader bufferedReader;
     private BufferedWriter bufferedWriter;
     private String username = "";
-    private int partida;
+    private Boolean flagPartida;
 
     public Jogador(Socket socket){
         try{
@@ -21,9 +22,10 @@ public class Jogador implements Runnable {
             this.socket = socket;
             this.bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
             this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
-            this.partida = -1;
+            this.idSessao = -1;
+            this.flagPartida = false;
             jogadores.add(this);
-            System.out.println("Usuários conectados: " + this.users());
+            System.out.println("Usuários conectados: " + this.users() + "\n");
         }
         catch(IOException e){
             System.out.println("Erro no cliente " + socket.getRemoteSocketAddress() + ": " + e.getMessage());
@@ -49,29 +51,33 @@ public class Jogador implements Runnable {
         return this.username;
     }
 
-    public int getPartida(){
-        return this.partida;
+    public int getSessao(){
+        return this.idSessao;
     }
 
-    public boolean estaEmPartida(){
-        return this.partida != -1;
+    public boolean estaEmSessao(){
+        return this.idSessao != -1;
     }
 
-    public void setPartida(int partida){
-        this.partida = partida;
+    public void setSessao(int idSessao){
+        this.idSessao = idSessao;
     }
 
-    public void removePartida(){
-        setPartida(-1);
+    public void removeSessao(){
+        setSessao(-1);
     }
 
     public synchronized void setId(){
-        this.userId = ++livre;
+        this.idUsuario = ++livre;
         setUsername(null);
     }
 
+    public synchronized void setPartida(Boolean flag){
+        this.flagPartida = flag;
+    }
+
     public void setUsername(String username){
-        this.username = "Anônimo " + this.userId;
+        this.username = "Anônimo " + this.idUsuario;
         if (username != null && !username.isEmpty()) this.username = username;
     }
 
@@ -99,34 +105,55 @@ public class Jogador implements Runnable {
             conteudo = "";
         }
 
-        switch(comando){
-            case "100":
-                setUsername(conteudo);
-                System.out.println("Usuário " + this.username + " conectado!");
-                str = "200";
-                break;
-            case "101":
-                str = "201";
-                break;
-            case "103":
-                str = "203 " + Partida.listarPartidas();
-                break;
-            case "104":
-                str = "204 " + Partida.criaPartida(this);
-                break;
-            case "105":
-                str = "205 " + Partida.entrarPartida(this, conteudo);
-                break;
-            case "106":
-                str = "206 " + Partida.sairPartida(this);
-                break;
-            case "999":
-                str = "";
-                this.closeEverything();
-                break;
-            default:
-                str = "COMANDO INVÁLIDO!";
-                break;
+        if(this.flagPartida){
+            switch(comando){
+                case "101":
+                    str = "301";
+                    break;
+                case "113":
+                    str = "303 " + Sessao.escolheClasse(this, conteudo);
+                    break;
+                case "114":
+                    str = "304";
+                    break;
+                case "115":
+                    str = "305 " + Sessao.sairPartida(this);
+                    break;
+                default:
+                    str = "COMANDO INVÁLIDO!";
+                    break;
+            }
+        }
+        else{
+            switch(comando){
+                case "100":
+                    setUsername(conteudo);
+                    System.out.println("Usuário " + this.username + " conectado!\n");
+                    str = "200";
+                    break;
+                case "101":
+                    str = "201";
+                    break;
+                case "103":
+                    str = "203 " + Sessao.listarSessoes();
+                    break;
+                case "104":
+                    str = "204 " + Sessao.criaSessao(this);
+                    break;
+                case "105":
+                    str = "205 " + Sessao.entrarSessao(this, conteudo);
+                    break;
+                case "106":
+                    str = "206 " + Sessao.sairSessao(this);
+                    break;
+                case "999":
+                    str = "";
+                    this.closeEverything();
+                    break;
+                default:
+                    str = "COMANDO INVÁLIDO!";
+                    break;
+            }
         }
         return str;
     }
