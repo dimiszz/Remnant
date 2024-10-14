@@ -94,9 +94,14 @@ public class Sessao {
             sessao.player1.setPartida(true);
             sessao.player2.setPartida(true);
             sessao.partida = new Partida(sessao.player1, sessao.player2);
-            if(sessao.player1 == player) sessao.player2.write("300");
-            
-            if(sessao.player2 == player) sessao.player1.write("300");
+
+            if(sessao.player1 == player){
+                sessao.player2.write("306 " + player.getUsername() + " entrou na partida!\n300");
+            }
+            else if(sessao.player2 == player){
+                sessao.player1.write("306 " + player.getUsername() + " entrou na partida!\n300");
+            }
+
             return sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2() + "\n300";
         }
 
@@ -109,6 +114,10 @@ public class Sessao {
         Sessao sessao = sessoes.get(player.getSessao());
 
         if(!sessao.removePlayer(player)) return "Você não está na sessão " + sessao.getId();
+
+        if(sessao.player1 == null && sessao.player2 == null){
+            sessoes.remove(sessao.getId());
+        }
 
         return "Você saiu da sessão " + sessao.getId() + ".";
     }
@@ -130,7 +139,7 @@ public class Sessao {
         if(sessao.player2 == playerAtual){
             Jogador playerOutro = sessao.player1;
             playerOutro.setPartida(false);
-            playerOutro.write("306 Seu oponente saiu da partida.\n206 " + sairSessao(playerAtual));
+            playerOutro.write("306 Seu oponente saiu da partida.\n206 " + sairSessao(playerOutro));
         }
         
         return "Você saiu da partida.\n206 " + sairSessao(playerAtual);
