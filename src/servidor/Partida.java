@@ -8,7 +8,7 @@ public class Partida {
     private String jogadaP1;
     private String jogadaP2;
     private int rodada;
-    private Boolean flagCombate;
+    private Boolean combateIniciado;
 
     public Partida(Jogador player1, Jogador player2){
         this.player1 = player1;
@@ -16,7 +16,7 @@ public class Partida {
         this.classeP1 = null;
         this.classeP2 = null;
         rodada = 0;
-        this.flagCombate = false;
+        this.combateIniciado = false;
     }
 
     protected String getJogadaP1(){
@@ -40,7 +40,7 @@ public class Partida {
     }
 
     protected void comecaCombate(){
-        this.flagCombate = true;
+        this.combateIniciado = true;
 
         String resultado = this.player1.getUsername() + ";" + this.classeP1 + ";"
                 + this.player2.getUsername() + ";" + this.classeP2;
@@ -69,7 +69,7 @@ public class Partida {
 
     //303
     protected void setClasse(Jogador player, String classe){
-        if(this.flagCombate){
+        if(this.combateIniciado){
             player.write("303 Combate já iniciado");
             return;
         }
