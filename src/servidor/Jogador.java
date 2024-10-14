@@ -93,9 +93,8 @@ public class Jogador implements Runnable {
         }
     }
 
-    public String decodifica(String mensagem){
-        String comando, conteudo, str;
-
+    private void decodifica(String mensagem){
+        String comando, conteudo;
         if(mensagem.contains(" ")){
             comando = mensagem.substring(0, mensagem.indexOf(' '));
             conteudo = mensagem.substring(mensagem.indexOf(' ') + 1);
@@ -108,19 +107,19 @@ public class Jogador implements Runnable {
         if(this.flagPartida){
             switch(comando){
                 case "101":
-                    str = "301";
+                    write("301");
                     break;
                 case "113":
-                    str = "303 " + Sessao.escolheClasse(this, conteudo);
+                    Sessao.escolheClasse(this, conteudo);
                     break;
                 case "114":
-                    str = "304";
+                    write("304");
                     break;
                 case "115":
-                    str = "305 " + Sessao.sairPartida(this);
+                    Sessao.sairPartida(this);
                     break;
                 default:
-                    str = "COMANDO INVÁLIDO!";
+                    write("COMANDO INVÁLIDO!");
                     break;
             }
         }
@@ -129,33 +128,31 @@ public class Jogador implements Runnable {
                 case "100":
                     setUsername(conteudo);
                     System.out.println("Usuário " + this.username + " conectado!\n");
-                    str = "200";
+                    write("200");
                     break;
                 case "101":
-                    str = "201";
+                    write("201");
                     break;
                 case "103":
-                    str = "203 " + Sessao.listarSessoes();
+                    Sessao.listarSessoes(this);
                     break;
                 case "104":
-                    str = "204 " + Sessao.criaSessao(this);
+                    Sessao.criaSessao(this);
                     break;
                 case "105":
-                    str = "205 " + Sessao.entrarSessao(this, conteudo);
+                    Sessao.entrarSessao(this, conteudo);
                     break;
                 case "106":
-                    str = "206 " + Sessao.sairSessao(this);
+                    Sessao.sairSessao(this);
                     break;
                 case "999":
-                    str = "";
                     this.closeEverything();
                     break;
                 default:
-                    str = "COMANDO INVÁLIDO!";
+                    write("COMANDO INVÁLIDO!");
                     break;
             }
         }
-        return str;
     }
 
     @Override
@@ -163,9 +160,7 @@ public class Jogador implements Runnable {
         try {
             while(socket.isConnected() && !socket.isClosed()){
                 String message = this.bufferedReader.readLine();
-                String response = decodifica(message);
-                if (response.isEmpty()) continue;
-                write(response);
+                this.decodifica(message);
             }
         }
         catch(SocketException e) {

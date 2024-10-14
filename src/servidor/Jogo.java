@@ -11,12 +11,12 @@ public class Jogo {
 
     protected static String getClasse(String classe){
         switch(classe){
-            case "1":
+            case "Guerreiro":
                 return "Guerreiro";
-            case "2":
-                return "Mago";
-            case "3":
-                return "Arqueiro";
+            case "Feiticeiro":
+                return "Feiticeiro";
+            case "Assassino":
+                return "Assassino";
             default:
                 return "invalido";
         }

@@ -58,7 +58,7 @@ public class Sessao {
         return true;
     }
 
-    protected static String listarSessoes(){
+    protected static void listarSessoes(Jogador player){
         StringBuilder resultado = new StringBuilder(Integer.toString(sessoes.size()));
 
         for(Sessao sessao : sessoes.values()){
@@ -67,28 +67,44 @@ public class Sessao {
                     .append(";").append(sessao.getPlayer2());
         }
 
-        return resultado.toString();
+        player.write("203 " + resultado.toString());
     }
 
-    protected static String criaSessao(Jogador player){
-        if(sessoes.get(player.getSessao()) != null) return "Você já está em uma sessão.";
-        if(sessoes.size() >= Sessao.maximoSessoes)
-            return "Não foi possível criar a sessão: número máximo atingido.";
+    protected static void criaSessao(Jogador player){
+        if(sessoes.get(player.getSessao()) != null){
+            player.write("204 Você já está em uma sessão.");
+            return;
+        }
+        if(sessoes.size() >= Sessao.maximoSessoes){
+            player.write("204 Não foi possível criar a sessão: número máximo atingido.");
+            return;
+        }
 
         Sessao sessao = new Sessao();
         sessao.addPlayer(player);
-
-        return sessao.getId() + ";" + player.getUsername();
+        player.write("204 " + sessao.getId() + ";" + player.getUsername());
     }
 
-    protected static String entrarSessao(Jogador player, String id){
-        if(player.estaEmSessao()) return "Você já está em uma sessão.";
+    protected static void entrarSessao(Jogador player, String id){
+        if(player.estaEmSessao()){
+            player.write("205 Você já está em uma sessão.");
+            return;
+        }
         //https://stackoverflow.com/questions/18711896/how-can-i-prevent-java-lang-numberformatexception-for-input-string-n-a
-        if(!id.matches("\\d+")) return "ID da sessao inválido.";
+        if(!id.matches("\\d+")){
+            player.write("205 ID da sessao inválido.");
+            return;
+        }
 
         Sessao sessao  = sessoes.get(Integer.parseInt(id));
-        if(sessao == null) return "Sessão não foi encontrada.";
-        if(!sessao.addPlayer(player)) return "Sessão está cheia.";
+        if(sessao == null){
+            player.write("205 Sessão não foi encontrada.");
+            return;
+        }
+        if(!sessao.addPlayer(player)){
+            player.write("205 Sessão está cheia.");
+            return;
+        }
 
         if(sessao.player1 != null && sessao.player2 != null){
             sessao.player1.setPartida(true);
@@ -96,37 +112,45 @@ public class Sessao {
             sessao.partida = new Partida(sessao.player1, sessao.player2);
 
             if(sessao.player1 == player){
-                sessao.player2.write("306 " + player.getUsername() + " entrou na partida!\n300");
+                sessao.player2.write("306 " + player.getUsername() + " entrou na partida!");
+                sessao.player2.write("300");
             }
             else if(sessao.player2 == player){
-                sessao.player1.write("306 " + player.getUsername() + " entrou na partida!\n300");
+                sessao.player1.write("306 " + player.getUsername() + " entrou na partida!");
+                sessao.player1.write("300");
             }
-
-            return sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2() + "\n300";
+            player.write("205 " + sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2());
+            player.write("300");
+            return;
         }
 
-        return sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2();
+        player.write("205 " + sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2());
     }
 
-    protected static String sairSessao(Jogador player){
-        if(player.getSessao() == -1) return "Você não está em nenhuma sessão.";
+    protected static void sairSessao(Jogador player){
+        if(player.getSessao() == -1){
+            player.write("206 Você não está em nenhuma sessão.");
+            return;
+        }
 
         Sessao sessao = sessoes.get(player.getSessao());
-
-        if(!sessao.removePlayer(player)) return "Você não está na sessão " + sessao.getId();
+        if(!sessao.removePlayer(player)){
+            player.write("206 Você não está na sessão " + sessao.getId() + ".");
+            return;
+        }
 
         if(sessao.player1 == null && sessao.player2 == null){
             sessoes.remove(sessao.getId());
         }
-
-        return "Você saiu da sessão " + sessao.getId() + ".";
+        player.write("206 Você saiu da sessão " + sessao.getId() + ".");
+        return;
     }
 
-    protected static String escolheClasse(Jogador player, String classe){
-        return sessoes.get(player.getSessao()).partida.setClasse(player, classe);
+    protected static void escolheClasse(Jogador player, String classe){
+        sessoes.get(player.getSessao()).partida.setClasse(player, classe);
     }
 
-    protected static String sairPartida(Jogador playerAtual){
+    protected static void sairPartida(Jogador playerAtual){
         Sessao sessao = sessoes.get(playerAtual.getSessao());
         sessao.partida = null;
         playerAtual.setPartida(false);
@@ -134,14 +158,18 @@ public class Sessao {
         if(sessao.player1 == playerAtual){
             Jogador playerOutro = sessao.player2;
             playerOutro.setPartida(false);
-            playerOutro.write("305 Seu oponente saiu da partida.\n206 " + sairSessao(playerAtual));
+            playerOutro.write("305 Seu oponente saiu da partida.");
+            sairSessao(playerOutro);
         }
-        if(sessao.player2 == playerAtual){
+        else if(sessao.player2 == playerAtual){
             Jogador playerOutro = sessao.player1;
             playerOutro.setPartida(false);
-            playerOutro.write("305 Seu oponente saiu da partida.\n206 " + sairSessao(playerOutro));
+            playerOutro.write("305 Seu oponente saiu da partida.");
+            sairSessao(playerOutro);
         }
         
-        return "Você saiu da partida.\n206 " + sairSessao(playerAtual);
+        playerAtual.write("305 Você saiu da partida.");
+        sairSessao(playerAtual);
+        return;
     }
 }
