@@ -7,16 +7,16 @@ public class Sessao {
     private static final int maximoSessoes = 5;
     private static int livre = 0;
     private final int id;
-    private Jogador player1;
-    private Jogador player2;
+    private Usuario user1;
+    private Usuario user2;
     private Partida partida;
 
     public Sessao(){
         this.id = livre;
         sessoes.put(livre, this);
         livre++;
-        this.player1 = null;
-        this.player2 = null;
+        this.user1 = null;
+        this.user2 = null;
         this.partida = null;
     }
 
@@ -24,53 +24,53 @@ public class Sessao {
         return id;
     }
 
-    private String getPlayer1(){
+    private String getuser1(){
         String p1 = "[VAGO]";
-        if (player1 != null) p1 = this.player1.getUsername();
+        if (user1 != null) p1 = this.user1.getUsername();
         return p1;
     }
 
-    private String getPlayer2(){
+    private String getuser2(){
         String p2 = "[VAGO]";
-        if (player2 != null) p2 = this.player2.getUsername();
+        if (user2 != null) p2 = this.user2.getUsername();
         return p2;
     }
 
-    private synchronized boolean addPlayer(Jogador player){
-        if(this.player1 == null) this.player1 = player;
-        else if(this.player2 == null) this.player2 = player;
+    private synchronized boolean addPlayer(Usuario player){
+        if(this.user1 == null) this.user1 = player;
+        else if(this.user2 == null) this.user2 = player;
         else return false;
 
         player.setSessao(this.id);
         return true;
     }
 
-    private synchronized boolean removePlayer(Jogador player){
-        if(this.player1 == player){
-            this.player1 = null;
+    private synchronized boolean removePlayer(Usuario player){
+        if(this.user1 == player){
+            this.user1 = null;
             player.removeSessao();
         }
-        else if(this.player2 == player){
-            this.player2 = null;
+        else if(this.user2 == player){
+            this.user2 = null;
             player.removeSessao();
         }
         else return false;
         return true;
     }
 
-    protected static void listarSessoes(Jogador player){
+    protected static void listarSessoes(Usuario player){
         StringBuilder resultado = new StringBuilder(Integer.toString(sessoes.size()));
 
         for(Sessao sessao : sessoes.values()){
             resultado.append(";").append(sessao.getId())
-                    .append(";").append(sessao.getPlayer1())
-                    .append(";").append(sessao.getPlayer2());
+                    .append(";").append(sessao.getuser1())
+                    .append(";").append(sessao.getuser2());
         }
 
         player.write("203 " + resultado.toString());
     }
 
-    protected static void criaSessao(Jogador player){
+    protected static void criaSessao(Usuario player){
         if(sessoes.get(player.getSessao()) != null){
             player.write("204 Você já está em uma sessão.");
             return;
@@ -85,7 +85,7 @@ public class Sessao {
         player.write("204 " + sessao.getId() + ";" + player.getUsername());
     }
 
-    protected static void entrarSessao(Jogador player, String id){
+    protected static void entrarSessao(Usuario player, String id){
         if(player.estaEmSessao()){
             player.write("205 Você já está em uma sessão.");
             return;
@@ -106,28 +106,28 @@ public class Sessao {
             return;
         }
 
-        if(sessao.player1 != null && sessao.player2 != null){
-            sessao.player1.setPartida(true);
-            sessao.player2.setPartida(true);
-            sessao.partida = new Partida(sessao.player1, sessao.player2);
+        if(sessao.user1 != null && sessao.user2 != null){
+            sessao.user1.setPartida(true);
+            sessao.user2.setPartida(true);
+            sessao.partida = new Partida(sessao.user1, sessao.user2);
 
-            if(sessao.player1 == player){
-                sessao.player2.write("306 " + player.getUsername() + " entrou na partida!");
-                sessao.player2.write("300");
+            if(sessao.user1 == player){
+                sessao.user2.write("306 " + player.getUsername() + " entrou na partida!");
+                sessao.user2.write("300");
             }
-            else if(sessao.player2 == player){
-                sessao.player1.write("306 " + player.getUsername() + " entrou na partida!");
-                sessao.player1.write("300");
+            else if(sessao.user2 == player){
+                sessao.user1.write("306 " + player.getUsername() + " entrou na partida!");
+                sessao.user1.write("300");
             }
-            player.write("205 " + sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2());
+            player.write("205 " + sessao.getId() + ";" + sessao.getuser1() + ";" + sessao.getuser2());
             player.write("300");
             return;
         }
 
-        player.write("205 " + sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2());
+        player.write("205 " + sessao.getId() + ";" + sessao.getuser1() + ";" + sessao.getuser2());
     }
 
-    protected static void sairSessao(Jogador player){
+    protected static void sairSessao(Usuario player){
         if(player.getSessao() == -1){
             player.write("206 Você não está em nenhuma sessão.");
             return;
@@ -139,34 +139,34 @@ public class Sessao {
             return;
         }
 
-        if(sessao.player1 == null && sessao.player2 == null){
+        if(sessao.user1 == null && sessao.user2 == null){
             sessoes.remove(sessao.getId());
         }
         player.write("206 Você saiu da sessão " + sessao.getId() + ".");
         return;
     }
 
-    protected static void escolheClasse(Jogador player, String classe){
+    protected static void escolheClasse(Usuario player, String classe){
         sessoes.get(player.getSessao()).partida.setClasse(player, classe);
     }
 
-    protected static void escolheCombate(Jogador player, String jogada){
+    protected static void escolheCombate(Usuario player, String jogada){
         sessoes.get(player.getSessao()).partida.combate(player, jogada);
     }
 
-    protected static void sairPartida(Jogador playerAtual){
+    protected static void sairPartida(Usuario playerAtual){
         Sessao sessao = sessoes.get(playerAtual.getSessao());
         sessao.partida = null;
         playerAtual.setPartida(false);
 
-        if(sessao.player1 == playerAtual){
-            Jogador playerOutro = sessao.player2;
+        if(sessao.user1 == playerAtual){
+            Usuario playerOutro = sessao.user2;
             playerOutro.setPartida(false);
             playerOutro.write("305 Seu oponente saiu da partida.");
             sairSessao(playerOutro);
         }
-        else if(sessao.player2 == playerAtual){
-            Jogador playerOutro = sessao.player1;
+        else if(sessao.user2 == playerAtual){
+            Usuario playerOutro = sessao.user1;
             playerOutro.setPartida(false);
             playerOutro.write("305 Seu oponente saiu da partida.");
             sairSessao(playerOutro);

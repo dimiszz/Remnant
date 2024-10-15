@@ -27,51 +27,51 @@ public class Jogo {
     protected static void escolheTurno(Partida partida){
         int rodada = random.nextInt(2);
         if(rodada == 0){
-            partida.setTurnoP2("Defesa");
-            partida.setTurnoP1("Ataque");
+            partida.getPlayer1().setTurno("Ataque");
+            partida.getPlayer2().setTurno("Defesa");
         }
         else{
-            partida.setTurnoP1("Defesa");
-            partida.setTurnoP2("Ataque");
+            partida.getPlayer2().setTurno("Ataque");
+            partida.getPlayer1().setTurno("Defesa");
         }
     }
 
-    protected static Boolean escolheJogada(Partida partida, Jogador playerAtual, Jogador playerOutro, String turno, String jogada){
+    protected static Boolean escolheJogada(Partida partida, Usuario user1, Usuario user2, String turno, String jogada){
         if(turno.equals("Ataque")){
             switch (jogada) {
                 case "Fisico":
-                    playerAtual.write("304 Ataque físico selecionado.");
-                    playerOutro.write("304 " + playerOutro.getUsername() + " selecionou a jogada.");
+                    user1.write("304 Ataque físico selecionado.");
+                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
                     return true;
                 case "Magico":
-                    playerAtual.write("304 Ataque mágico selecionado.");
-                    playerOutro.write("304 " + playerOutro.getUsername() + " selecionou a jogada.");
+                    user1.write("304 Ataque mágico selecionado.");
+                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
                     return true;
                 case "Especial":
-                    playerAtual.write("304 Ataque especial selecionado.");
-                    playerOutro.write("304 " + playerOutro.getUsername() + " selecionou a jogada.");
+                    user1.write("304 Ataque especial selecionado.");
+                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
                     return true;
                 default:
-                    playerAtual.write("304 Jogada inválida");
+                    user1.write("304 Jogada inválida");
                     return false;
             }
         }
         else{
             switch (jogada) {
                 case "Fisico":
-                    playerAtual.write("304 Defesa normal selecionado.");
-                    playerOutro.write("304 " + playerOutro.getUsername() + " selecionou a jogada.");
+                    user1.write("304 Defesa normal selecionado.");
+                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
                     return true;
                 case "Magico":
-                    playerAtual.write("304 Escudo mágico selecionado.");
-                    playerOutro.write("304 " + playerOutro.getUsername() + " selecionou a jogada.");
+                    user1.write("304 Escudo mágico selecionado.");
+                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
                     return true;
                 case "Counter":
-                    playerAtual.write("304 Counter selecionado.");
-                    playerOutro.write("304 " + playerOutro.getUsername() + " selecionou a jogada.");
+                    user1.write("304 Counter selecionado.");
+                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
                     return true;
                 default:
-                    playerAtual.write("304 Jogada inválida");
+                    user1.write("304 Jogada inválida");
                     return false;
             }
         }

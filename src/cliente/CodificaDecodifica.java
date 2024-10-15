@@ -93,8 +93,8 @@ public class CodificaDecodifica {
                 str.append("Sessões disponíveis:\n");
                 for(int i = 1; i < sessoes.length; i+=3){
                     str.append("id: ").append(sessoes[i]);
-                    str.append("\tplayer1: ").append(sessoes[i+1]);
-                    str.append("\tplayer2: ").append(sessoes[i+2]);
+                    str.append("\tuser1: ").append(sessoes[i+1]);
+                    str.append("\tuser2: ").append(sessoes[i+2]);
                     str.append("\n");
                 }
                 str.append("----------------------------------------------------------------------------------------------------\n");
@@ -118,8 +118,8 @@ public class CodificaDecodifica {
                 if(conteudo.contains(";")){
                     String[] sessao = conteudo.split(";");
                     str.append("id: ").append(sessao[0]);
-                    str.append("\tplayer1: ").append(sessao[1]);
-                    str.append("\tplayer2: ").append(sessao[2]);
+                    str.append("\tuser1: ").append(sessao[1]);
+                    str.append("\tuser2: ").append(sessao[2]);
                 }
                 else{
                     str.append(conteudo);
