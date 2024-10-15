@@ -61,7 +61,7 @@ public class CodificaDecodifica {
     }
 
     public static String decodifica(String mensagem){
-        System.out.println("Servidor: " + mensagem + "\n");
+        //System.out.println("Servidor: " + mensagem + "\n");
         StringBuilder str = new StringBuilder("");
         String comando = separaComando(mensagem);
         String conteudo = separaConteudo(mensagem);

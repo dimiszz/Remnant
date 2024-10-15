@@ -130,7 +130,6 @@ public class Jogo {
                         break;
                     // Unico caso especial em que o atacante recebe dano
                     case "Counter":
-                        System.out.println("ALTERANDO VIDA" + vida + " " + dano + (vida-dano));
                         atacante.getClasse().setVida(vida - dano);
                         if(atacante.getClasse().getVida() < 0){
                             atacante.getClasse().setVida(0);
