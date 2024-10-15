@@ -1,19 +1,11 @@
 package servidor;
 
-import javax.management.OperationsException;
-
 public class Classe {
-    /*
-    - Guerreiro   vida: 72  defesa: 7  físico: 22  inteligência: 10
-    - Feiticeiro  vida: 65  defesa: 5  físico: 6   inteligência: 26
-    - Assassino   vida: 68  defesa: 4  físico: 20  inteligência: 16
-    */
-
-    private String classe;
+    private final String classe;
     private int vida;
-    private int defesa;
-    private int fisico;
-    private int inteligencia;
+    private final int defesa;
+    private final int fisico;
+    private final int inteligencia;
 
     public Classe(String classe, int vida, int defesa, int fisico, int inteligencia) {
         this.classe = classe;
@@ -31,12 +23,32 @@ public class Classe {
         return new Classe("Feiticeiro", 65, 5, 6, 26);
     }
 
-    public static Classe Assassino(){
-        return new Classe("Assassino",68, 4, 20, 16);
+    public static Classe Paladino(){
+        return new Classe("Paladino",68, 4, 20, 16);
     }
 
     public String getAtributos(){
         return this.vida + ";" + this.defesa + ";" + this.fisico + ";" + this.inteligencia;
+    }
+
+    public int getVida(){
+        return this.vida;
+    }
+
+    public int getDefesa(){
+        return this.defesa;
+    }
+
+    public int getFisico(){
+        return this.fisico;
+    }
+
+    public int getInteligencia(){
+        return this.inteligencia;
+    }
+
+    public void setVida(int vida){
+        this.vida = vida;
     }
 
     @Override
