@@ -61,16 +61,27 @@ public class CodificaDecodifica {
     }
 
     public static String decodifica(String mensagem){
-        //System.out.println("Servidor: " + mensagem + "\n");
+        System.out.println("Servidor: " + mensagem + "\n");
         StringBuilder str = new StringBuilder("");
         String comando = separaComando(mensagem);
         String conteudo = separaConteudo(mensagem);
+        String[] conteudos = null;
+        if(conteudo.contains(";")){
+            conteudos = conteudo.split(";");
+        }
 
         switch(comando){
             case "200":
                 str.append("""
                 ----------------------------------------------------------------------------------------------------
-                Seja bem vindo a Remnant! Nesse jogo, você deve escolher entre Atacar
+                 _____  ______ __  __ _   _          _   _ _______ 
+                |  __ \\|  ____|  \\/  | \\ | |   /\\   | \\ | |__   __|
+                | |__) | |__  | \\  / |  \\| |  /  \\  |  \\| |  | |   
+                |  _  /|  __| | |\\/| | . ` | / /\\ \\ | . ` |  | |   
+                | | \\ \\| |____| |  | | |\\  |/ ____ \\| |\\  |  | |   
+                |_|  \\_\\______|_|  |_|_| \\_/_/    \\_\\_| \\_|  |_|   
+                                                    
+                Bem vindo! Nesse jogo, você deve escolher entre Atacar
                 ou Defender e Magia ou Físico, além do golpe especial contra ataque.
                 Os jogadores possuem 3 vidas. Defesas físicas defendem física, o mesmo para mágicas.
                 Ou seja, se 1 jogador usar defesa física e o outro ataque mágico, toma dano.
@@ -93,13 +104,12 @@ public class CodificaDecodifica {
                 """);
                 break;
             case "203":
-                String[] sessoes = conteudo.split(";");
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 str.append("Sessões disponíveis:\n");
-                for(int i = 1; i < sessoes.length; i+=3){
-                    str.append("id: ").append(sessoes[i]);
-                    str.append("\tuser1: ").append(sessoes[i+1]);
-                    str.append("\tuser2: ").append(sessoes[i+2]);
+                for(int i = 1; i < conteudos.length; i+=3){
+                    str.append("id: ").append(conteudos[i]);
+                    str.append("\tuser1: ").append(conteudos[i+1]);
+                    str.append("\tuser2: ").append(conteudos[i+2]);
                     str.append("\n");
                 }
                 str.append("----------------------------------------------------------------------------------------------------\n");
@@ -121,10 +131,9 @@ public class CodificaDecodifica {
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 str.append("Entrando na sessão:\n");
                 if(conteudo.contains(";")){
-                    String[] sessao = conteudo.split(";");
-                    str.append("id: ").append(sessao[0]);
-                    str.append("\tuser1: ").append(sessao[1]);
-                    str.append("\tuser2: ").append(sessao[2]);
+                    str.append("id: ").append(conteudos[0]);
+                    str.append("\tuser1: ").append(conteudos[1]);
+                    str.append("\tuser2: ").append(conteudos[2]);
                 }
                 else{
                     str.append(conteudo);
@@ -167,6 +176,11 @@ public class CodificaDecodifica {
                 str.append("Escolhendo classe:\n").append(conteudo).append("\n");
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
+            case "304":
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                str.append(conteudo).append("\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                break;
             case "305":
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 str.append("Saindo da partida:\n").append(conteudo).append("\n");
@@ -178,25 +192,70 @@ public class CodificaDecodifica {
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "400":
-                String[] jogadores = conteudo.split(";");
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 str.append("Combate iniciado!\n");
-                str.append("Jogador 1: ").append(jogadores[0]).append("\tClasse: ").append(jogadores[1]);
-                str.append("\nJogador 2: ").append(jogadores[2]).append("\tClasse: ").append(jogadores[3]);
+                str.append("Jogador 1: ").append(conteudos[0]).append("\tClasse: ").append(conteudos[1]);
+                str.append("\nJogador 2: ").append(conteudos[2]).append("\tClasse: ").append(conteudos[3]);
                 str.append("\n");
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "401":
-                String[] conteudos = conteudo.split(";");
                 str.append("----------------------------------------------------------------------------------------------------\n");
-                str.append("Começando Rodada: ").append(conteudos[13]).append("\n\n");
+                str.append("Começando Rodada ").append(conteudos[13]).append(":\n\n");
                 str.append("Jogador 1: ").append(conteudos[1]).append("\tClasse: ").append(conteudos[2]);
                 str.append("\nVida: ").append(conteudos[3]).append("\tDefesa: ").append(conteudos[4]);
                 str.append("\tFísico: ").append(conteudos[5]).append("\tInteligência: ").append(conteudos[6]);
                 str.append("\n\nJogador 2: ").append(conteudos[7]).append("\tClasse: ").append(conteudos[8]);
                 str.append("\nVida: ").append(conteudos[9]).append("\tDefesa: ").append(conteudos[10]);
                 str.append("\tFísico: ").append(conteudos[11]).append("\tInteligência: ").append(conteudos[12]);
-                str.append("\n\nVocê começa com: ").append(conteudos[0]).append("\n");
+                str.append("\n\nVocê começa com: ").append(conteudos[0]).append("\n\n");
+                str.append("Se você estiver atacando, use \"/combate {tipo}\" e escolha entre Fisico, Magico ou Especial.\n");
+                str.append("Se você estiver defendendo, use \"/combate {tipo}\" e escolha entre Fisico, Magico ou Counter.\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                break;
+            case "402":
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                str.append("Você escolheu ").append(conteudos[1]).append(" e o ").append(conteudos[2]);
+                str.append(" escolheu ").append(conteudos[3]).append(".\n");
+                if(conteudos[0].equals("0")){
+                    str.append("Você recebeu ").append(conteudos[4]).append(" de dano e ficou com ");
+                    str.append(conteudos[5]).append(" de vida restante.\n");
+                }
+                else{
+                    str.append("Você causou ").append(conteudos[4]).append(" de dano e o oponente ficou com ");
+                    str.append(conteudos[5]).append(" de vida restante.\n");
+                }
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                break;
+            case "403":
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                str.append("Agora é a sua vez de ").append(conteudo).append("!\n");
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                break;
+            case "404":
+                str.append("----------------------------------------------------------------------------------------------------\n");
+                if(conteudo.equals("1")){
+                    str.append("""
+                     __     ______  _    _  __            _______ _   _ _ 
+                     \\ \\   / / __ \\| |  | |   \\ \\        / /_   _| \\ | | |
+                      \\ \\_/ / |  | | |  | |    \\ \\  /\\  / /  | | |  \\| | |
+                       \\   /| |  | | |  | |     \\ \\/  \\/ /   | | | . ` | |
+                        | | | |__| | |__| |      \\  /\\  /   _| |_| |\\  |_|
+                        |_|  \\____/ \\____/        \\/  \\/   |_____|_| \\_(_)
+                    
+                    """);
+                }
+                else{
+                    str.append("""
+                     __     ______  _    _   _        ____   _____ ______ 
+                     \\ \\   / / __ \\| |  | | |   |    / __ \\ / ____|  ____|
+                      \\ \\_/ / |  | | |  | | |   |   | |  | | (___ | |__   
+                       \\   /| |  | | |  | | |   |   | |  | |\\___ \\|  __|  
+                        | | | |__| | |__| | |   |___| |__| |____) | |____ 
+                        |_|  \\____/ \\____/    |______\\____/|_____/|______|  
+                    
+                    """);
+                }
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "999":
@@ -207,8 +266,7 @@ public class CodificaDecodifica {
                 str.append("CHAT INICIADO COM O USUÁRIO ").append(conteudo);
                 break;
             case "1202":
-                String[] mensagens = conteudo.split(";");
-                Chat.write(mensagens[0], mensagens[1]);
+                Chat.write(conteudos[0], conteudos[1]);
                 break;
             default:
                 str.append("""

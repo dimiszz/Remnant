@@ -4,14 +4,14 @@ public class Partida {
     private final Jogador player1;
     private final Jogador player2;
     private Boolean combateIniciado;
-    //private Boolean metadeRodada;
+    private Boolean metadeRodada;
     private int rodada;
 
     public Partida(Usuario user1, Usuario user2){
         this.player1 = new Jogador(user1);
         this.player2 = new Jogador(user2);
         this.combateIniciado = false;
-        //this.metadeRodada = false;
+        this.metadeRodada = false;
         rodada = 0;
     }
 
@@ -35,17 +35,20 @@ public class Partida {
             return;
         }
 
-        System.out.println("Jogador " + user.getUsername() + "escolheu " + classe_selecionada);
-
-        if(user == this.player1.getUser()) this.player1.setClasse(classe_selecionada);
-        else this.player2.setClasse(classe_selecionada);
-
-        user.write("303 Classe " + classe_selecionada + " selecionada");
-
-        if (this.player1.getClasse() == null || this.player2.getClasse() == null) {
-            this.player1.getUser().write("306 Aguardando o outro jogador selecionar...");
+        if(user == this.player1.getUser()){
+            this.player1.setClasse(classe_selecionada);
+            this.player1.getUser().write("303 Classe " + classe_selecionada + " selecionada");
+            this.player2.getUser().write("303 " + this.player1.getUser().getUsername() + " selecionou a classe.");
+        }
+        else {
+            this.player2.setClasse(classe_selecionada);
+            this.player2.getUser().write("303 Classe " + classe_selecionada + " selecionada");
+            this.player2.getUser().write("303 " + this.player2.getUser().getUsername() + " selecionou a classe.");
         }
 
+        if (this.player1.getClasse() == null || this.player2.getClasse() == null) {
+            user.write("306 Aguardando o outro jogador selecionar...");
+        }
         else comecaCombate();
     }
 
@@ -111,7 +114,36 @@ public class Partida {
             else{
                 Jogo.realizaCombate(this.player2, this.player1);
             }
+
+            if(this.player1.getClasse().getVida() <= 0){
+                this.player1.getUser().write("404 0");
+                this.player2.getUser().write("404 1");
+                Sessao.sairPartida(this.player1.getUser());
+                Sessao.sairPartida(this.player2.getUser());
+                return;
+            }
+            else if(this.player2.getClasse().getVida() <= 0){
+                this.player1.getUser().write("404 1");
+                this.player2.getUser().write("404 0");
+                Sessao.sairPartida(this.player1.getUser());
+                Sessao.sairPartida(this.player2.getUser());
+                return;
+            }
+
+            if(!this.metadeRodada){
+                this.metadeRodada = true;
+                Jogo.inverteTurno(this.player1, this.player2);
+                this.player1.getUser().write("403 " + this.player1.getTurno());
+                this.player2.getUser().write("403 " + this.player2.getTurno());
+            }
+            else{
+                this.metadeRodada = false;
+                comecaRodada();
+            }
         }
+
+        this.player1.setJogada(null);
+        this.player2.setJogada(null);
         return;
     }
 }

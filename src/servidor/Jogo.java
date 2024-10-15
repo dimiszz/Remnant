@@ -18,6 +18,17 @@ public class Jogo {
         }
     }
 
+    protected static void inverteTurno(Jogador player1, Jogador player2){
+        if(player1.getTurno().equals("Ataque")){
+            player1.setTurno("Defesa");
+            player2.setTurno("Ataque");
+        }
+        else{
+            player1.setTurno("Ataque");
+            player2.setTurno("Defesa");
+        }
+    }
+
     protected static void escolheTurno(Partida partida){
         int rodada = random.nextInt(2);
         if(rodada == 0){
@@ -73,8 +84,10 @@ public class Jogo {
 
     // Considera todas as possibilidades de combate
     protected static void realizaCombate(Jogador atacante, Jogador defensor){
+        String resultado;
         int dano = calculaDano(atacante.getClasse(), atacante.getJogada());
         int vida = defensor.getClasse().getVida();
+
         switch(atacante.getJogada()){
             case "Fisico":
                 switch(defensor.getJogada()){
@@ -115,13 +128,35 @@ public class Jogo {
                     case "Magico":
                         defensor.getClasse().setVida(vida - dano);
                         break;
+                    // Unico caso especial em que o atacante recebe dano
                     case "Counter":
+                        System.out.println("ALTERANDO VIDA" + vida + " " + dano + (vida-dano));
                         atacante.getClasse().setVida(vida - dano);
-                        break;
+                        if(atacante.getClasse().getVida() < 0){
+                            atacante.getClasse().setVida(0);
+                        }
+                        resultado = "402 0;" + atacante.getJogada() + ";" + defensor.getUser().getUsername() + ";";
+                        resultado += defensor.getJogada() + ";" + dano + ";" + atacante.getClasse().getVida();
+                        atacante.getUser().write(resultado);
+                        
+                        resultado = "402 1;" + defensor.getJogada() + ";" + atacante.getUser().getUsername() + ";";
+                        resultado += atacante.getJogada() + ";" + dano + ";" + atacante.getClasse().getVida();
+                        defensor.getUser().write(resultado);
+                        return;
                 }
                 break;
         }
+        if(defensor.getClasse().getVida() < 0){
+            defensor.getClasse().setVida(0);
+        }
+        // primeiro campo indica se voce causou o dano 1 ou recebeu 0
+        resultado = "402 1;" + atacante.getJogada() + ";" + defensor.getUser().getUsername() + ";";
+        resultado += defensor.getJogada() + ";" + dano + ";" + defensor.getClasse().getVida();
+        atacante.getUser().write(resultado);
         
+        resultado = "402 0;" + defensor.getJogada() + ";" + atacante.getUser().getUsername() + ";";
+        resultado += atacante.getJogada() + ";" + dano + ";" + defensor.getClasse().getVida();
+        defensor.getUser().write(resultado);
     }
 
     protected static int calculaDano(Classe classe, String jogada){

@@ -1,7 +1,5 @@
 package servidor;
 
-//import javax.management.OperationsException;
-
 public class Classe {
     private final String classe;
     private int vida;
