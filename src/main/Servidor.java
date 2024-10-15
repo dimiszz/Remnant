@@ -17,9 +17,9 @@ public class Servidor {
                 Socket cliente = servidor.accept();
                 System.out.println("Cliente conectado: " + cliente.getRemoteSocketAddress());
 
-                // Cria uma nova thread para o cliente/jogador
-                Jogador novojogador = new Jogador(cliente);
-                new Thread(novojogador).start();
+                // Cria uma nova thread para o cliente/usuario
+                Usuario novoUsuario = new Usuario(cliente);
+                new Thread(novoUsuario).start();
             }
 
             // Fecha o servidor
