@@ -65,8 +65,6 @@ public class Chat extends JFrame implements ActionListener {
         this.add(panel, BorderLayout.SOUTH);
 
         this.setMinimumSize(new Dimension(200, 400));
-        this.pack();
-        this.setVisible(true);
     }
 
 
@@ -77,7 +75,7 @@ public class Chat extends JFrame implements ActionListener {
                 Thread.sleep(50);
                 System.err.println("Tentando enviar mensagem: " + message);
                 writeMessage("Você", message);
-                if (!messageQueue.offer("/escrever " + message))
+                if (messageQueue != null && !messageQueue.offer("/escrever " + message))
                     System.err.println("Não foi possível enviar a mensagem: " + message);
 
                 messageField.setText("");
@@ -106,6 +104,8 @@ public class Chat extends JFrame implements ActionListener {
 
     public static void iniciaChat(String user) {
         chat = new Chat(user);
+        chat.pack();
+        chat.setVisible(true);
     }
 
     public static void write(String remetente, String message){
