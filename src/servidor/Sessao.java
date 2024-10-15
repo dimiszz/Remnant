@@ -150,6 +150,10 @@ public class Sessao {
         sessoes.get(player.getSessao()).partida.setClasse(player, classe);
     }
 
+    protected static void escolheCombate(Jogador player, String jogada){
+        sessoes.get(player.getSessao()).partida.combate(player, jogada);
+    }
+
     protected static void sairPartida(Jogador playerAtual){
         Sessao sessao = sessoes.get(playerAtual.getSessao());
         sessao.partida = null;

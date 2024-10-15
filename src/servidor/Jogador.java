@@ -113,7 +113,7 @@ public class Jogador implements Runnable {
                     Sessao.escolheClasse(this, conteudo);
                     break;
                 case "114":
-                    write("304");
+                    Sessao.escolheCombate(this, conteudo);
                     break;
                 case "115":
                     Sessao.sairPartida(this);

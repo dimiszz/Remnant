@@ -143,7 +143,7 @@ public class CodificaDecodifica {
                 Classes:
                 - Guerreiro   vida: 72  defesa: 7  físico: 22  inteligência: 10
                 - Feiticeiro  vida: 65  defesa: 5  físico: 6   inteligência: 26
-                - Assassino   vida: 68  defesa: 4  físico: 20  inteligência: 16
+                - Paladino   vida: 68  defesa: 4  físico: 20  inteligência: 16
                 ----------------------------------------------------------------------------------------------------
                 """);
                 break;
