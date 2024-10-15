@@ -10,6 +10,7 @@ public class Partida {
         this.player1 = new Jogador(user1);
         this.player2 = new Jogador(user2);
         this.combateIniciado = false;
+        this.metadeRodada = false;
         rodada = 0;
     }
 
@@ -23,13 +24,13 @@ public class Partida {
 
     protected void setClasse(Usuario user, String classe){
         if(this.combateIniciado){
-            user.write("303 Combate já iniciado");
+            user.write("303 Combate já iniciado.");
             return;
         }
 
         Classe classe_selecionada = Jogo.getClasse(classe);
         if(classe_selecionada == null){
-            user.write("303 Classe inválida");
+            user.write("303 Classe inválida.");
             return;
         }
 
@@ -75,39 +76,41 @@ public class Partida {
         return;
     }
 
-    protected void combate(Usuario userAtual, String jogada){
+    protected void combate(Usuario user, String jogada){
         if(!this.combateIniciado){
-            userAtual.write("304 Combate ainda não iniciado");
+            user.write("304 Combate ainda não iniciado.");
             return;
         }        
 
-        Usuario userOutro;
-        Jogador playerAtual;
-        if(userAtual == this.player1.getUser()){
+        Jogador playerAtual, playerOutro;
+        if(user == this.player1.getUser()){
             playerAtual = this.player1;
-            userOutro = this.player2.getUser();
+            playerOutro = this.player2;
         }
         else{
             playerAtual = this.player2;
-            userOutro = this.player1.getUser();
+            playerOutro = this.player1;
         }
 
-        if(Jogo.escolheJogada(this, userAtual, userOutro, playerAtual.getTurno(), jogada)){
+        if(Jogo.escolheJogada(playerAtual, playerOutro, jogada)){
             playerAtual.setJogada(jogada);
         }
         else{
             return;
         }
 
-
         if(this.player1.getJogada() == null || this.player2.getJogada() == null){
-            userAtual.write("306 Aguardando o outro jogador selecionar...");
+            playerAtual.getUser().write("306 Aguardando o outro jogador selecionar...");
             return;
         }
         else{
-            Jogo.calculaDano(playerAtual.getClasse(), jogada);
-            // Precisa considerar muitos ifs e elses
-            return;
+            if(this.player1.getTurno().equals("Ataque")){
+                Jogo.realizaCombate(this.player1, this.player2);
+            }
+            else{
+                Jogo.realizaCombate(this.player2, this.player1);
+            }
         }
+        return;
     }
 }

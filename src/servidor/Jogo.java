@@ -30,50 +30,103 @@ public class Jogo {
         }
     }
 
-    protected static Boolean escolheJogada(Partida partida, Usuario user1, Usuario user2, String turno, String jogada){
-        if(turno.equals("Ataque")){
-            switch (jogada) {
+    protected static Boolean escolheJogada(Jogador player1, Jogador player2, String jogada){
+        if(player1.getTurno().equals("Ataque")){
+            switch(jogada){
                 case "Fisico":
-                    user1.write("304 Ataque físico selecionado.");
-                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
+                    player1.getUser().write("304 Ataque físico selecionado.");
+                    player2.getUser().write("304 " + player2.getUser().getUsername() + " selecionou a jogada.");
                     return true;
                 case "Magico":
-                    user1.write("304 Ataque mágico selecionado.");
-                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
+                    player1.getUser().write("304 Ataque mágico selecionado.");
+                    player2.getUser().write("304 " + player2.getUser().getUsername() + " selecionou a jogada.");
                     return true;
                 case "Especial":
-                    user1.write("304 Ataque especial selecionado.");
-                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
+                    player1.getUser().write("304 Ataque especial selecionado.");
+                    player2.getUser().write("304 " + player2.getUser().getUsername() + " selecionou a jogada.");
                     return true;
                 default:
-                    user1.write("304 Jogada inválida");
+                    player1.getUser().write("304 Jogada inválida.");
                     return false;
             }
         }
         else{
-            switch (jogada) {
+            switch(jogada){
                 case "Fisico":
-                    user1.write("304 Defesa normal selecionado.");
-                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
+                    player1.getUser().write("304 Defesa normal selecionado.");
+                    player2.getUser().write("304 " + player2.getUser().getUsername() + " selecionou a jogada.");
                     return true;
                 case "Magico":
-                    user1.write("304 Escudo mágico selecionado.");
-                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
+                    player1.getUser().write("304 Escudo mágico selecionado.");
+                    player2.getUser().write("304 " + player2.getUser().getUsername() + " selecionou a jogada.");
                     return true;
                 case "Counter":
-                    user1.write("304 Counter selecionado.");
-                    user2.write("304 " + user2.getUsername() + " selecionou a jogada.");
+                    player1.getUser().write("304 Counter selecionado.");
+                    player2.getUser().write("304 " + player2.getUser().getUsername() + " selecionou a jogada.");
                     return true;
                 default:
-                    user1.write("304 Jogada inválida");
+                    player1.getUser().write("304 Jogada inválida.");
                     return false;
             }
         }
     }
 
+    // Considera todas as possibilidades de combate
+    protected static void realizaCombate(Jogador atacante, Jogador defensor){
+        int dano = calculaDano(atacante.getClasse(), atacante.getJogada());
+        int vida = defensor.getClasse().getVida();
+        switch(atacante.getJogada()){
+            case "Fisico":
+                switch(defensor.getJogada()){
+                    case "Fisico":
+                        dano -= defensor.getClasse().getDefesa();
+                        defensor.getClasse().setVida(vida - dano);
+                        break;
+                    case "Magico":
+                        defensor.getClasse().setVida(vida - dano);
+                        break;
+                    case "Counter":
+                        defensor.getClasse().setVida(vida - dano);
+                        break;
+                }
+                break;
+            case "Magico":
+                switch(defensor.getJogada()){
+                    case "Fisico":
+                        dano -= defensor.getClasse().getDefesa()/2;
+                        defensor.getClasse().setVida(vida - dano);
+                        break;
+                    case "Magico":
+                        dano -= defensor.getClasse().getDefesa();
+                        dano -= defensor.getClasse().getInteligencia()/3;
+                        defensor.getClasse().setVida(vida - dano);
+                        break;
+                    case "Counter":
+                        defensor.getClasse().setVida(vida - dano);
+                        break;
+                }
+                break;
+            case "Especial":
+                switch(defensor.getJogada()){
+                    case "Fisico":
+                        dano -= defensor.getClasse().getDefesa();
+                        defensor.getClasse().setVida(vida - dano);
+                        break;
+                    case "Magico":
+                        defensor.getClasse().setVida(vida - dano);
+                        break;
+                    case "Counter":
+                        atacante.getClasse().setVida(vida - dano);
+                        break;
+                }
+                break;
+        }
+        
+    }
+
     protected static int calculaDano(Classe classe, String jogada){
         int dano, desvio;
-        desvio = random.nextInt(10) - 5;
+        desvio = random.nextInt(11) - 5;
         switch (jogada) {
             case "Fisico":
                 dano = classe.getFisico();

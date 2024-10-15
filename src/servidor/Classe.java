@@ -3,11 +3,11 @@ package servidor;
 //import javax.management.OperationsException;
 
 public class Classe {
-    private String classe;
+    private final String classe;
     private int vida;
-    private int defesa;
-    private int fisico;
-    private int inteligencia;
+    private final int defesa;
+    private final int fisico;
+    private final int inteligencia;
 
     public Classe(String classe, int vida, int defesa, int fisico, int inteligencia) {
         this.classe = classe;
@@ -33,12 +33,24 @@ public class Classe {
         return this.vida + ";" + this.defesa + ";" + this.fisico + ";" + this.inteligencia;
     }
 
+    public int getVida(){
+        return this.vida;
+    }
+
+    public int getDefesa(){
+        return this.defesa;
+    }
+
     public int getFisico(){
         return this.fisico;
     }
 
     public int getInteligencia(){
         return this.inteligencia;
+    }
+
+    public void setVida(int vida){
+        this.vida = vida;
     }
 
     @Override
