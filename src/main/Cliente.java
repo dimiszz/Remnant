@@ -66,12 +66,14 @@ public class Cliente {
 
             System.err.println("Iniciando console de logs.");
 
+            Scanner scanner = new Scanner(System.in);
+            System.out.println("Insira o IP:");
+            String ip = scanner.nextLine();
 
-            Cliente cliente = new Cliente("127.0.0.1",7777);
+            Cliente cliente = new Cliente(ip,7777);
             Chat.addMessageQueue(cliente.messageQueue);
 
             // Le o nome de usuario e envia ao servidor
-            Scanner scanner = new Scanner(System.in);
             System.out.println("Digite o seu nome de usuário: ");
             String username = scanner.nextLine();
             cliente.bufferedWriter.write("100 " + username);
@@ -83,7 +85,6 @@ public class Cliente {
             cliente.iniciaEscritor();
             cliente.mainLoop();
 
-            System.out.println("Tentando finalizar o scanner...");
             scanner.close();
             logs.dispose();
             Chat.finalizaChat();

@@ -61,8 +61,8 @@ public class CodificaDecodifica {
     }
 
     public static String decodifica(String mensagem){
-        System.out.println("Servidor: " + mensagem + "\n");
-        StringBuilder str = new StringBuilder("");
+        //System.out.println("Servidor: " + mensagem + "\n");
+        StringBuilder str = new StringBuilder();
         String comando = separaComando(mensagem);
         String conteudo = separaConteudo(mensagem);
         String[] conteudos = null;
@@ -106,11 +106,13 @@ public class CodificaDecodifica {
             case "203":
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 str.append("Sessões disponíveis:\n");
-                for(int i = 1; i < conteudos.length; i+=3){
-                    str.append("id: ").append(conteudos[i]);
-                    str.append("\tuser1: ").append(conteudos[i+1]);
-                    str.append("\tuser2: ").append(conteudos[i+2]);
-                    str.append("\n");
+                if(conteudos != null) {
+                    for (int i = 1; i < conteudos.length; i += 3) {
+                        str.append("id: ").append(conteudos[i]);
+                        str.append("\tuser1: ").append(conteudos[i + 1]);
+                        str.append("\tuser2: ").append(conteudos[i + 2]);
+                        str.append("\n");
+                    }
                 }
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 break;

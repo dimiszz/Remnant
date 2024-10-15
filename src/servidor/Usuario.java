@@ -118,6 +118,9 @@ public class Usuario implements Runnable {
                 case "115":
                     Sessao.sairPartida(this);
                     break;
+                case "1102":
+                    Sessao.escrever(this, conteudo);
+                    break;
                 default:
                     write("COMANDO INVÁLIDO!");
                     break;

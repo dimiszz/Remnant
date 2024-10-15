@@ -37,7 +37,10 @@ public class Escritor implements Runnable {
                 this.bufferedWriter.write(mensagem);
                 this.bufferedWriter.newLine();
                 this.bufferedWriter.flush();
-                if (mensagem.equals("999")) active.set(false);
+                if (mensagem.equals("999")) {
+                    System.out.println("Pressione qualquer tecla...");
+                    active.set(false);
+                }
             }
         }
         catch(IOException e) {
