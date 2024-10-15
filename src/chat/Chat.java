@@ -6,11 +6,13 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Date;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 
 // https://stackoverflow.com/questions/35283349/how-to-make-enter-key-and-submit-button-have-same-actionevent
 // https://www.geeksforgeeks.org/java-swing-jtextarea/
 public class Chat extends JFrame implements ActionListener {
     private static Chat chat;
+    private static BlockingQueue<String> messageQueue;
 
     private final JTextArea chatArea;
     private final JTextField messageField;
@@ -69,14 +71,24 @@ public class Chat extends JFrame implements ActionListener {
 
 
     private void sendMessage() {
-        String message = messageField.getText();
-        if (!message.isBlank()) {
-            writeMessage(message, "Você");
-            messageField.setText("");
+        try {
+            String message = messageField.getText();
+            if (!message.isBlank()) {
+                Thread.sleep(50);
+                System.err.println("Tentando enviar mensagem: " + message);
+                writeMessage("Você", message);
+                if (!messageQueue.offer("/escrever " + message))
+                    System.err.println("Não foi possível enviar a mensagem: " + message);
+
+                messageField.setText("");
+            }
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 
-    private void writeMessage(String message, String remetente) {
+    private void writeMessage(String remetente, String message) {
         if (message != null && !message.isBlank()) {
             chatArea.append("[" + sdf.format(new Date()) + "] ");
             chatArea.append(remetente + ": " + message + "\n");
@@ -88,16 +100,27 @@ public class Chat extends JFrame implements ActionListener {
     }
 
     public static void finalizaChat() {
-        Chat.chat.dispose();
+        if (chat != null)
+            Chat.chat.dispose();
     }
 
     public static void iniciaChat(String user) {
         chat = new Chat(user);
     }
 
+    public static void write(String remetente, String message){
+        chat.writeMessage(remetente, message);
+    }
+
+    public static void addMessageQueue(BlockingQueue<String> messageQueue){
+        Chat.messageQueue = messageQueue;
+    }
+
     public static void main(String[] args) throws InterruptedException {
 
         //SwingUtilities.invokeLater(() -> new Chat());
+
+        Chat.finalizaChat();
 
         Chat.iniciaChat("Dimirti");
 

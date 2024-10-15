@@ -121,10 +121,14 @@ public class Sessao {
             }
             player.write("205 " + sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2());
             player.write("300");
+
+            sessao.player1.write("1201 " + sessao.player2.getUsername());
+            sessao.player2.write("1201 " + sessao.player1.getUsername());
             return;
         }
 
         player.write("205 " + sessao.getId() + ";" + sessao.getPlayer1() + ";" + sessao.getPlayer2());
+
     }
 
     protected static void sairSessao(Jogador player){
@@ -170,6 +174,14 @@ public class Sessao {
         
         playerAtual.write("305 Você saiu da partida.");
         sairSessao(playerAtual);
-        return;
+    }
+
+    protected static void escrever(Jogador playerAtual, String mensagem){
+        Sessao sessao = sessoes.get(playerAtual.getSessao());
+
+        Jogador playerOutro = sessao.player2;
+        if(sessao.player2 == playerAtual) playerOutro = sessao.player1;
+
+        playerOutro.write("1202 " + playerAtual.getUsername() + ";" + mensagem);
     }
 }
