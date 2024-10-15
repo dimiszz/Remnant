@@ -119,6 +119,9 @@ public class Sessao {
             }
             user.write("205 " + sessao.getId() + ";" + sessao.getuser1() + ";" + sessao.getuser2());
             user.write("300");
+
+            sessao.user1.write("1201 " + sessao.user2.getUsername());
+            sessao.user2.write("1201 " + sessao.user1.getUsername());
             return;
         }
 
@@ -166,6 +169,14 @@ public class Sessao {
             sessao.user1.write("305 Seu oponente saiu da partida.");
             sairSessao(sessao.user1);
         }
-        return;
+    }
+
+    protected static void escrever(Usuario userAtual, String mensagem){
+        Sessao sessao = sessoes.get(userAtual.getSessao());
+
+        Usuario userOutro = sessao.user2;
+        if(sessao.user2 == userAtual) userOutro = sessao.user1;
+
+        userOutro.write("1202 " + userAtual.getUsername() + ";" + mensagem);
     }
 }
