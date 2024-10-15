@@ -3,12 +3,6 @@ package servidor;
 import java.util.Random;
 
 public class Jogo {
-    /*
-    - Guerreiro   vida: 72  defesa: 7  físico: 22  inteligência: 10
-    - Feiticeiro  vida: 65  defesa: 5  físico: 6   inteligência: 26
-    - Paladino   vida: 68  defesa: 4  físico: 20  inteligência: 16
-    */
-
     public static Random random = new Random();
 
     protected static Classe getClasse(String classe){

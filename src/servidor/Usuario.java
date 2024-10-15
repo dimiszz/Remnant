@@ -67,6 +67,11 @@ public class Usuario implements Runnable {
         setSessao(-1);
     }
 
+    public void setUsername(String username){
+        this.username = "Anônimo " + this.idUsuario;
+        if (username != null && !username.isEmpty()) this.username = username;
+    }
+
     public synchronized void setId(){
         this.idUsuario = ++livre;
         setUsername(null);
@@ -74,11 +79,6 @@ public class Usuario implements Runnable {
 
     public synchronized void setPartida(Boolean flag){
         this.flagPartida = flag;
-    }
-
-    public void setUsername(String username){
-        this.username = "Anônimo " + this.idUsuario;
-        if (username != null && !username.isEmpty()) this.username = username;
     }
 
     public void closeEverything(){

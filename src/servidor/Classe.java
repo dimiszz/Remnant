@@ -3,12 +3,6 @@ package servidor;
 //import javax.management.OperationsException;
 
 public class Classe {
-    /*
-    - Guerreiro   vida: 72  defesa: 7  físico: 22  inteligência: 10
-    - Feiticeiro  vida: 65  defesa: 5  físico: 6   inteligência: 26
-    - Paladino   vida: 68  defesa: 4  físico: 20  inteligência: 16
-    */
-
     private String classe;
     private int vida;
     private int defesa;
