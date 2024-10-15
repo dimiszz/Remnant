@@ -4,13 +4,14 @@ public class Partida {
     private final Jogador player1;
     private final Jogador player2;
     private Boolean combateIniciado;
+    //private Boolean metadeRodada;
     private int rodada;
 
     public Partida(Usuario user1, Usuario user2){
         this.player1 = new Jogador(user1);
         this.player2 = new Jogador(user2);
         this.combateIniciado = false;
-        this.metadeRodada = false;
+        //this.metadeRodada = false;
         rodada = 0;
     }
 
