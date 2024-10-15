@@ -104,6 +104,8 @@ public class Jogador implements Runnable {
             conteudo = "";
         }
 
+        //System.out.println("COMANDO: " + mensagem);
+
         if(this.flagPartida){
             switch(comando){
                 case "101":
@@ -117,6 +119,9 @@ public class Jogador implements Runnable {
                     break;
                 case "115":
                     Sessao.sairPartida(this);
+                    break;
+                case "1102":
+                    Sessao.escrever(this, conteudo);
                     break;
                 default:
                     write("COMANDO INVÁLIDO!");

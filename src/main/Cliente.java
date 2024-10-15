@@ -1,10 +1,14 @@
 package main;
 
+import chat.Chat;
 import cliente.*;
 import logs.LogFrame;
 import java.io.*;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 // Fonte para o servidor e cliente: https://www.youtube.com/watch?v=gLfuZrrfKes
@@ -12,12 +16,14 @@ public class Cliente {
     private final Socket socket;
     private final BufferedWriter bufferedWriter;
     private final BufferedReader bufferedReader;
-    private AtomicBoolean active = new AtomicBoolean(true);
+    private final AtomicBoolean active = new AtomicBoolean(true);
+    private final BlockingQueue<String> messageQueue;
 
     public Cliente(String host, int port) throws IOException {
         this.socket = new Socket(host, port);
         this.bufferedWriter = new BufferedWriter(new OutputStreamWriter(this.socket.getOutputStream()));
         this.bufferedReader = new BufferedReader(new InputStreamReader(this.socket.getInputStream()));
+        this.messageQueue = new ArrayBlockingQueue<>(10);
     }
 
     public void iniciaLeitor(){
@@ -25,11 +31,16 @@ public class Cliente {
     }
 
     public void iniciaEscritor(){
-        Thread.ofPlatform().daemon().start(new Escritor(this.socket, this.bufferedWriter, this.active));
+        Thread.ofPlatform().daemon().start(new Escritor(this.socket, this.bufferedWriter, this.active, this.messageQueue));
     }
 
-    public void mainLoop(){
-        while(active.get());
+    public void mainLoop() throws InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        while(active.get()){
+            String mensagem = scanner.nextLine();
+            boolean result = messageQueue.offer(mensagem, 1, TimeUnit.SECONDS);
+            if (!result) System.err.println("Erro ao enviar mensagem: fila cheia. " + mensagem);
+        };
         close();
     }
 
@@ -51,12 +62,13 @@ public class Cliente {
 
     public static void main(String[] args) {
         try {
-            LogFrame logs = new LogFrame(false);
+            LogFrame logs = new LogFrame(true);
 
             System.err.println("Iniciando console de logs.");
 
 
             Cliente cliente = new Cliente("127.0.0.1",7777);
+            Chat.addMessageQueue(cliente.messageQueue);
 
             // Le o nome de usuario e envia ao servidor
             Scanner scanner = new Scanner(System.in);
@@ -74,6 +86,7 @@ public class Cliente {
             System.out.println("Tentando finalizar o scanner...");
             scanner.close();
             logs.dispose();
+            Chat.finalizaChat();
             System.out.println("acabou a thread principal.");
         }
         catch(Exception e) {

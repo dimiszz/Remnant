@@ -3,12 +3,14 @@ package cliente;
 import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Leitor implements Runnable{
     private final Socket socket;
     private final BufferedReader bufferedReader;
     private AtomicBoolean active;
+
 
     public Leitor(Socket s, BufferedReader br, AtomicBoolean active){
         this.socket = s;
@@ -24,9 +26,13 @@ public class Leitor implements Runnable{
             try {
                 mensagem = bufferedReader.readLine();
 
+                if(mensagem == null) continue;
+
                 System.err.println("Servidor: " + mensagem);
 
                 mensagem = CodificaDecodifica.decodifica(mensagem);
+
+                if (mensagem.isBlank()) continue;
 
                 System.out.println(mensagem);
 

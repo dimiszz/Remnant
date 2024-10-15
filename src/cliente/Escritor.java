@@ -4,6 +4,7 @@ import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
 import java.util.Scanner;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Escritor implements Runnable {
@@ -11,11 +12,13 @@ public class Escritor implements Runnable {
     private final BufferedWriter bufferedWriter;
     private final Scanner scanner;
     private AtomicBoolean active;
+    private final BlockingQueue<String> messageQueue;
 
-    public Escritor(Socket socket, BufferedWriter bufferedWriter, AtomicBoolean active){
+    public Escritor(Socket socket, BufferedWriter bufferedWriter, AtomicBoolean active, BlockingQueue<String> messageQueue){
         this.socket = socket;
         this.bufferedWriter = bufferedWriter;
         this.active = active;
+        this.messageQueue = messageQueue;
         this.scanner = new Scanner(System.in);
     }
 
@@ -23,7 +26,7 @@ public class Escritor implements Runnable {
     public void run(){
         try {
             while(active.get() && !socket.isClosed() && socket.isConnected()){
-                String mensagem = scanner.nextLine();
+                String mensagem = messageQueue.take();
 
                 System.err.println("Cliente: " + mensagem);
 
@@ -43,6 +46,9 @@ public class Escritor implements Runnable {
         }
         catch(NoSuchElementException e) {
             System.out.println("Thread do Escritor interrompida.");
+        } catch (InterruptedException e) {
+            System.out.println("Thread do Escritor interrompida.");
+            throw new RuntimeException(e);
         }
     }
 }

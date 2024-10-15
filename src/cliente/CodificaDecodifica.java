@@ -1,5 +1,7 @@
 package cliente;
 
+import chat.Chat;
+
 public class CodificaDecodifica {
     public static String separaComando(String mensagem){
         if(mensagem.contains(" ")){
@@ -16,7 +18,7 @@ public class CodificaDecodifica {
     }
 
     public static String codifica(String mensagem){
-        StringBuilder str = new StringBuilder("");
+        StringBuilder str = new StringBuilder();
         String comando = separaComando(mensagem);
         String conteudo = separaConteudo(mensagem);
 
@@ -47,6 +49,9 @@ public class CodificaDecodifica {
                 break;
             case "/fechar":
                 str.append("999");
+                break;
+            case "/escrever":
+                str.append("1102 ").append(conteudo);
                 break;
             default:
                 str.append("COMANDO INVÁLIDO!");
@@ -131,6 +136,7 @@ public class CodificaDecodifica {
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 str.append("Saindo da sessão:\n").append(conteudo).append("\n");
                 str.append("----------------------------------------------------------------------------------------------------\n");
+                Chat.finalizaChat();
                 break;
             case "300":
                 str.append("""
@@ -195,6 +201,14 @@ public class CodificaDecodifica {
                 break;
             case "999":
                 str.append("");
+                break;
+            case "1201":
+                Chat.iniciaChat(conteudo);
+                str.append("CHAT INICIADO COM O USUÁRIO ").append(conteudo);
+                break;
+            case "1202":
+                String[] mensagens = conteudo.split(";");
+                Chat.write(mensagens[0], mensagens[1]);
                 break;
             default:
                 str.append("""
