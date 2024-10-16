@@ -2,6 +2,7 @@ package main;
 
 import chat.Chat;
 import cliente.*;
+import com.sun.tools.javac.Main;
 import logs.LogFrame;
 import java.io.*;
 import java.net.Socket;
@@ -34,13 +35,26 @@ public class Cliente {
         Thread.ofPlatform().daemon().start(new Escritor(this.socket, this.bufferedWriter, this.active, this.messageQueue));
     }
 
-    public void mainLoop() throws InterruptedException {
-        Scanner scanner = new Scanner(System.in);
-        while(active.get()){
-            String mensagem = scanner.nextLine();
-            boolean result = messageQueue.offer(mensagem, 1, TimeUnit.SECONDS);
-            if (!result) System.err.println("Erro ao enviar mensagem: fila cheia. " + mensagem);
-        };
+    public void mainLoop(){
+        Thread scannerThread = Thread.ofPlatform().daemon().start(() -> {
+                try {
+                    Scanner scanner = new Scanner(System.in);
+                    while (active.get()) {
+                        String mensagem = scanner.nextLine();
+                        boolean result = messageQueue.offer(mensagem, 1, TimeUnit.SECONDS);
+                        if (!result) System.err.println("Erro ao enviar mensagem: fila cheia. " + mensagem);
+                    }
+                    ;
+                    close();
+                }
+                catch(InterruptedException e) {
+                    System.out.println("Tentando finalizar o scanner...");
+                }
+            }
+        );
+
+        while (active.get());
+        scannerThread.interrupt();
         close();
     }
 
@@ -105,7 +119,7 @@ public class Cliente {
             scanner.close();
             logs.dispose();
             Chat.finalizaChat();
-            System.out.println("acabou a thread principal.");
+            System.out.println("Obrigado por se conectar!!");
         }
         catch(Exception e) {
             System.out.println("Erro: " + e.getMessage());
