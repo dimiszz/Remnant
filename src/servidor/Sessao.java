@@ -152,28 +152,28 @@ public class Sessao {
         sessoes.get(user.getSessao()).partida.combate(user, jogada);
     }
 
-    protected static void sairPartida(Usuario user){
+    protected synchronized static void sairPartida(Usuario user){
         Sessao sessao = sessoes.get(user.getSessao());
         sessao.partida = null;
         user.setPartida(false);
-        user.write("305 Você saiu da partida.");
-        sairSessao(user);
+        user.write("\"305 Você saiu da partida.");
 
-        if(sessao.user1 == user){
+        if(sessao.user1 == user && sessao.user2 != null){
             sessao.user2.setPartida(false);
             sessao.user2.write("305 Seu oponente saiu da partida.");
             sairSessao(sessao.user2);
         }
-        else if(sessao.user2 == user){
+        else if(sessao.user2 == user && sessao.user1 != null){
             sessao.user1.setPartida(false);
             sessao.user1.write("305 Seu oponente saiu da partida.");
             sairSessao(sessao.user1);
         }
+        sairSessao(user);
     }
 
     protected static void escrever(Usuario userAtual, String mensagem){
         Sessao sessao = sessoes.get(userAtual.getSessao());
-
+        if (sessao == null) return;
         Usuario userOutro = sessao.user2;
         if(sessao.user2 == userAtual) userOutro = sessao.user1;
 

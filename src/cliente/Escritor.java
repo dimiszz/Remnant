@@ -10,7 +10,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Escritor implements Runnable {
     private final Socket socket;
     private final BufferedWriter bufferedWriter;
-    private final Scanner scanner;
     private AtomicBoolean active;
     private final BlockingQueue<String> messageQueue;
 
@@ -19,7 +18,6 @@ public class Escritor implements Runnable {
         this.bufferedWriter = bufferedWriter;
         this.active = active;
         this.messageQueue = messageQueue;
-        this.scanner = new Scanner(System.in);
     }
 
     @Override
@@ -38,7 +36,8 @@ public class Escritor implements Runnable {
                 this.bufferedWriter.newLine();
                 this.bufferedWriter.flush();
                 if (mensagem.equals("999")) {
-                    System.out.println("Pressione qualquer tecla...");
+                    Thread.sleep(500);
+                    System.out.println("Pressione qualquer tecla para continuar...");
                     active.set(false);
                 }
             }

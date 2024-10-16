@@ -15,6 +15,7 @@ public class Usuario implements Runnable {
     private BufferedWriter bufferedWriter;
     private String username = "";
     private Boolean flagPartida;
+    private Boolean active = true;
 
     public Usuario(Socket socket){
         try{
@@ -33,6 +34,7 @@ public class Usuario implements Runnable {
     }
 
     public void write(String mensagem){
+        if (!active) return;
         try{
             this.bufferedWriter.write(mensagem);
             this.bufferedWriter.newLine();
@@ -40,6 +42,7 @@ public class Usuario implements Runnable {
         }
         catch(IOException e){
             System.out.println("Não foi possível escrever a mensagem: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
@@ -83,6 +86,9 @@ public class Usuario implements Runnable {
 
     public void closeEverything(){
         try {
+            active = false;
+            System.out.println("ID SESSÃO: " + this.idSessao);
+            if (this.idSessao != -1) Sessao.sairPartida(this);
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
             if (this.socket != null) this.socket.close();
@@ -118,6 +124,8 @@ public class Usuario implements Runnable {
                 case "115":
                     Sessao.sairPartida(this);
                     break;
+                case "999":
+                    this.closeEverything();
                 case "1102":
                     Sessao.escrever(this, conteudo);
                     break;
