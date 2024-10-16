@@ -7,14 +7,14 @@ public class Classe {
     private final String classe;
     private int vida;
     private final int defesa;
-    private final int fisico;
+    private final int forca;
     private final int inteligencia;
 
-    public Classe(String classe, int vida, int defesa, int fisico, int inteligencia) {
+    public Classe(String classe, int vida, int defesa, int forca, int inteligencia) {
         this.classe = classe;
         this.vida = vida;
         this.defesa = defesa;
-        this.fisico = fisico;
+        this.forca = forca;
         this.inteligencia = inteligencia;
     }
 
@@ -31,7 +31,7 @@ public class Classe {
     }
 
     public String getAtributos(){
-        return this.vida + ";" + this.defesa + ";" + this.fisico + ";" + this.inteligencia;
+        return this.vida + ";" + this.defesa + ";" + this.forca + ";" + this.inteligencia;
     }
 
     public int getVida(){
@@ -42,22 +42,22 @@ public class Classe {
         return this.defesa;
     }
 
-    public int getFisico(){
-        return this.fisico;
+    public int getForca(){
+        return this.forca;
     }
 
     protected int calculaDano(String jogada){
         int dano, desvio;
         desvio = random.nextInt(11) - 5;
         switch (jogada) {
-            case "Fisico":
-                dano = getFisico();
+            case "fisico":
+                dano = getForca();
                 return dano + desvio;
-            case "Magico":
+            case "magico":
                 dano =getInteligencia();
                 return dano + desvio;
-            case "Especial":
-                dano = getFisico() + getInteligencia();
+            case "especial":
+                dano = getForca() + getInteligencia();
                 return dano + desvio;
             default:
                 System.out.println("BUG TÁ CAINDO EM -1: " + jogada);

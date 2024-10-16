@@ -3,7 +3,6 @@ package cliente;
 import java.io.*;
 import java.net.Socket;
 import java.util.NoSuchElementException;
-import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 

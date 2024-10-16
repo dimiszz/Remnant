@@ -2,7 +2,6 @@ package main;
 
 import chat.Chat;
 import cliente.*;
-import com.sun.tools.javac.Main;
 import logs.LogFrame;
 import java.io.*;
 import java.net.Socket;
@@ -44,7 +43,7 @@ public class Cliente {
                         boolean result = messageQueue.offer(mensagem, 1, TimeUnit.SECONDS);
                         if (!result) System.err.println("Erro ao enviar mensagem: fila cheia. " + mensagem);
                     }
-                    ;
+                    scanner.close();
                     close();
                 }
                 catch(InterruptedException e) {
@@ -96,8 +95,8 @@ public class Cliente {
 
 
             Scanner scanner = new Scanner(System.in);
-//            System.out.println("Insira o IP:");
-//            String ip = scanner.nextLine();
+            // System.out.println("Insira o IP:");
+            // String ip = scanner.nextLine();
 
             Cliente cliente = new Cliente(enderecoIp,porta);
             LogFrame logs = new LogFrame(modoDebug);
@@ -123,7 +122,7 @@ public class Cliente {
         }
         catch(Exception e) {
             System.out.println("Erro: " + e.getMessage());
-            //e.printStackTrace();
+            // e.printStackTrace();
         }
     }
 }

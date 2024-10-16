@@ -5,8 +5,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Date;
-import java.util.Scanner;
 import java.util.concurrent.BlockingQueue;
+// import java.util.Scanner;
 
 // https://stackoverflow.com/questions/35283349/how-to-make-enter-key-and-submit-button-have-same-actionevent
 // https://www.geeksforgeeks.org/java-swing-jtextarea/
@@ -38,8 +38,7 @@ public class Chat extends JFrame implements ActionListener {
 
 
         JScrollPane scroll = new JScrollPane(chatArea);
-        scroll.setVerticalScrollBarPolicy(
-                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+        scroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
         this.add(scroll, BorderLayout.CENTER);
 
 
@@ -116,32 +115,35 @@ public class Chat extends JFrame implements ActionListener {
         Chat.messageQueue = messageQueue;
     }
 
-    public static void main(String[] args) throws InterruptedException {
+    /* APENAS TESTE DO CHAT */
+    // public static void main(String[] args) throws InterruptedException {
 
-        //SwingUtilities.invokeLater(() -> new Chat());
+    //     //SwingUtilities.invokeLater(() -> new Chat());
 
-        Chat.finalizaChat();
+    //     Chat.finalizaChat();
 
-        Chat.iniciaChat("Dimirti");
+    //     Chat.iniciaChat("Dimirti");
 
-        Scanner sn = new Scanner(System.in);
+    //     Scanner sn = new Scanner(System.in);
 
-        String message = "";
-        while(!message.equals("exit")){
-            message = sn.nextLine();
-        }
+    //     String message = "";
+    //     while(!message.equals("exit")){
+    //         message = sn.nextLine();
+    //     }
 
-        Chat.finalizaChat();
+    //     Chat.finalizaChat();
 
-        Thread.sleep(1000);
+    //     Thread.sleep(1000);
 
-        Chat.iniciaChat("Prado");
+    //     Chat.iniciaChat("Prado");
 
-        message = "";
-        while(!message.equals("exit")){
-            message = sn.nextLine();
-        }
+    //     message = "";
+    //     while(!message.equals("exit")){
+    //         message = sn.nextLine();
+    //     }
 
-        Chat.finalizaChat();
-    }
+    //     Chat.finalizaChat();
+
+    //     sn.close();
+    // }
 }
