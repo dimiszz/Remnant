@@ -43,3 +43,5 @@ Enquanto isso, quem defende escolhe entre defesa Física, Mágica e Counter. No 
 Por fim, temos o que deixa o jogo interessante: o Ataque Especial e a defesa Counter. Caso o atacante escolha Especial, o dano é igual a soma de sua Força com sua Inteligência. Defesas comuns não conseguem mitigar o ataque Especial. Para tanto, o defensor deve usar o Counter. Essa defesa reverte todo o dano que iria receber como dano para quem atacou.
 
 O jogo termina quando um dos jogadores chega a 0 pontos de vida e o outro é declarado como vencedor.
+
+Para um entendimento mais profundo do código fonte, veja [aqui](docs/Remnant.md)!
