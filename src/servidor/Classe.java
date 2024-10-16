@@ -1,6 +1,9 @@
 package servidor;
 
+import java.util.Random;
+
 public class Classe {
+    public static Random random = new Random();
     private final String classe;
     private int vida;
     private final int defesa;
@@ -43,12 +46,36 @@ public class Classe {
         return this.fisico;
     }
 
+    protected int calculaDano(String jogada){
+        int dano, desvio;
+        desvio = random.nextInt(11) - 5;
+        switch (jogada) {
+            case "Fisico":
+                dano = getFisico();
+                return dano + desvio;
+            case "Magico":
+                dano =getInteligencia();
+                return dano + desvio;
+            case "Especial":
+                dano = getFisico() + getInteligencia();
+                return dano + desvio;
+            default:
+                System.out.println("BUG TÁ CAINDO EM -1: " + jogada);
+                return -1;
+        }
+    }
+
     public int getInteligencia(){
         return this.inteligencia;
     }
 
-    public void setVida(int vida){
-        this.vida = vida;
+    public void tomaDano(int dano){
+        this.vida -= dano;
+        if (this.vida < 0) this.vida = 0;
+    }
+
+    public boolean morto(){
+        return this.vida <= 0;
     }
 
     @Override

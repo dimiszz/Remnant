@@ -35,18 +35,20 @@ public class Partida {
             return;
         }
 
-        if(user == this.player1.getUser()){
-            this.player1.setClasse(classe_selecionada);
-            this.player1.getUser().write("303 Classe " + classe_selecionada + " selecionada");
-            this.player2.getUser().write("303 " + this.player1.getUser().getUsername() + " selecionou a classe.");
-        }
-        else {
-            this.player2.setClasse(classe_selecionada);
-            this.player2.getUser().write("303 Classe " + classe_selecionada + " selecionada");
-            this.player2.getUser().write("303 " + this.player2.getUser().getUsername() + " selecionou a classe.");
+        Jogador jogadorAtual = this.player1;
+        Jogador outroJogador = this.player2;
+
+        if(user == this.player2.getUser()){
+            jogadorAtual = this.player2;
+            outroJogador = this.player1;
         }
 
-        if (this.player1.getClasse() == null || this.player2.getClasse() == null) {
+        jogadorAtual.setClasse(classe_selecionada);
+        jogadorAtual.getUser().write("303 Classe " + classe_selecionada + " selecionada");
+        outroJogador.getUser().write("303 " + this.player1.getUser().getUsername() + " selecionou a classe.");
+
+
+        if (outroJogador.getClasse() == null) {
             user.write("306 Aguardando o outro jogador selecionar...");
         }
         else comecaCombate();
@@ -84,66 +86,62 @@ public class Partida {
         if(!this.combateIniciado){
             user.write("304 Combate ainda não iniciado.");
             return;
-        }        
-
-        Jogador playerAtual, playerOutro;
-        if(user == this.player1.getUser()){
-            playerAtual = this.player1;
-            playerOutro = this.player2;
-        }
-        else{
-            playerAtual = this.player2;
-            playerOutro = this.player1;
         }
 
-        if(Jogo.escolheJogada(playerAtual, playerOutro, jogada)){
-            playerAtual.setJogada(jogada);
-        }
-        else{
-            return;
-        }
+        Jogador playerAtual = (user == this.player1.getUser()) ? this.player1 : this.player2;
+        Jogador playerOutro = (playerAtual == this.player1) ? this.player2 : this.player1;
 
-        if(this.player1.getJogada() == null || this.player2.getJogada() == null){
+
+        if(!Jogo.escolheJogada(playerAtual, playerOutro, jogada)) return;
+
+        playerAtual.setJogada(jogada);
+
+        if(playerOutro.getJogada() == null){
             playerAtual.getUser().write("306 Aguardando o outro jogador selecionar...");
             return;
         }
-        else{
-            if(this.player1.getTurno().equals("Ataque")){
-                Jogo.realizaCombate(this.player1, this.player2);
-            }
-            else{
-                Jogo.realizaCombate(this.player2, this.player1);
-            }
 
-            if(this.player1.getClasse().getVida() <= 0){
-                this.player1.getUser().write("404 0");
-                this.player2.getUser().write("404 1");
-                Sessao.sairPartida(this.player1.getUser());
-                Sessao.sairPartida(this.player2.getUser());
-                return;
-            }
-            else if(this.player2.getClasse().getVida() <= 0){
-                this.player1.getUser().write("404 1");
-                this.player2.getUser().write("404 0");
-                Sessao.sairPartida(this.player1.getUser());
-                Sessao.sairPartida(this.player2.getUser());
-                return;
-            }
-
-            if(!this.metadeRodada){
-                this.metadeRodada = true;
-                Jogo.inverteTurno(this.player1, this.player2);
-                this.player1.getUser().write("403 " + this.player1.getTurno());
-                this.player2.getUser().write("403 " + this.player2.getTurno());
-            }
-            else{
-                this.metadeRodada = false;
-                comecaRodada();
-            }
+        if(Jogo.realizaCombate(this.player1, this.player2)){
+            finalizaPartida();
+            return;
         }
+
+        if(!this.metadeRodada){
+            this.metadeRodada = true;
+            inverteTurno();
+            this.player1.getUser().write("403 " + this.player1.getTurno());
+            this.player2.getUser().write("403 " + this.player2.getTurno());
+        }
+        else{
+            this.metadeRodada = false;
+            comecaRodada();
+        }
+
 
         this.player1.setJogada(null);
         this.player2.setJogada(null);
         return;
+    }
+
+    protected void finalizaPartida(){
+        Jogador perdedor = (this.player1.getClasse().morto()) ? this.player1 : this.player2;
+        Jogador vencedor = (perdedor == this.player1) ? this.player2 : this.player1;
+
+
+        vencedor.getUser().write("404 1");
+        perdedor.getUser().write("404 0");
+        Sessao.sairPartida(vencedor.getUser());
+        Sessao.sairPartida(perdedor.getUser());
+    }
+
+    protected void inverteTurno(){
+        if(player1.getTurno().equals("Ataque")){
+            player1.setTurno("Defesa");
+            player2.setTurno("Ataque");
+        }
+        else{
+            player1.setTurno("Ataque");
+            player2.setTurno("Defesa");
+        }
     }
 }
