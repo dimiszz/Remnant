@@ -87,7 +87,6 @@ public class Usuario implements Runnable {
     public void closeEverything(){
         try {
             active = false;
-            System.out.println("ID SESSÃO: " + this.idSessao);
             if (this.idSessao != -1) Sessao.sairPartida(this);
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
