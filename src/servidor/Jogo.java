@@ -6,11 +6,11 @@ public class Jogo {
 
     protected static Classe getClasse(String classe){
         switch(classe){
-            case "Guerreiro":
+            case "guerreiro":
                 return Classe.Guerreiro();
-            case "Feiticeiro":
+            case "geiticeiro":
                 return Classe.Feiticeiro();
-            case "Paladino":
+            case "paladino":
                 return Classe.Paladino();
             default:
                 return null;
@@ -34,14 +34,14 @@ public class Jogo {
         String acao;
         if(player1.getTurno().equals("Ataque")){
             switch(jogada){
-                case "Fisico":
-                    acao = "Ataque físico";
+                case "fisico":
+                    acao = "Ataque Físico";
                     break;
-                case "Magico":
-                    acao = "Ataque mágico selecionado.";
+                case "magico":
+                    acao = "Ataque Mágico";
                     break;
-                case "Especial":
-                    acao = "Ataque especial selecionado.";
+                case "especial":
+                    acao = "Ataque Especial";
                     break;
                 default:
                     player1.getUser().write("304 Jogada inválida.");
@@ -50,13 +50,13 @@ public class Jogo {
         }
         else{
             switch (jogada) {
-                case "Fisico":
-                    acao = "Defesa normal";
+                case "escudo":
+                    acao = "Escudo Físico";
                     break;
-                case "Magico":
-                    acao = "Escudo mágico";
+                case "barreira":
+                    acao = "Barreira Mágica";
                     break;
-                case "Counter":
+                case "counter":
                     acao = "Counter";
                     break;
                 default:
@@ -66,18 +66,14 @@ public class Jogo {
         }
 
         player1.getUser().write("304 " + acao + " selecionado.");
-
         player2.getUser().write("304 " + player2 + " selecionou a jogada.");
         return true;
     }
 
     // Considera todas as possibilidades de combate e retorna se alguém foi morto.
     protected static boolean realizaCombate(Jogador player1, Jogador player2){
-        String resultado;
-
         Jogador playerAtacante = player1.getTurno().equals("Ataque") ? player1 : player2;
         Jogador playerDefensor = (playerAtacante == player1) ? player2 : player1;
-
 
         Classe atacante = playerAtacante.getClasse();
         Classe defensor = playerDefensor.getClasse();
@@ -85,40 +81,39 @@ public class Jogo {
         int dano = atacante.calculaDano(playerAtacante.getJogada());
 
         switch(playerAtacante.getJogada()){
-            case "Fisico":
+            case "fisico":
                 switch(playerDefensor.getJogada()){
-                    case "Fisico":
+                    case "escudo":
                         dano -= defensor.getDefesa();
                         break;
-                    case "Magico":
+                    case "barreira":
                         break;
-                    case "Counter":
+                    case "counter":
                         break;
                 }
                 break;
-            case "Magico":
+            case "magico":
                 switch(playerDefensor.getJogada()){
-                    case "Fisico":
+                    case "escudo":
                         dano -= defensor.getDefesa()/2;
                         break;
-                    case "Magico":
+                    case "barreira":
                         dano -= defensor.getDefesa();
                         dano -= defensor.getInteligencia()/3;
                         break;
-                    case "Counter":
+                    case "counter":
                         break;
                 }
                 break;
-            case "Especial":
+            case "especial":
                 switch(playerDefensor.getJogada()){
-                    case "Fisico":
+                    case "escudo":
                         dano -= defensor.getDefesa();
                         break;
-                    case "Magico":
+                    case "barreira":
                         break;
                     // Unico caso especial em que o atacante recebe dano
-                    case "Counter":
-
+                    case "counter":
                         return causaDano(playerDefensor, playerAtacante, dano);
                 }
                 break;

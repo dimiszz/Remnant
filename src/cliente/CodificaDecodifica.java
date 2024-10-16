@@ -81,12 +81,22 @@ public class CodificaDecodifica {
                 | | \\ \\| |____| |  | | |\\  |/ ____ \\| |\\  |  | |   
                 |_|  \\_\\______|_|  |_|_| \\_/_/    \\_\\_| \\_|  |_|   
                                                     
-                Bem vindo! Nesse jogo, você deve escolher entre Atacar
-                ou Defender e Magia ou Físico, além do golpe especial contra ataque.
-                Os jogadores possuem 3 vidas. Defesas físicas defendem física, o mesmo para mágicas.
-                Ou seja, se 1 jogador usar defesa física e o outro ataque mágico, toma dano.
-                Se ambos atacarem, ambos levam dano. Se um atacar e o outro usar o contra-ataque, 
-                apenas o que atacou leva dano, independente do tipo do ataque. Ganha quem ficar vivo!
+                Bem vindo ao Remnant! Crie uma sessão e disputa com outros jogadores!
+                Nesse jogo, você luta com um outro player em um combate por turnos.
+                No início escolhe uma classe entre Guerreiro, Feiticeiro e Paladino.
+                Quando o combate começa, ocorre as rodadas, que é composto por dois turnos.
+                O primeiro é definido aleatoriamente quem ataca e quem defende.
+                O segundo é o contrário do primeiro. Assim, toda roda cada um ataca e defende uma vez.
+                
+                Detalhes do combate:
+                O atacante tem três opções, Ataque Físico, Ataque Mágico e Ataque Especial.
+                - Ataque Físico escala com a Força.
+                - Ataque Mágico escala com a Inteligência.
+                - Ataque Especial escala com a soma da Força e Inteligência.
+                E o defensor tem três opções, Escudo, Barreira e Counter.
+                - Escudo reduz o dano de todos os tipos de ataques, mas pouco do Ataque Mágico.
+                - Barreira reduz apenas o dano do Ataque Mágico.
+                - Counter devolve inteiramente contra Ataque Especial e não faz nada contra o resto.
                 
                 Para ver os possíveis comandos digite "/ajuda".
                 ----------------------------------------------------------------------------------------------------
@@ -154,13 +164,13 @@ public class CodificaDecodifica {
                 ----------------------------------------------------------------------------------------------------
                 Partida iniciada!
                 Escolha sua classe usando o comando "/escolher {classe}".
-                Ex: "/escolher Guerreiro"
+                Ex: "/escolher guerreiro"
                 Use "/ajuda" para ver os comandos disponíveis na partida.
 
                 Classes:
-                - Guerreiro   vida: 72  defesa: 7  físico: 22  inteligência: 10
-                - Feiticeiro  vida: 65  defesa: 5  físico: 6   inteligência: 26
-                - Paladino   vida: 68  defesa: 4  físico: 20  inteligência: 16
+                - Guerreiro   vida: 72  defesa: 7  força: 22  inteligência: 10
+                - Feiticeiro  vida: 65  defesa: 5  força: 6   inteligência: 26
+                - Paladino   vida: 68  defesa: 4  força: 20  inteligência: 16
                 ----------------------------------------------------------------------------------------------------
                 """);
                 break;
@@ -170,6 +180,11 @@ public class CodificaDecodifica {
                 - Use "/escolher {classe}" para escolher a sua classe.
                 - Use "/combate {ataque/defesa}" para escolher o tipo de ataque ou defesa.
                 - Use "/sair_partida" para sair da partida.
+                
+                Detalhes do combando:
+                A escolha da classe pode ser entre "guerreiro", "feiticeiro" e "paladino".
+                O atacante tem três opções, "fisico", "magico" e "especial".
+                E o defensor tem três opções, "escudo", "barreira" e "counter".
                 ----------------------------------------------------------------------------------------------------
                 """);
                 break;
@@ -206,10 +221,10 @@ public class CodificaDecodifica {
                 str.append("Começando Rodada ").append(conteudos[13]).append(":\n\n");
                 str.append("Jogador 1: ").append(conteudos[1]).append("\tClasse: ").append(conteudos[2]);
                 str.append("\nVida: ").append(conteudos[3]).append("\tDefesa: ").append(conteudos[4]);
-                str.append("\tFísico: ").append(conteudos[5]).append("\tInteligência: ").append(conteudos[6]);
+                str.append("\tForça: ").append(conteudos[5]).append("\tInteligência: ").append(conteudos[6]);
                 str.append("\n\nJogador 2: ").append(conteudos[7]).append("\tClasse: ").append(conteudos[8]);
                 str.append("\nVida: ").append(conteudos[9]).append("\tDefesa: ").append(conteudos[10]);
-                str.append("\tFísico: ").append(conteudos[11]).append("\tInteligência: ").append(conteudos[12]);
+                str.append("\tForça: ").append(conteudos[11]).append("\tInteligência: ").append(conteudos[12]);
                 str.append("\n\nVocê começa com: ").append(conteudos[0]).append("\n\n");
                 str.append("Se você estiver atacando, use \"/combate {tipo}\" e escolha entre Fisico, Magico ou Especial.\n");
                 str.append("Se você estiver defendendo, use \"/combate {tipo}\" e escolha entre Fisico, Magico ou Counter.\n");
