@@ -8,7 +8,7 @@ public class Jogo {
         switch(classe){
             case "guerreiro":
                 return Classe.Guerreiro();
-            case "geiticeiro":
+            case "feiticeiro":
                 return Classe.Feiticeiro();
             case "paladino":
                 return Classe.Paladino();
@@ -66,7 +66,7 @@ public class Jogo {
         }
 
         player1.getUser().write("304 " + acao + " selecionado.");
-        player2.getUser().write("304 " + player2 + " selecionou a jogada.");
+        player2.getUser().write("304 " + player1 + " selecionou a jogada.");
         return true;
     }
 

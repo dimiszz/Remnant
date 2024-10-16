@@ -154,7 +154,8 @@ public class Sessao {
 
     protected synchronized static void sairPartida(Usuario user){
         Sessao sessao = sessoes.get(user.getSessao());
-        sessao.partida = null;
+
+        if (sessao.partida != null) sessao.partida = null;
         user.setPartida(false);
         user.write("\"305 Você saiu da partida.");
 

@@ -39,10 +39,10 @@ public class CodificaDecodifica {
                 str.append("106");
                 break;
             case "/escolher":
-                str.append("113 ").append(conteudo);
+                str.append("113 ").append(conteudo.toLowerCase());
                 break;
             case "/combate":
-                str.append("114 ").append(conteudo);
+                str.append("114 ").append(conteudo.toLowerCase());
                 break;
             case "/sair_partida":
                 str.append("115");
@@ -226,8 +226,8 @@ public class CodificaDecodifica {
                 str.append("\nVida: ").append(conteudos[9]).append("\tDefesa: ").append(conteudos[10]);
                 str.append("\tForça: ").append(conteudos[11]).append("\tInteligência: ").append(conteudos[12]);
                 str.append("\n\nVocê começa com: ").append(conteudos[0]).append("\n\n");
-                str.append("Se você estiver atacando, use \"/combate {tipo}\" e escolha entre Fisico, Magico ou Especial.\n");
-                str.append("Se você estiver defendendo, use \"/combate {tipo}\" e escolha entre Fisico, Magico ou Counter.\n");
+                str.append("Se você estiver atacando, use \"/combate {tipo}\" e escolha entre \"fisico\", \"magico\" e \"especial\".\n");
+                str.append("Se você estiver defendendo, use \"/combate {tipo}\" e escolha entre \"escudo\", \"barreira\" e \"counter\".\n");
                 str.append("----------------------------------------------------------------------------------------------------\n");
                 break;
             case "402":

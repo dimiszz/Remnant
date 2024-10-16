@@ -45,7 +45,7 @@ public class Partida {
 
         jogadorAtual.setClasse(classe_selecionada);
         jogadorAtual.getUser().write("303 Classe " + classe_selecionada + " selecionada");
-        outroJogador.getUser().write("303 " + this.player1.getUser().getUsername() + " selecionou a classe.");
+        outroJogador.getUser().write("303 " + jogadorAtual.getUser().getUsername() + " selecionou a classe.");
 
 
         if (outroJogador.getClasse() == null) {
