@@ -40,4 +40,9 @@ public class Jogador {
     protected void setJogada(String jogada){
         this.jogada = jogada;
     }
+
+    @Override
+    public String toString(){
+        return this.user.getUsername();
+    }
 }
