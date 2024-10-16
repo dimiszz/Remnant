@@ -176,6 +176,7 @@ public class Sessao {
         if (sessao == null) return;
         Usuario userOutro = sessao.user2;
         if(sessao.user2 == userAtual) userOutro = sessao.user1;
+        // testar se usuário userOutro é nulo.
 
         userOutro.write("1202 " + userAtual.getUsername() + ";" + mensagem);
     }
