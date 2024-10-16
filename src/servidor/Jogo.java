@@ -130,7 +130,7 @@ public class Jogo {
                         break;
                     // Unico caso especial em que o atacante recebe dano
                     case "Counter":
-                        atacante.getClasse().setVida(vida - dano);
+                        atacante.getClasse().setVida(atacante.getClasse().getVida() - dano);
                         if(atacante.getClasse().getVida() < 0){
                             atacante.getClasse().setVida(0);
                         }
@@ -172,6 +172,7 @@ public class Jogo {
                 dano = classe.getFisico() + classe.getInteligencia();
                 return dano + desvio;
             default:
+                System.out.println("BUG TÁ CAINDO EM -1: " + jogada);
                 return -1;
         }
     }
