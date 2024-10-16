@@ -2,9 +2,6 @@
 
 Na interface do cliente, ele utiliza os comandos escrevendo ``/comando`` e isso é traduzido para o servidor para códigos.
 
-
-# Mensagens do Servidor (Comandos)
-
 - /ajuda &rarr; **101** → exibe ajuda sobre os comandos disponíveis.
 
 - /listar_sessoes &rarr; **103** → lista as sessões disponíveis.
