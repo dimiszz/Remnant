@@ -131,7 +131,7 @@ public class Partida {
         vencedor.getUser().write("404 1");
         perdedor.getUser().write("404 0");
         Sessao.sairPartida(vencedor.getUser());
-        Sessao.sairPartida(perdedor.getUser());
+        //Sessao.sairPartida(perdedor.getUser());
     }
 
     protected void inverteTurno(){
