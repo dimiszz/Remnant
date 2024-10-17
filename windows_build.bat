@@ -7,8 +7,7 @@ REM Verifica se o diretório out/manual/rods existe e cria se necessário
 
 IF EXIST out (
     echo Preparando clean build...
-    rmdir /s out
-    Y
+    rmdir /s /q out
 )
 
 IF NOT EXIST out\manual\rods (
