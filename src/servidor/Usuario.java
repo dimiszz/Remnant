@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
 
+// Classe do usuário conectado no servidor
 public class Usuario implements Runnable {
     private static ArrayList<Usuario> usuarios = new ArrayList<>();
     private static int livre = 0;

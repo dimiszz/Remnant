@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.io.OutputStream;
 import java.io.PrintStream;
 
+// Classe necessária para o log, usado para debugar
 public class LogFrame {
     private JFrame frame;
 
@@ -31,7 +32,7 @@ public class LogFrame {
         frame.setVisible(true);
 
         // Redireciona System.err para o JTextArea usando um PrintStream
-        PrintStream printStream = new PrintStream(new JTextAreaOutputStream(textArea));
+        PrintStream printStream = new PrintStream(new TextAreaOutput(textArea));
         System.setErr(printStream); // Redireciona System.err
     }
 

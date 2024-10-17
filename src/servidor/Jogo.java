@@ -2,8 +2,9 @@ package servidor;
 
 import static servidor.Classe.random;
 
+// Classe do jogo com os métodos estáticos necessários para o combate
 public class Jogo {
-
+    // Retorna a classe escolhida pelo jogador
     protected static Classe getClasse(String classe){
         switch(classe){
             case "guerreiro":
@@ -17,7 +18,7 @@ public class Jogo {
         }
     }
 
-
+    // Escolhe aleatoriamente quem começa a rodada
     protected static void escolheTurno(Partida partida){
         int rodada = random.nextInt(2);
         if(rodada == 0){
@@ -30,6 +31,7 @@ public class Jogo {
         }
     }
 
+    // Define a jogada do jogador
     protected static Boolean escolheJogada(Jogador player1, Jogador player2, String jogada){
         String acao;
         if(player1.getTurno().equals("Ataque")){
@@ -122,6 +124,7 @@ public class Jogo {
         return causaDano(playerAtacante, playerDefensor, dano);
     }
 
+    // Causa dano ao jogador e retorna se ele foi morto
     public static boolean causaDano(Jogador atacante, Jogador defensor, int dano){
         String resultado;
 
@@ -138,10 +141,5 @@ public class Jogo {
         defensor.getUser().write(resultado);
 
         return defensor.getClasse().morto();
-    }
-
-
-    public static void main(String[] args){
-
     }
 }

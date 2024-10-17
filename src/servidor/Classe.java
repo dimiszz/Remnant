@@ -2,6 +2,7 @@ package servidor;
 
 import java.util.Random;
 
+// Classe das classes de rpg com os atributos e métodos necessários para o combate
 public class Classe {
     public static Random random = new Random();
     private final String classe;

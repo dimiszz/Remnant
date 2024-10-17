@@ -2,6 +2,7 @@ package cliente;
 
 import chat.Chat;
 
+// Classe para codificar e decodificar as mensagens tando da escrita quanto da leitura
 public class CodificaDecodifica {
     public static String separaComando(String mensagem){
         if(mensagem.contains(" ")){

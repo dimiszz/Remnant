@@ -1,5 +1,6 @@
 package servidor;
 
+// Classe da partida com os métodos necessários para o combate
 public class Partida {
     private final Jogador player1;
     private final Jogador player2;
@@ -23,6 +24,7 @@ public class Partida {
         return this.player2;
     }
 
+    // Define a classe do jogador se a entrada for válida
     protected void setClasse(Usuario user, String classe){
         if(this.combateIniciado){
             user.write("303 Combate já iniciado.");
@@ -82,6 +84,7 @@ public class Partida {
         return;
     }
 
+    //Recebe o jogador que realiza o combate e a sua jogada
     protected void combate(Usuario user, String jogada){
         if(!this.combateIniciado){
             user.write("304 Combate ainda não iniciado.");
@@ -101,6 +104,7 @@ public class Partida {
             return;
         }
 
+        // Depois de verificar a possibilidade de combate, realiza o combate
         if(Jogo.realizaCombate(this.player1, this.player2)){
             finalizaPartida();
             return;
@@ -123,6 +127,7 @@ public class Partida {
         return;
     }
 
+    // Verifica quem venceu e perdeu e finaliza a partida
     protected void finalizaPartida(){
         Jogador perdedor = (this.player1.getClasse().morto()) ? this.player1 : this.player2;
         Jogador vencedor = (perdedor == this.player1) ? this.player2 : this.player1;
@@ -134,6 +139,7 @@ public class Partida {
         //Sessao.sairPartida(perdedor.getUser());
     }
 
+    // Inverte o turno dos jogadores usado para metade da rodada
     protected void inverteTurno(){
         if(player1.getTurno().equals("Ataque")){
             player1.setTurno("Defesa");

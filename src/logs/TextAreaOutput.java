@@ -5,10 +5,11 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class JTextAreaOutputStream extends java.io.OutputStream {
+// Classe apenas para redirecionar a saída de erro para um JTextArea
+public class TextAreaOutput extends java.io.OutputStream {
     private final JTextArea textArea;
 
-    public JTextAreaOutputStream(JTextArea textArea) {
+    public TextAreaOutput(JTextArea textArea) {
         this.textArea = textArea;
     }
 

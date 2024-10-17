@@ -10,6 +10,7 @@ import java.util.concurrent.BlockingQueue;
 
 // https://stackoverflow.com/questions/35283349/how-to-make-enter-key-and-submit-button-have-same-actionevent
 // https://www.geeksforgeeks.org/java-swing-jtextarea/
+// Classe para a interface gráfica do chat
 public class Chat extends JFrame implements ActionListener {
     private static Chat chat;
     private static BlockingQueue<String> messageQueue;

@@ -1,5 +1,6 @@
 package servidor;
 
+// Classe do jogador com os atributos necessários para o combate
 public class Jogador {
     private final Usuario user;
     private Classe classe;

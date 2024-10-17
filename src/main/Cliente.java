@@ -73,7 +73,7 @@ public class Cliente {
         }
     }
 
-
+    // Tenta conectador com o servidor pelo ip e porta, depois inicia as threads 
     public static void main(String[] args) {
         try {
 

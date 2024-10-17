@@ -6,6 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// Classe com a thread para escrita de mensagens para o servidor, recebendo mensagens da entrada
 public class Escritor implements Runnable {
     private final Socket socket;
     private final BufferedWriter bufferedWriter;

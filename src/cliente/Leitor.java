@@ -5,6 +5,7 @@ import java.net.Socket;
 import java.net.SocketException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// Classe com a thread para leitura de mensagens do servidor
 public class Leitor implements Runnable{
     private final Socket socket;
     private final BufferedReader bufferedReader;

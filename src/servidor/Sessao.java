@@ -2,6 +2,7 @@ package servidor;
 
 import java.util.HashMap;
 
+// Classe para gerenciar as sessões dos usuários
 public class Sessao {
     private static final HashMap<Integer, Sessao> sessoes = new HashMap<>();
     private static final int maximoSessoes = 5;
@@ -84,6 +85,7 @@ public class Sessao {
         user.broadcast("207 " + user.getUsername() + ";" + sessao.getId());
     }
 
+    // Aqui na entrada da sessão já começa a partida se tiver dois jogadores
     protected static void entrarSessao(Usuario user, String id){
         if(user.estaEmSessao()){
             user.write("205 Você já está em uma sessão.");
