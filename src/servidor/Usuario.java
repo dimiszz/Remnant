@@ -98,6 +98,13 @@ public class Usuario implements Runnable {
         }
     }
 
+    public void broadcast(String mensagem){
+        for(Usuario usuario : usuarios){
+            if (usuario == this) continue;
+            usuario.write(mensagem);
+        }
+    }
+
     private void decodifica(String mensagem){
         String comando, conteudo;
         if(mensagem.contains(" ")){

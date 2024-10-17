@@ -81,6 +81,7 @@ public class Sessao {
         Sessao sessao = new Sessao();
         sessao.addUsuario(user);
         user.write("204 " + sessao.getId() + ";" + user.getUsername());
+        user.broadcast("207 " + user.getUsername() + ";" + sessao.getId());
     }
 
     protected static void entrarSessao(Usuario user, String id){

@@ -3,7 +3,7 @@ REM =========================
 REM Configuração do Cliente
 REM =========================
 
-REM Exclui o diretório out se ele existir
+REM Exclui o diretório out se ele existir para garantir o clean build
 IF EXIST out (
     echo Preparando clean build...
     rmdir /s /q out
