@@ -159,7 +159,7 @@ public class Sessao {
 
         if (sessao != null) sessao.partida = null;
         user.setPartida(false);
-        user.write("\"305 Você saiu da partida.");
+        user.write("305 Você saiu da partida.");
 
         if(sessao != null) {
             if (sessao.user1 == user && sessao.user2 != null) {
