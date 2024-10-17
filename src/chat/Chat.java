@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.BlockingQueue;
 // import java.util.Scanner;
@@ -43,6 +44,7 @@ public class Chat extends JFrame implements ActionListener {
 
 
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
+        panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
         messageField = new JTextField(20);
         messageField.setFont(font);
         JButton sendButton = new JButton("Enviar");
@@ -107,6 +109,29 @@ public class Chat extends JFrame implements ActionListener {
         chat.setVisible(true);
     }
 
+    public static void iniciaChatGlobal(String user, ArrayList<String> connectedUsers) {
+        chat = new Chat(user); // Manter a criação padrão do Chat
+
+        chat.setMinimumSize(new Dimension(400, 400));
+        // Adicionando a área de usuários conectados à janela
+        JTextArea userArea = new JTextArea();
+        userArea.setEditable(false);
+        userArea.setLineWrap(true);
+        userArea.setWrapStyleWord(true);
+        userArea.setFont(new Font("Arial", Font.PLAIN, 14));
+        userArea.setText(String.join("\n", connectedUsers)); // Exibe os usuários conectados
+    
+        JScrollPane userScroll = new JScrollPane(userArea);
+        userScroll.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+        userScroll.setPreferredSize(new Dimension(100, 200)); // Definindo largura da área de usuários
+    
+        chat.add(userScroll, BorderLayout.EAST); // Adiciona a lista de usuários conectados ao lado do chat
+    
+        chat.pack();
+        chat.setVisible(true);
+    }
+    
+
     public static void write(String remetente, String message){
         chat.writeMessage(remetente, message);
     }
@@ -116,34 +141,15 @@ public class Chat extends JFrame implements ActionListener {
     }
 
     /* APENAS TESTE DO CHAT */
-    // public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException {
 
-    //     //SwingUtilities.invokeLater(() -> new Chat());
+        //SwingUtilities.invokeLater(() -> new Chat());
+        ArrayList<String> connectedUsers = new ArrayList<String>();
 
-    //     Chat.finalizaChat();
+        connectedUsers.add("User2");
+        connectedUsers.add("User1");
+        connectedUsers.add("User0");
 
-    //     Chat.iniciaChat("Dimirti");
-
-    //     Scanner sn = new Scanner(System.in);
-
-    //     String message = "";
-    //     while(!message.equals("exit")){
-    //         message = sn.nextLine();
-    //     }
-
-    //     Chat.finalizaChat();
-
-    //     Thread.sleep(1000);
-
-    //     Chat.iniciaChat("Prado");
-
-    //     message = "";
-    //     while(!message.equals("exit")){
-    //         message = sn.nextLine();
-    //     }
-
-    //     Chat.finalizaChat();
-
-    //     sn.close();
-    // }
+        Chat.iniciaChatGlobal("ChatGlobal", connectedUsers);
+    }
 }
