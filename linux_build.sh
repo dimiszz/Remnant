@@ -3,6 +3,12 @@
 # Configuração do Cliente
 # =========================
 
+# Exclui o diretório 'out' se ele existir para garantir o clean build
+if [ -d "out" ]; then
+    echo "Preparando clean build..."
+    rm -rf out
+fi
+
 # Verifica se o diretório out/manual/rods existe e cria se necessário
 if [ ! -d "out/manual/rods" ]; then
     echo "Criando o diretório out/manual/rods..."

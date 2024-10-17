@@ -3,12 +3,12 @@ REM =========================
 REM Configuração do Cliente
 REM =========================
 
-REM Verifica se o diretório out/manual/rods existe e cria se necessário
-
+REM Exclui o diretório out se ele existir
 IF EXIST out (
     echo Preparando clean build...
     rmdir /s /q out
 )
+REM Verifica se o diretório out/manual/rods existe e cria se necessário
 
 IF NOT EXIST out\manual\rods (
     echo Criando o diretório out\manual\rods...
