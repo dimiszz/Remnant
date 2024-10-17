@@ -38,7 +38,7 @@ Caso queira finalizar a aplicação, use `/fechar`.
 
 Como funciona o jogo? Primeiramente, os jogadores irão escolher suas classes. A partida vai definir aleatoriamente quem vai começar defendendo e atacando. Assim, quem ataca vai escolher entre 3 opções: Físico, Mágico e Especial. O dano será equivalente à força, inteligência e a soma destes, respectivamente.
 
-Enquanto isso, quem defende escolhe entre defesa Física, Mágica e Counter. No caso de ataque Físico, somente uma defesa Física conseguirá mitigar parte do dano. Para um ataque Mágico, uma defesa Física mitiga pouca parte do dano e uma Mágica usa os pontos de Inteligência como parte da defesa.
+Enquanto isso, quem defende escolhe entre defesa Escudo, Barreira e Counter. No caso de ataque Físico, somente um Escudo conseguirá mitigar parte do dano. Para um ataque Mágico, um Escudo mitiga pouca parte do dano e uma Barreira usa os pontos de Inteligência como parte da defesa.
 
 Por fim, temos o que deixa o jogo interessante: o Ataque Especial e a defesa Counter. Caso o atacante escolha Especial, o dano é igual a soma de sua Força com sua Inteligência. Defesas comuns não conseguem mitigar o ataque Especial. Para tanto, o defensor deve usar o Counter. Essa defesa reverte todo o dano que iria receber como dano para quem atacou.
 
