@@ -135,6 +135,7 @@ public class Sessao {
         }
 
         Sessao sessao = sessoes.get(user.getSessao());
+        if(sessao == null) return;
         sessao.removeUsuario(user);
         user.write("206 Você saiu da sessão " + sessao.getId() + ".");
 
@@ -155,19 +156,20 @@ public class Sessao {
     protected synchronized static void sairPartida(Usuario user){
         Sessao sessao = sessoes.get(user.getSessao());
 
-        if (sessao.partida != null) sessao.partida = null;
+        if (sessao != null) sessao.partida = null;
         user.setPartida(false);
         user.write("\"305 Você saiu da partida.");
 
-        if(sessao.user1 == user && sessao.user2 != null){
-            sessao.user2.setPartida(false);
-            sessao.user2.write("305 Seu oponente saiu da partida.");
-            sairSessao(sessao.user2);
-        }
-        else if(sessao.user2 == user && sessao.user1 != null){
-            sessao.user1.setPartida(false);
-            sessao.user1.write("305 Seu oponente saiu da partida.");
-            sairSessao(sessao.user1);
+        if(sessao != null) {
+            if (sessao.user1 == user && sessao.user2 != null) {
+                sessao.user2.setPartida(false);
+                sessao.user2.write("305 Seu oponente saiu da partida.");
+                sairSessao(sessao.user2);
+            } else if (sessao.user2 == user && sessao.user1 != null) {
+                sessao.user1.setPartida(false);
+                sessao.user1.write("305 Seu oponente saiu da partida.");
+                sairSessao(sessao.user1);
+            }
         }
         sairSessao(user);
     }
