@@ -46,6 +46,8 @@ public class Leitor implements Runnable{
                 //e.printStackTrace();
             } catch (InterruptedException e) {
                 System.out.println("Thread foi interrompida antes da conexão com o socket fechar.");
+            }
+            finally{
                 this.active.set(false);
             }
         }

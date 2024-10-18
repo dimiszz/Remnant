@@ -92,7 +92,7 @@ public class Usuario implements Runnable {
     public void closeEverything(){
         try {
             active = false;
-            if (this.idSessao != -1) Sessao.sairPartida(this);
+            if (this.idSessao != -1) Sessao.fecharPartida(this);
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
             if (this.socket != null) this.socket.close();
@@ -133,7 +133,7 @@ public class Usuario implements Runnable {
                     Sessao.escolheCombate(this, conteudo);
                     break;
                 case "115":
-                    Sessao.sairPartida(this);
+                    Sessao.fecharPartida(this);
                     break;
                 case "999":
                     this.closeEverything();
@@ -204,5 +204,10 @@ public class Usuario implements Runnable {
 
         Usuario user = (Usuario) obj;
         return this.getIdUsuario() == user.getIdUsuario();
+    }
+
+    @Override
+    public String toString(){
+        return this.getUsername();
     }
 }

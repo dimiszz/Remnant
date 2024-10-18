@@ -141,8 +141,7 @@ public class Partida {
 
         vencedor.write("404 1");
         perdedor.write("404 0");
-        Sessao.sairPartida(vencedor.getUser());
-        //Sessao.sairPartida(perdedor.getUser());
+        Sessao.fecharPartida(vencedor.getUser());
     }
 
     // Inverte o turno dos jogadores usado para metade da rodada
