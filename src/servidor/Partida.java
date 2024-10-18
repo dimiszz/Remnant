@@ -1,5 +1,7 @@
 package servidor;
 
+import static servidor.Classe.random;
+
 // Classe da partida com os métodos necessários para o combate
 public class Partida {
     private final Jogador player1;
@@ -16,12 +18,17 @@ public class Partida {
         rodada = 0;
     }
 
-    protected Jogador getPlayer1(){
-        return this.player1;
-    }
-
-    protected Jogador getPlayer2(){
-        return this.player2;
+    // Escolhe aleatoriamente quem começa a rodada
+    protected void escolheTurno(){
+        int rodada = random.nextInt(2);
+        if(rodada == 0){
+            this.player1.setTurno("Ataque");
+            this.player2.setTurno("Defesa");
+        }
+        else{
+            this.player1.setTurno("Defesa");
+            this.player2.setTurno("Ataque");
+        }
     }
 
     // Define a classe do jogador se a entrada for válida
@@ -31,7 +38,7 @@ public class Partida {
             return;
         }
 
-        Classe classe_selecionada = Jogo.getClasse(classe);
+        Classe classe_selecionada = Classe.getClasse(classe);
         if(classe_selecionada == null){
             user.write("303 Classe inválida.");
             return;
@@ -40,14 +47,14 @@ public class Partida {
         Jogador jogadorAtual = this.player1;
         Jogador outroJogador = this.player2;
 
-        if(user == this.player2.getUser()){
+        if(this.player2.checkUser(user)){
             jogadorAtual = this.player2;
             outroJogador = this.player1;
         }
 
         jogadorAtual.setClasse(classe_selecionada);
-        jogadorAtual.getUser().write("303 Classe " + classe_selecionada + " selecionada");
-        outroJogador.getUser().write("303 " + jogadorAtual.getUser().getUsername() + " selecionou a classe.");
+        jogadorAtual.write("303 Classe " + classe_selecionada + " selecionada");
+        outroJogador.write("303 " + jogadorAtual.getUsername() + " selecionou a classe.");
 
 
         if (outroJogador.getClasse() == null) {
@@ -60,27 +67,27 @@ public class Partida {
         this.combateIniciado = true;
 
         String str = "";
-        str += this.player1.getUser().getUsername() + ";" + this.player1.getClasse().toString() + ";";
-        str += this.player2.getUser().getUsername() + ";" + this.player2.getClasse().toString();
+        str += this.player1.getUsername() + ";" + this.player1.getClasse().toString() + ";";
+        str += this.player2.getUsername() + ";" + this.player2.getClasse().toString();
 
-        this.player1.getUser().write("400 " + str);
-        this.player2.getUser().write("400 " + str);
+        this.player1.write("400 " + str);
+        this.player2.write("400 " + str);
         comecaRodada();
     }
 
     // Cada rodada tem duas partes, porque cada um precisa atacar e defender uma vez
     // A parte aleatória é só a primeira parte, a segunda parte é sempre o contrário da primeira
     protected void comecaRodada(){
-        Jogo.escolheTurno(this);
+        escolheTurno();
         this.rodada++;
 
         String str = "";
-        str += this.player1.getUser().getUsername() + ";" + this.player1.getClasse() + ";" + this.player1.getClasse().getAtributos() + ";";
-        str += this.player2.getUser().getUsername() + ";" + this.player2.getClasse() + ";" + this.player2.getClasse().getAtributos() + ";";
+        str += this.player1.getUsername() + ";" + this.player1.getClasse() + ";" + this.player1.getClasse().getAtributos() + ";";
+        str += this.player2.getUsername() + ";" + this.player2.getClasse() + ";" + this.player2.getClasse().getAtributos() + ";";
         str += this.rodada;
 
-        this.player1.getUser().write("401 " + this.player1.getTurno() + ";" + str);
-        this.player2.getUser().write("401 " + this.player2.getTurno() + ";" + str);
+        this.player1.write("401 " + this.player1.getTurno() + ";" + str);
+        this.player2.write("401 " + this.player2.getTurno() + ";" + str);
         return;
     }
 
@@ -91,7 +98,7 @@ public class Partida {
             return;
         }
 
-        Jogador playerAtual = (user == this.player1.getUser()) ? this.player1 : this.player2;
+        Jogador playerAtual = (this.player1.checkUser(user)) ? this.player1 : this.player2;
         Jogador playerOutro = (playerAtual == this.player1) ? this.player2 : this.player1;
 
 
@@ -100,7 +107,7 @@ public class Partida {
         playerAtual.setJogada(jogada);
 
         if(playerOutro.getJogada() == null){
-            playerAtual.getUser().write("306 Aguardando o outro jogador selecionar...");
+            playerAtual.write("306 Aguardando o outro jogador selecionar...");
             return;
         }
 
@@ -113,8 +120,8 @@ public class Partida {
         if(!this.metadeRodada){
             this.metadeRodada = true;
             inverteTurno();
-            this.player1.getUser().write("403 " + this.player1.getTurno());
-            this.player2.getUser().write("403 " + this.player2.getTurno());
+            this.player1.write("403 " + this.player1.getTurno());
+            this.player2.write("403 " + this.player2.getTurno());
         }
         else{
             this.metadeRodada = false;
@@ -124,7 +131,6 @@ public class Partida {
 
         this.player1.setJogada(null);
         this.player2.setJogada(null);
-        return;
     }
 
     // Verifica quem venceu e perdeu e finaliza a partida
@@ -133,8 +139,8 @@ public class Partida {
         Jogador vencedor = (perdedor == this.player1) ? this.player2 : this.player1;
 
 
-        vencedor.getUser().write("404 1");
-        perdedor.getUser().write("404 0");
+        vencedor.write("404 1");
+        perdedor.write("404 0");
         Sessao.sairPartida(vencedor.getUser());
         //Sessao.sairPartida(perdedor.getUser());
     }

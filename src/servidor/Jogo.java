@@ -4,32 +4,6 @@ import static servidor.Classe.random;
 
 // Classe do jogo com os métodos estáticos necessários para o combate
 public class Jogo {
-    // Retorna a classe escolhida pelo jogador
-    protected static Classe getClasse(String classe){
-        switch(classe){
-            case "guerreiro":
-                return Classe.Guerreiro();
-            case "feiticeiro":
-                return Classe.Feiticeiro();
-            case "paladino":
-                return Classe.Paladino();
-            default:
-                return null;
-        }
-    }
-
-    // Escolhe aleatoriamente quem começa a rodada
-    protected static void escolheTurno(Partida partida){
-        int rodada = random.nextInt(2);
-        if(rodada == 0){
-            partida.getPlayer1().setTurno("Ataque");
-            partida.getPlayer2().setTurno("Defesa");
-        }
-        else{
-            partida.getPlayer2().setTurno("Ataque");
-            partida.getPlayer1().setTurno("Defesa");
-        }
-    }
 
     // Define a jogada do jogador
     protected static Boolean escolheJogada(Jogador player1, Jogador player2, String jogada){
@@ -46,7 +20,7 @@ public class Jogo {
                     acao = "Ataque Especial";
                     break;
                 default:
-                    player1.getUser().write("304 Jogada inválida.");
+                    player1.write("304 Jogada inválida.");
                     return false;
             }
         }
@@ -62,13 +36,13 @@ public class Jogo {
                     acao = "Counter";
                     break;
                 default:
-                    player1.getUser().write("304 Jogada inválida.");
+                    player1.write("304 Jogada inválida.");
                     return false;
             }
         }
 
-        player1.getUser().write("304 " + acao + " selecionado.");
-        player2.getUser().write("304 " + player1 + " selecionou a jogada.");
+        player1.write("304 " + acao + " selecionado.");
+        player2.write("304 " + player1 + " selecionou a jogada.");
         return true;
     }
 
@@ -132,13 +106,13 @@ public class Jogo {
 
         defensor.getClasse().tomaDano(dano);
 
-        resultado = "402 1;" + atacante.getJogada() + ";" + defensor.getUser().getUsername() + ";";
+        resultado = "402 1;" + atacante.getJogada() + ";" + defensor.getUsername() + ";";
         resultado += defensor.getJogada() + ";" + dano + ";" + defensor.getClasse().getVida();
-        atacante.getUser().write(resultado);
+        atacante.write(resultado);
 
-        resultado = "402 0;" + defensor.getJogada() + ";" + atacante.getUser().getUsername() + ";";
+        resultado = "402 0;" + defensor.getJogada() + ";" + atacante.getUsername() + ";";
         resultado += atacante.getJogada() + ";" + dano + ";" + defensor.getClasse().getVida();
-        defensor.getUser().write(resultado);
+        defensor.write(resultado);
 
         return defensor.getClasse().morto();
     }

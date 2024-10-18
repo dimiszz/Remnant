@@ -42,8 +42,28 @@ public class Jogador {
         this.jogada = jogada;
     }
 
+    protected void write(String message){
+        this.user.write(message);
+    }
+
+    protected String getUsername(){
+        return this.user.getUsername();
+    }
+
+    protected boolean checkUser(Usuario user){
+        return user.equals(this.user);
+    }
+
     @Override
     public String toString(){
         return this.user.getUsername();
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null || obj.getClass() != getClass()) return false;
+
+        Jogador jogador = (Jogador) obj;
+        return this.user.getIdUsuario() == jogador.getUser().getIdUsuario();
     }
 }

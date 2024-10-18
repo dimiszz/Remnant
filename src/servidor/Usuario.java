@@ -51,6 +51,10 @@ public class Usuario implements Runnable {
         return usuarios.size();
     }
 
+    public int getIdUsuario(){
+        return idUsuario;
+    }
+
     public String getUsername(){
         return this.username;
     }
@@ -192,5 +196,13 @@ public class Usuario implements Runnable {
             closeEverything();
             System.out.println("Usuários conectados: " + this.users() + "\n");
         }
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (obj == null || obj.getClass() != getClass()) return false;
+
+        Usuario user = (Usuario) obj;
+        return this.getIdUsuario() == user.getIdUsuario();
     }
 }
