@@ -150,6 +150,8 @@ public class Sessao {
         user.write("305 Você saiu da partida.");
         sairSessao(user);
 
+        if (oponente == null) return;
+
         oponente.setPartida(false);
         oponente.write("305 Seu oponente saiu da partida.");
         sairSessao(oponente);
@@ -165,7 +167,7 @@ public class Sessao {
 
         Usuario oponente = sessao.getOponente(user);
 
-        user.write("1202 " + oponente + ";" + mensagem);
+        oponente.write("1202 " + user + ";" + mensagem);
     }
 
     private void iniciaSessao(Usuario user){

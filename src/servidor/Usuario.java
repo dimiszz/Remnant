@@ -93,6 +93,7 @@ public class Usuario implements Runnable {
 
     public void closeEverything(){
         try {
+            System.out.println("FECHANDO TUDO DO USUÁRIO " + this.socket.getRemoteSocketAddress());
             active = false;
             if (this.idSessao != -1) Sessao.fecharPartida(this);
             if (this.bufferedReader != null) this.bufferedReader.close();
