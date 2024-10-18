@@ -7,7 +7,7 @@ assignees: ''
 
 ---
 
-**Motivação para feature.**
+**Motivação**
 Descrição clara e concisa do problema.
 
 **(Opcional) Proponha uma solução.**
