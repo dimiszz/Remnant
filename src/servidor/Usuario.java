@@ -4,10 +4,12 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 // Classe do usuário conectado no servidor
 public class Usuario implements Runnable {
-    private static ArrayList<Usuario> usuarios = new ArrayList<>();
+    private static final List<Usuario> usuarios = Collections.synchronizedList(new ArrayList<>());
     private static int livre = 0;
     private int idUsuario;
     private int idSessao;
@@ -200,6 +202,7 @@ public class Usuario implements Runnable {
 
     @Override
     public boolean equals(Object obj){
+        if (this == obj) return true;
         if (obj == null || obj.getClass() != getClass()) return false;
 
         Usuario user = (Usuario) obj;

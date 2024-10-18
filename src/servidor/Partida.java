@@ -99,7 +99,7 @@ public class Partida {
         }
 
         Jogador playerAtual = (this.player1.checkUser(user)) ? this.player1 : this.player2;
-        Jogador playerOutro = (playerAtual == this.player1) ? this.player2 : this.player1;
+        Jogador playerOutro = getOponente(playerAtual);
 
 
         if(!Jogo.escolheJogada(playerAtual, playerOutro, jogada)) return;
@@ -112,7 +112,7 @@ public class Partida {
         }
 
         // Depois de verificar a possibilidade de combate, realiza o combate
-        if(Jogo.realizaCombate(this.player1, this.player2)){
+        if(Jogo.realizaCombate(playerAtual, playerOutro)){
             finalizaPartida();
             return;
         }
@@ -120,8 +120,8 @@ public class Partida {
         if(!this.metadeRodada){
             this.metadeRodada = true;
             inverteTurno();
-            this.player1.write("403 " + this.player1.getTurno());
-            this.player2.write("403 " + this.player2.getTurno());
+            playerAtual.write("403 " + playerAtual.getTurno());
+            playerOutro.write("403 " + playerOutro.getTurno());
         }
         else{
             this.metadeRodada = false;
@@ -129,8 +129,8 @@ public class Partida {
         }
 
 
-        this.player1.setJogada(null);
-        this.player2.setJogada(null);
+        playerAtual.setJogada(null);
+        playerOutro.setJogada(null);
     }
 
     // Verifica quem venceu e perdeu e finaliza a partida
@@ -143,6 +143,12 @@ public class Partida {
         perdedor.write("404 0");
         Sessao.fecharPartida(vencedor.getUser());
     }
+
+    private Jogador getOponente(Jogador jogador) {
+        return (this.player1 == jogador) ? this.player2 : this.player1;
+    }
+
+
 
     // Inverte o turno dos jogadores usado para metade da rodada
     protected void inverteTurno(){
