@@ -38,6 +38,41 @@ public class Jogador {
         this.turno = turno;
     }
 
+    protected String validaJogada(String jogada){
+        String acao;
+        if(this.turno.equals("Ataque")){
+            switch(jogada){
+                case "fisico":
+                    acao = "Ataque Físico";
+                    break;
+                case "magico":
+                    acao = "Ataque Mágico";
+                    break;
+                case "especial":
+                    acao = "Ataque Especial";
+                    break;
+                default:
+                    return "invalido";
+            }
+        }
+        else{
+            switch (jogada) {
+                case "escudo":
+                    acao = "Escudo Físico";
+                    break;
+                case "barreira":
+                    acao = "Barreira Mágica";
+                    break;
+                case "counter":
+                    acao = "Counter";
+                    break;
+                default:
+                    return "invalido";
+            }
+        }
+        return acao;
+    }
+
     protected void setJogada(String jogada){
         this.jogada = jogada;
     }

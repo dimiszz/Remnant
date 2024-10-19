@@ -5,46 +5,6 @@ import static servidor.Classe.random;
 // Classe do jogo com os métodos estáticos necessários para o combate
 public class Jogo {
 
-    // Define a jogada do jogador
-    protected static Boolean escolheJogada(Jogador player1, Jogador player2, String jogada){
-        String acao;
-        if(player1.getTurno().equals("Ataque")){
-            switch(jogada){
-                case "fisico":
-                    acao = "Ataque Físico";
-                    break;
-                case "magico":
-                    acao = "Ataque Mágico";
-                    break;
-                case "especial":
-                    acao = "Ataque Especial";
-                    break;
-                default:
-                    player1.write("304 Jogada inválida.");
-                    return false;
-            }
-        }
-        else{
-            switch (jogada) {
-                case "escudo":
-                    acao = "Escudo Físico";
-                    break;
-                case "barreira":
-                    acao = "Barreira Mágica";
-                    break;
-                case "counter":
-                    acao = "Counter";
-                    break;
-                default:
-                    player1.write("304 Jogada inválida.");
-                    return false;
-            }
-        }
-
-        player1.write("304 " + acao + " selecionado.");
-        player2.write("304 " + player1 + " selecionou a jogada.");
-        return true;
-    }
 
     // Considera todas as possibilidades de combate e retorna se alguém foi morto.
     protected static boolean realizaCombate(Jogador player1, Jogador player2){

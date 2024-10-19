@@ -102,8 +102,11 @@ public class Partida {
         Jogador playerOutro = getOponente(playerAtual);
 
 
-        if(!Jogo.escolheJogada(playerAtual, playerOutro, jogada)) return;
-
+        String acao = playerAtual.validaJogada(jogada);
+        if(acao.equals("invalido")) {
+            playerAtual.write("304 Jogada inválida.");
+            return;
+        }
         playerAtual.setJogada(jogada);
 
         if(playerOutro.getJogada() == null){
