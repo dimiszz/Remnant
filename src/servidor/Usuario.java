@@ -4,10 +4,12 @@ import java.io.*;
 import java.net.Socket;
 import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 // Classe do usuário conectado no servidor
 public class Usuario implements Runnable {
-    private static ArrayList<Usuario> usuarios = new ArrayList<>();
+    private static final List<Usuario> usuarios = Collections.synchronizedList(new ArrayList<>());
     private static int livre = 0;
     private int idUsuario;
     private int idSessao;
@@ -51,6 +53,10 @@ public class Usuario implements Runnable {
         return usuarios.size();
     }
 
+    public int getIdUsuario(){
+        return idUsuario;
+    }
+
     public String getUsername(){
         return this.username;
     }
@@ -87,8 +93,9 @@ public class Usuario implements Runnable {
 
     public void closeEverything(){
         try {
+            System.out.println("FECHANDO TUDO DO USUÁRIO " + this.socket.getRemoteSocketAddress());
             active = false;
-            if (this.idSessao != -1) Sessao.sairPartida(this);
+            if (this.idSessao != -1) Sessao.fecharPartida(this);
             if (this.bufferedReader != null) this.bufferedReader.close();
             if (this.bufferedWriter != null) this.bufferedWriter.close();
             if (this.socket != null) this.socket.close();
@@ -129,7 +136,7 @@ public class Usuario implements Runnable {
                     Sessao.escolheCombate(this, conteudo);
                     break;
                 case "115":
-                    Sessao.sairPartida(this);
+                    Sessao.fecharPartida(this);
                     break;
                 case "999":
                     this.closeEverything();
@@ -192,5 +199,19 @@ public class Usuario implements Runnable {
             closeEverything();
             System.out.println("Usuários conectados: " + this.users() + "\n");
         }
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) return true;
+        if (obj == null || obj.getClass() != getClass()) return false;
+
+        Usuario user = (Usuario) obj;
+        return this.getIdUsuario() == user.getIdUsuario();
+    }
+
+    @Override
+    public String toString(){
+        return this.getUsername();
     }
 }

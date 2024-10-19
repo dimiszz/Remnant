@@ -11,7 +11,7 @@ public class Classe {
     private final int forca;
     private final int inteligencia;
 
-    public Classe(String classe, int vida, int defesa, int forca, int inteligencia) {
+    private Classe(String classe, int vida, int defesa, int forca, int inteligencia) {
         this.classe = classe;
         this.vida = vida;
         this.defesa = defesa;
@@ -19,16 +19,30 @@ public class Classe {
         this.inteligencia = inteligencia;
     }
 
-    public static Classe Guerreiro(){
+    private static Classe Guerreiro(){
         return new Classe("Guerreiro",72, 7, 22, 10);
     }
 
-    public static Classe Feiticeiro(){
+    private static Classe Feiticeiro(){
         return new Classe("Feiticeiro", 65, 5, 6, 26);
     }
 
-    public static Classe Paladino(){
+    private static Classe Paladino(){
         return new Classe("Paladino",68, 4, 20, 16);
+    }
+
+    // Retorna a classe escolhida pelo jogador
+    protected static Classe getClasse(String classe){
+        switch(classe){
+            case "guerreiro":
+                return Classe.Guerreiro();
+            case "feiticeiro":
+                return Classe.Feiticeiro();
+            case "paladino":
+                return Classe.Paladino();
+            default:
+                return null;
+        }
     }
 
     public String getAtributos(){
