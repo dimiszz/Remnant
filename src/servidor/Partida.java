@@ -109,6 +109,9 @@ public class Partida {
         }
         playerAtual.setJogada(jogada);
 
+        playerAtual.write("304 " + acao + " selecionado.");
+        playerOutro.write("304 " + playerAtual + " selecionou a jogada.");
+
         if(playerOutro.getJogada() == null){
             playerAtual.write("306 Aguardando o outro jogador selecionar...");
             return;
