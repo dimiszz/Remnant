@@ -1,7 +1,5 @@
 package servidor;
 
-import static servidor.Classe.random;
-
 // Classe do jogo com os métodos estáticos necessários para o combate
 public class Jogo {
 
